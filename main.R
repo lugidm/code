@@ -6,22 +6,25 @@ library(maps)
 source("precip.R")
 source("pr.R")
 library(rgdal)
-MISSING_VALUE=1.00000002004088e+20
+library(zoom)
+#library(ggplot2)
+#library(rasterVis)
 input_file <- "../Lukas_Moser/EUR-11/eval/pr_EUR-11_ECMWF-ERAINT_evaluation_r1i1p1_CLMcom-CCLM4-8-17_v1_day_19960101-19961231.nc"
 output_dir <- "../Results/"
-#pr <- getPrecipAtDay(input_file, 1)
-pr <- getPR(input_file, 1)
 
-#image(pr$x, pr$y,pr$z)
-#data$dim$lon$vals -> lon
-#data$dim$lat$vals -> lat
-#data$dim$time$vals -> time
-#data$dim$level$vals -> lev
-#pr[pr=="1.00000002004088e+20"] <- NA
-'data$dim$y$vals -> lat
-data$dim$x$vals -> lon
-pr1<-pr[,,1]
-image(lon,lat,pr1)
-data(wrld_simpl)
-image(lon,lat,pr1)
-plot(wrld_simpl,add=TRUE)'
+nc_data<-nc_open(input_file)
+fillvalue <- ncatt_get(nc_data, "pr", "_FillValue")
+nc_close(nc_data)
+
+pr <- getPrecipAtDay(input_file, 100)
+prs <- getPrecipAllDays(input_file)
+#pr <- getPR(input_file, 1)
+#levelplot(pr)
+#zoom(pr, ext=drawExtent(), maxpixels=100000)
+plot(pr, xlab="lon", ylab="lat", map())
+map(add=TRUE, col="red")
+#zm()
+
+#contour(pr, add=FALSE, nlevels=10)
+#map(add=TRUE, col="red")
+#zm()
