@@ -13,6 +13,8 @@ getPrecipAtDay <- function(inputfile, day){
     lonlat <- SpatialPoints(lonlat, proj4string = CRS("+proj=longlat +datum=WGS84"))
 
     # My best guess at the proj4 string from the information given
+    # coordinate reference system arguments
+   # mycrs <- CRS("+proj=lcc +lat_1=35 +lat_2=51 +lat_0=39 +lon_0=14 +k=0.684241 +units=m +datum=WGS84 +no_defs")
     mycrs <- CRS("+proj=lcc +lat_1=35 +lat_2=51 +lat_0=39 +lon_0=14 +k=0.684241 +units=m +datum=WGS84 +no_defs")
     plonlat <- spTransform(lonlat, CRSobj = mycrs)
     # Take a look
@@ -21,13 +23,14 @@ getPrecipAtDay <- function(inputfile, day){
     extent(plonlat)
 
     # Yay! Now we can properly set the coordinate information for the raster
-    pr <- raster(inputfile, varname="pr")
+    pr <- raster(inputfile, varname="pr", time="1997-01-01")
+    pr[pr==MISSING_VALUE]<-NA
     # Fix the projection and extent
     projection(pr) <- mycrs
     extent(pr) <- extent(plonlat)
     # Take a look
     print(pr)
-    pr[pr==MISSING_VALUE]<-NA
+
     plot(pr)
     invisible(readline(prompt="Press [enter] to continue"))
     # Project to long lat grid
@@ -36,10 +39,9 @@ getPrecipAtDay <- function(inputfile, day){
     r
     plot(r)
     # Add contours
-    contour(r, add=TRUE)
+    #contour(r, add=TRUE)
 
     # Add country lines
-    library("maps")
     map(add=TRUE, col="black")
     return(pr)
 }
