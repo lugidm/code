@@ -1,3 +1,11 @@
+.RData
+.Rhistory
 .idea/*
 .idea
 data
+*.log 
+*.toc
+*.aux
+*.gz 
+*.nc
+*.pdf
