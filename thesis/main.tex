@@ -1,0 +1,46 @@
+\documentclass[12pt,twoside]{report}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{ngerman}
+\usepackage[a4paper, width=150mm, top=25mm, bottom=25mm, bindingoffset=6mm]{geometry}
+
+\usepackage{fancyhdr}
+\pagestyle{fancy} %% there the header is been set up 
+\fancyfoot{}
+\fancyfoot[LE,RO]{\thepage}
+\fancyhead[LE,RO]{\rightmark}
+
+
+
+\graphicspath{ {images/} }
+\title{
+	{Nachweis von Gewitterzellen in simulierten regionalen Klimamodellen}\\
+	{\large Wegener Center for Climate and Global Change}\\
+	{\includegraphics{university.jpg}}
+}
+\author{Lukas Moser}
+\date{01.01.10}
+\begin{document}
+	\maketitle
+	\pagestyle{fancy}
+	\chapter*{Abstrakt}
+	\input{chapters/abstract}
+	\chapter*{Danksagungen}
+	\input{chapters/acknowledgements}
+	\tableofcontents
+	
+	\chapter{Einführung}
+	\input{chapters/introduction}
+
+	\chapter{Chapter Two Title}
+	\input{chapters/chapter01}
+	
+	
+	\chapter{Conclusion}
+	\input{chapters/conclusion}
+	
+	\appendix
+	\chapter{Appendix Title}
+	\input{chapters/appendix}
+	
+\end{document}
