@@ -4,27 +4,31 @@
 # Created by: lugi
 # Created on: 03.10.19
 
+getAnnualMeanObs <- function(allDays)
+{
+    print("meancalc")
+    pr_by_year<-calc(subset(allDays, which(getZ(allDays)<as.Date('1996-01-01'))), mean)
+    for(i in 1996:1998){
+        date_string_start <- paste0(toString(i), "-01-01")
+        date_string_end <- paste0(toString(i+1), "-01-01")
+        extract_ids <- which((getZ(allDays) < as.Date(date_string_end))& (getZ(allDays) >= as.Date(date_string_start)))
+        pr_by_year <- addLayer(pr_by_year, calc(subset(allDays, extract_ids),mean))
+    }
+    return(pr_by_year)
+}
 
 getPrecipObs <- function(inputfile, layers){
 
-
-    pr <- brick(inputfile, varname="rr")
+    pr <- stack(inputfile, varname="rr")
+    pr <- subset(pr, which(getZ(pr) < as.Date('2006-01-01')))
+    print("rastered and subset")
     #print(pr)
-    nc_data<-nc_open(inputfile)
-    fillvalue <- ncatt_get(nc_data, "rr", "_FillValue")
-    nc_close(nc_data)
-    #pr[pr==fillvalue$value]<-NA
-
+    #pr[pr==fVal_obs$value]<-NA
     return(pr)
 }
 
-getPrecipAtDay2 <- function(inputfile){
-    pr<-list()
-    pr$lon <- raster(inputfile, varname="lon")
-    pr$lat <- raster(inputfile, varname="lat")
-    pr$pr <- raster(inputfile, varname="pr")
-
-    pr$pr[pr$pr==fillvalue$value]<-NA
-    print("aHA")
+getPrecip <- function(inputfile){
+    pr<-stack(inputfile, varname = "pr")
+    pr[pr==fVal_sim$value]<-NA
     return(pr)
 }

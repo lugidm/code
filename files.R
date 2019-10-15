@@ -5,6 +5,9 @@
 getEUR11evalPR <- function(){
 
     input_file <- "../Lukas_Moser/EUR-11/eval/pr_EUR-11_ECMWF-ERAINT_evaluation_r1i1p1_CLMcom-CCLM4-8-17_v1_day_19960101-19961231.nc"
+    input_file <- c(input_file, "../Lukas_Moser/EUR-11/eval/pr_EUR-11_ECMWF-ERAINT_evaluation_r1i1p1_CLMcom-CCLM4-8-17_v1_day_19970101-19971231.nc")
+    input_file <- c(input_file, "../Lukas_Moser/EUR-11/eval/pr_EUR-11_ECMWF-ERAINT_evaluation_r1i1p1_CLMcom-CCLM4-8-17_v1_day_19980101-19981231.nc")
+    input_file <- c(input_file, "../Lukas_Moser/EUR-11/eval/pr_EUR-11_ECMWF-ERAINT_evaluation_r1i1p1_CLMcom-CCLM4-8-17_v1_day_19990101-19991231.nc")
     input_file <- c(input_file, "../Lukas_Moser/EUR-11/eval/pr_EUR-11_ECMWF-ERAINT_evaluation_r1i1p1_CLMcom-CCLM4-8-17_v1_day_20000101-20001231.nc")
     input_file <- c(input_file, "../Lukas_Moser/EUR-11/eval/pr_EUR-11_ECMWF-ERAINT_evaluation_r1i1p1_CLMcom-CCLM4-8-17_v1_day_20010101-20011231.nc")
     input_file <- c(input_file, "../Lukas_Moser/EUR-11/eval/pr_EUR-11_ECMWF-ERAINT_evaluation_r1i1p1_CLMcom-CCLM4-8-17_v1_day_20020101-20021231.nc")
@@ -25,10 +28,11 @@ getEUR11evalTAS <- function(){
 }
 getEUR11histPR <- function(){
     
-    input_file <- "../Lukas_Moser/EUR-11/historical/pr_EUR-11_MPI-ESM-LR_historical_r2i1p1_CLMcom-CCLM4-8-17_v1_day_19860101-19861231.nc"
-    input_file <- c(input_file, "../Lukas_Moser/EUR-11/historical/pr_EUR-11_MPI-ESM-LR_historical_r2i1p1_CLMcom-CCLM4-8-17_v1_day_19870101-19871231.nc")
-    input_file <- c(input_file, "../Lukas_Moser/EUR-11/historical/pr_EUR-11_MPI-ESM-LR_historical_r2i1p1_CLMcom-CCLM4-8-17_v1_day_19880101-19881231.nc")
-    input_file <- c(input_file, "../Lukas_Moser/EUR-11/historical/pr_EUR-11_MPI-ESM-LR_historical_r2i1p1_CLMcom-CCLM4-8-17_v1_day_19890101-19891231.nc")
+    input_file <- "../Lukas_Moser/EUR-11/historical/pr_EUR-11_MPI-ESM-LR_historical_r2i1p1_CLMcom-CCLM4-8-17_v1_day_19950101-19951231.nc"
+    input_file <- c(input_file, "../Lukas_Moser/EUR-11/historical/pr_EUR-11_MPI-ESM-LR_historical_r2i1p1_CLMcom-CCLM4-8-17_v1_day_19960101-19961231.nc")
+    input_file <- c(input_file, "../Lukas_Moser/EUR-11/historical/pr_EUR-11_MPI-ESM-LR_historical_r2i1p1_CLMcom-CCLM4-8-17_v1_day_19970101-19971231.nc")
+    input_file <- c(input_file, "../Lukas_Moser/EUR-11/historical/pr_EUR-11_MPI-ESM-LR_historical_r2i1p1_CLMcom-CCLM4-8-17_v1_day_19980101-19981231.nc")
+    input_file <- c(input_file, "../Lukas_Moser/EUR-11/historical/pr_EUR-11_MPI-ESM-LR_historical_r2i1p1_CLMcom-CCLM4-8-17_v1_day_19990101-19991231.nc")
     input_file <- c(input_file, "../Lukas_Moser/EUR-11/historical/pr_EUR-11_MPI-ESM-LR_historical_r2i1p1_CLMcom-CCLM4-8-17_v1_day_20000101-20001231.nc")
     input_file <- c(input_file, "../Lukas_Moser/EUR-11/historical/pr_EUR-11_MPI-ESM-LR_historical_r2i1p1_CLMcom-CCLM4-8-17_v1_day_20010101-20011231.nc")
     input_file <- c(input_file, "../Lukas_Moser/EUR-11/historical/pr_EUR-11_MPI-ESM-LR_historical_r2i1p1_CLMcom-CCLM4-8-17_v1_day_20020101-20021231.nc")

@@ -3,9 +3,11 @@
 # Created by: lugi
 # Created on: 07.10.19
 
-plotJPG <- function(rast, filename, plotmain, addMap){
-    jpeg(paste0(output_dir,filename), height = 800, width = 1200)
-    plot(rast, main=plotmain, breaks = c(0:8)*2, col=rev(heat.colors(n=8)))
+
+plotJPGmean <- function(rast, filename, plotmain, addMap){
+    jpeg(paste0(output_dir,filename), height = 600, width = 900)
+    quilt.plot(data.frame(lon=as.vector(subset(rast, 'longitude.coordinate')),lat=as.vector(subset(rast,'latitude.coordinate')),pr=as.vector(subset(rast, 1))), nx=412, ny=424,
+    col=rev(heat.colors(n=9)), breaks = c(0:9)*1.8, main=plotmain)
     if(!is.null(addMap) & addMap == TRUE){
         map(add=TRUE, col='black')
     }
@@ -13,10 +15,9 @@ plotJPG <- function(rast, filename, plotmain, addMap){
     print(paste0("plotted ", filename))
 }
 
-plotJPGSoph <- function(rast, filename, plotmain, addMap){
-    jpeg(paste0(output_dir,filename), height = 800, width = 1200)
-    quilt.plot(data.frame(lon=as.vector(rast$lon),lat=as.vector(rast$lat),pr=as.vector(rast$pr)), nx=412, ny=424, col=rev(heat.colors(n=8)), breaks = c(0:8)*10)
-    #plot(rast, main=plotmain, breaks = c(0:8)*2, col=rev(heat.colors(n=8)))
+plotJPGobs <- function(rast, filename, plotmain, addMap){
+    jpeg(paste0(output_dir,filename), height = 600, width = 900)
+    plot(rast, main=plotmain, breaks = c(0:9)*1.8, col=rev(heat.colors(n=9)))
     if(!is.null(addMap) & addMap == TRUE){
         map(add=TRUE, col='black')
     }
