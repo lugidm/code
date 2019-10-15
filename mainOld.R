@@ -1,17 +1,21 @@
+# Title     : TODO
+# Objective : TODO
+# Created by: lugi
+# Created on: 15.10.19
 library(ncdf4)
 library(ncdump)
 library(maptools)
 library(raster)
 library(maps)
 library(fields)
+source("precip.R")
+source("plot.R")
+source("files.R")
 library(rgdal)
 library(zoom)
 library(RColorBrewer)
 library(rasterVis)
 library(pbdDMAT)
-source("precip.R")
-source("plot.R")
-source("files.R")
 #library(ggplot2)
 #library(rasterVis)
 input_file_sim <- "../Lukas_Moser/EUR-11/eval/pr_EUR-11_ECMWF-ERAINT_evaluation_r1i1p1_CLMcom-CCLM4-8-17_v1_day_19960101-19961231.nc"
