@@ -3,6 +3,7 @@ library(ncdump)
 library(maptools)
 library(raster)
 library(maps)
+library(fields)
 source("precip.R")
 source("plot.R")
 source("files.R")
@@ -10,6 +11,7 @@ library(rgdal)
 library(zoom)
 library(RColorBrewer)
 library(rasterVis)
+library(pbdDMAT)
 #library(ggplot2)
 #library(rasterVis)
 input_file_sim <- "../Lukas_Moser/EUR-11/eval/pr_EUR-11_ECMWF-ERAINT_evaluation_r1i1p1_CLMcom-CCLM4-8-17_v1_day_19960101-19961231.nc"
@@ -28,7 +30,10 @@ fillvalue <- ncatt_get(nc_data, "pr", "_FillValue")
 nc_close(nc_data)
 
 #pr <- getPrecipAtDay(input_file_sim, 100)
-#prs <- getPrecipAllDays(input_file_sim[[1]])
+prs <- getPrecipAtDay2(input_files_eval_pr[[1]])
+prs$pr <- prs$pr*3600*24
+plotJPGSoph(prs, paste0(paste0("msim", time_list_eval[1]),".jpg"), paste0(paste0("Annual mean percipitation[mm/day] ",
+time_list_eval[1])," in EUR-11 evaluation-data"), addMap=TRUE)
 #obs <- getPrecipObs(input_file_obs)
 #mean_eval<-list()
 'for(i in 1:7)
@@ -42,7 +47,7 @@ nc_close(nc_data)
     time_list_eval[i])," in EUR-11 evaluation-data"), addMap=TRUE)
 }'
 #mean_hist<-list()
-for(i in 6:10)
+'for(i in 6:10)
 {
     prs <- getPrecipAllDays(input_files_hist_pr[[i]])
     prs <- prs*3600*24 # to get mm from kg/m2*s
@@ -80,3 +85,4 @@ for(i in 1:10)
 #contour(pr, add=FALSE, nlevels=10)
 #map(add=TRUE, col="red")
 #zm()
+'

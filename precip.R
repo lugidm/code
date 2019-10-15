@@ -71,3 +71,14 @@ getPrecipObs <- function(inputfile, layers){
 
     return(pr)
 }
+
+getPrecipAtDay2 <- function(inputfile){
+    pr<-list()
+    pr$lon <- raster(inputfile, varname="lon")
+    pr$lat <- raster(inputfile, varname="lat")
+    pr$pr <- raster(inputfile, varname="pr")
+
+    pr$pr[pr$pr==fillvalue$value]<-NA
+    print("aHA")
+    return(pr)
+}
