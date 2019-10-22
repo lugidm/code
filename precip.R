@@ -35,7 +35,7 @@ getPrecipObs <- function(inputfile, layers){
 
 getPrecip <- function(inputfile){
     pr<-stack(inputfile, varname = "pr")
-    values(pr)[values(pr) == fVal_sim$value]=NA
+    #values(pr)[values(pr) == fVal_sim$value]=NA
     print("fillValue Done")
     return(pr)
 }

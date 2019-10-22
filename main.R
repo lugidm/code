@@ -12,6 +12,7 @@ library(lfstat)
 source("precip.R")
 source("plot.R")
 source("files.R")
+source("compare.R")
 #library(ggplot2)
 #library(rasterVis)
 input_file_obs <- "../E-OBS/rr_ens_mean_0.1deg_reg_1995-2010_v20.0e.nc"
@@ -25,7 +26,7 @@ input_files_rcp_pr <- getEUR11rcp85PR()
 time_list_rcp <- c("2090", "2091", "2092", "2093", "2094", "2095", "2096", "2097", "2098", "2099")
 
 ### GLOBAL VARIABLES
-nc_data<-nc_open(input_files_eval_pr[[1]])
+nc_data<-nc_open(input_files_eval_pr[[2]])
 fVal_sim <- ncatt_get(nc_data, "pr", "_FillValue")
 nc_close(nc_data)
 nc_data<-nc_open(input_file_obs)
@@ -103,7 +104,7 @@ for(i in 1:10)
 '
 
 ### Q99 calculations in OBSERVATION DATA
-obs <- getPrecipObs(input_file_obs)
+'obs <- getPrecipObs(input_file_obs)
 qobs<-getAnnualQuantileObs(obs)
 for(i in 1:11)
 {
@@ -114,6 +115,7 @@ for(i in 1:11)
     writeRaster(subset(qobs, c((i*2)-1,i*2)), paste0("../Results/q90q99", time_list_obs[i], "obs.nc"), overwrite=TRUE, format="CDF",
     varname="MPercipitation", varunit="mm", longname="Mean Percipitation", xname="X", yname="Y",zname="nbands", zunit="numeric")
 }
+'
 ###
 ### Q99 calculations EVAL
 'for(i in 1:10)
@@ -133,6 +135,14 @@ for(i in 1:11)
     writeRaster(qprs, paste0("../Results/q90q99prs", time_list_eval[i], "eval.nc"), overwrite=TRUE, format="CDF",
     varname="MPercipitation", varunit="mm", longname="Mean Percipitation", xname="X", yname="Y",zname="nbands", zunit="numeric")
 }'
+
+obs <- getPrecipObs(input_file_obs)
+ob<-subset(obs, which(getZ(obs)<as.Date('1996-01-01')))
+prs <- getPrecip(input_files_eval_pr[[1]])
+print("now compare")
+compareQ99(simulated=prs, observated=ob)
+print("compare finshed")
+
 ###
 
 #mprs<-mean(prs)
