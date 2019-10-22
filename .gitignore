@@ -9,3 +9,8 @@ data
 *.gz 
 *.nc
 *.pdf
+*.bbl
+*.bcf
+*.blg
+*.out
+*.xml
