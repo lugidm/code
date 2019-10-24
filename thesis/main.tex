@@ -13,6 +13,8 @@
 \usepackage{biblatex}
 \addbibresource{chapters/references.bib}
 \usepackage[colorlinks=true, citecolor=blue, linkcolor=black]{hyperref}
+\usepackage{tabularx}
+
 
 
 \graphicspath{ {images/} }
@@ -26,20 +28,29 @@
 \begin{document}
 	\maketitle
 	\pagestyle{fancy}
+	
 	\chapter*{Abstrakt}
 	\input{chapters/abstract}
+	
 	\chapter*{Danksagungen}
 	\input{chapters/acknowledgements}
 	\tableofcontents
 	
 	\chapter{Einführung}
+	\label{chap:intro}
 	\input{chapters/introduction}
-
-	\chapter{Grobe Evaluierung über das Jahresmittel des Niederschlags}
+	
+	\chapter{Verwendete Evaluierungsmethoden}
+	\label{chap:methods}
+	\input{chapters/methods}
+	
+	\chapter{Evaluierung über das Jahresmittel des Niederschlags}
+	\label{chap:mean}
 	\input{chapters/chapter01}
 	
 	
 	\chapter{Conclusion}
+	\label{chap:conclusion}
 	\input{chapters/conclusion}
 	
 	\appendix

@@ -15,20 +15,21 @@ begin
 ;************************
 ; Define parameters
 ;************************
-typeS = "rectilinear"       ; type of source grid 
+typeS = "curvilinear"       ; type of source grid 
                             ; options are: rectilinear (1d coords)
 			    ;              curvilinear (2d coords)
 			    ; Note: unstructured grids cannot be described in SCRIP file;
 			    ;       ESMF format can be used instead. See details
 			    ;       on NCL website www.ncl.ucar.edu
 ;
-infileS = "../../E-OBS/rr_ens_mean_0.1deg_reg_1995-2010_v20.0e.nc"    ; name of the input file containing latitude and longitude of source grid
+;infileS = "../../E-OBS/rr_ens_mean_0.1deg_reg_1995-2010_v20.0e.nc"    ; name of the input file containing latitude and longitude of source grid
+infileS = "../../Lukas_Moser/EUR-11/eval/pr_EUR-11_ECMWF-ERAINT_evaluation_r1i1p1_CLMcom-CCLM4-8-17_v1_day_19960101-19961231.nc"
 outfileS = "target_grid.nc"  ; name of the output SCRIP file for source grid 
 ;
 print("Read file infileS "+infileS)
 fS   = addfile (infileS, "r")   ; open input file
-latS = fS->latitude             ; read latitude coordinate             
-lonS = fS->longitude            ; read longitude coordinate
+latS = fS->lat             ; read latitude coordinate             
+lonS = fS->lon            ; read longitude coordinate
 ; 
 ; Define options
 OptS                      = True
