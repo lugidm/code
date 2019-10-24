@@ -80,3 +80,86 @@ getEUR11rcp85TAS <- function(){
     input_file <- c(input_file, "../Lukas_Moser/EUR-11/rcp85/tas_EUR-11_MPI-ESM-LR_historical_r2i1p1_CLMcom-CCLM4-8-17_v1_day_20990101-20991231.nc")
     return(input_file)
 }
+#####################################################################
+###############   ALP-3 files########################################
+getALP3evalPR <- function(){
+    input_file <- "../Lukas_Moser/ALP-3/eval/tot_prec_1996.nc"
+    input_file <- c(input_file, "../Lukas_Moser/AlP-3/eval/tot_prec_1997.nc")
+    input_file <- c(input_file, "../Lukas_Moser/AlP-3/eval/tot_prec_1998.nc")
+    input_file <- c(input_file, "../Lukas_Moser/AlP-3/eval/tot_prec_1999.nc")
+    input_file <- c(input_file, "../Lukas_Moser/AlP-3/eval/tot_prec_2000.nc")
+    input_file <- c(input_file, "../Lukas_Moser/AlP-3/eval/tot_prec_2001.nc")
+    input_file <- c(input_file, "../Lukas_Moser/AlP-3/eval/tot_prec_2002.nc")
+    input_file <- c(input_file, "../Lukas_Moser/AlP-3/eval/tot_prec_2003.nc")
+    input_file <- c(input_file, "../Lukas_Moser/AlP-3/eval/tot_prec_2004.nc")
+    input_file <- c(input_file, "../Lukas_Moser/AlP-3/eval/tot_prec_2005.nc")
+        return(input_file)
+}
+getALP3evalTAS <- function(){
+    input_file <- "../Lukas_Moser/AlP-3/eval/t2m_1996.nc"
+    input_file <- c(input_file, "../Lukas_Moser/AlP-3/eval/t2m_1997.nc")
+    input_file <- c(input_file, "../Lukas_Moser/AlP-3/eval/t2m_1998.nc")
+    input_file <- c(input_file, "../Lukas_Moser/AlP-3/eval/t2m_1999.nc")
+    input_file <- c(input_file, "../Lukas_Moser/AlP-3/eval/t2m_2000.nc")
+    input_file <- c(input_file, "../Lukas_Moser/AlP-3/eval/t2m_2001.nc")
+    input_file <- c(input_file, "../Lukas_Moser/AlP-3/eval/t2m_2002.nc")
+    input_file <- c(input_file, "../Lukas_Moser/AlP-3/eval/t2m_2003.nc")
+    input_file <- c(input_file, "../Lukas_Moser/AlP-3/eval/t2m_2004.nc")
+    input_file <- c(input_file, "../Lukas_Moser/AlP-3/eval/t2m_2005.nc")
+    return(input_file)
+}
+
+getALP3histPR <- function(){
+    input_file <- "../Lukas_Moser/ALP-3/historical/tot_prec_1996.nc"
+    input_file <- c(input_file, "../Lukas_Moser/AlP-3/historical/tot_prec_1997.nc")
+    input_file <- c(input_file, "../Lukas_Moser/AlP-3/historical/tot_prec_1998.nc")
+    input_file <- c(input_file, "../Lukas_Moser/AlP-3/historical/tot_prec_1999.nc")
+    input_file <- c(input_file, "../Lukas_Moser/AlP-3/historical/tot_prec_2000.nc")
+    input_file <- c(input_file, "../Lukas_Moser/AlP-3/historical/tot_prec_2001.nc")
+    input_file <- c(input_file, "../Lukas_Moser/AlP-3/historical/tot_prec_2002.nc")
+    input_file <- c(input_file, "../Lukas_Moser/AlP-3/historical/tot_prec_2003.nc")
+    input_file <- c(input_file, "../Lukas_Moser/AlP-3/historical/tot_prec_2004.nc")
+    input_file <- c(input_file, "../Lukas_Moser/AlP-3/historical/tot_prec_2005.nc")
+        return(input_file)
+}
+getALP3histTAS <- function(){
+    input_file <- "../Lukas_Moser/AlP-3/historical/t2m_1996.nc"
+    input_file <- c(input_file, "../Lukas_Moser/AlP-3/historical/t2m_1997.nc")
+    input_file <- c(input_file, "../Lukas_Moser/AlP-3/historical/t2m_1998.nc")
+    input_file <- c(input_file, "../Lukas_Moser/AlP-3/historical/t2m_1999.nc")
+    input_file <- c(input_file, "../Lukas_Moser/AlP-3/historical/t2m_2000.nc")
+    input_file <- c(input_file, "../Lukas_Moser/AlP-3/historical/t2m_2001.nc")
+    input_file <- c(input_file, "../Lukas_Moser/AlP-3/historical/t2m_2002.nc")
+    input_file <- c(input_file, "../Lukas_Moser/AlP-3/historical/t2m_2003.nc")
+    input_file <- c(input_file, "../Lukas_Moser/AlP-3/historical/t2m_2004.nc")
+    input_file <- c(input_file, "../Lukas_Moser/AlP-3/historical/t2m_2005.nc")
+    return(input_file)
+}
+
+
+getALP3rcp85PR <- function(){
+    input_file <- "../Lukas_Moser/ALP-3/rcp85/tot_prec_2090.nc"
+    input_file <- c(input_file, "../Lukas_Moser/AlP-3/rcp85/tot_prec_2091.nc")
+    input_file <- c(input_file, "../Lukas_Moser/AlP-3/rcp85/tot_prec_2092.nc")
+    input_file <- c(input_file, "../Lukas_Moser/AlP-3/rcp85/tot_prec_2093.nc")
+    input_file <- c(input_file, "../Lukas_Moser/AlP-3/rcp85/tot_prec_2094.nc")
+    input_file <- c(input_file, "../Lukas_Moser/AlP-3/rcp85/tot_prec_2095.nc")
+    input_file <- c(input_file, "../Lukas_Moser/AlP-3/rcp85/tot_prec_2096.nc")
+    input_file <- c(input_file, "../Lukas_Moser/AlP-3/rcp85/tot_prec_2097.nc")
+    input_file <- c(input_file, "../Lukas_Moser/AlP-3/rcp85/tot_prec_2098.nc")
+    input_file <- c(input_file, "../Lukas_Moser/AlP-3/rcp85/tot_prec_2099.nc")
+        return(input_file)
+}
+getALP3rcp85TAS <- function(){
+    input_file <- "../Lukas_Moser/ALP-3/rcp85/t2m_2090.nc"
+    input_file <- c(input_file, "../Lukas_Moser/AlP-3/rcp85/t2m_2091.nc")
+    input_file <- c(input_file, "../Lukas_Moser/AlP-3/rcp85/t2m_2092.nc")
+    input_file <- c(input_file, "../Lukas_Moser/AlP-3/rcp85/t2m_2093.nc")
+    input_file <- c(input_file, "../Lukas_Moser/AlP-3/rcp85/t2m_2094.nc")
+    input_file <- c(input_file, "../Lukas_Moser/AlP-3/rcp85/t2m_2095.nc")
+    input_file <- c(input_file, "../Lukas_Moser/AlP-3/rcp85/t2m_2096.nc")
+    input_file <- c(input_file, "../Lukas_Moser/AlP-3/rcp85/t2m_2097.nc")
+    input_file <- c(input_file, "../Lukas_Moser/AlP-3/rcp85/t2m_2098.nc")
+    input_file <- c(input_file, "../Lukas_Moser/AlP-3/rcp85/t2m_2099.nc")
+    return(input_file)
+}

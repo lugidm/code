@@ -8,13 +8,15 @@
 \usepackage{fancyhdr}
 \pagestyle{fancy} %% there the header is been set up 
 \fancyfoot{}
-\fancyfoot[LE,RO]{\thepage}
+\fancyfoot[LO,RE]{\thepage}
 \fancyhead[LE,RO]{\rightmark}
+%\fancyhead{}
 \usepackage{biblatex}
 \addbibresource{chapters/references.bib}
 \usepackage[colorlinks=true, citecolor=blue, linkcolor=black]{hyperref}
 \usepackage{tabularx}
-
+\usepackage{gensymb}
+\usepackage[font={it}]{caption}
 
 
 \graphicspath{ {images/} }
@@ -27,7 +29,7 @@
 \date{01.01.10}
 \begin{document}
 	\maketitle
-	\pagestyle{fancy}
+
 	
 	\chapter*{Abstrakt}
 	\input{chapters/abstract}
