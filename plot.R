@@ -4,11 +4,11 @@
 # Created on: 07.10.19
 
 
-plotJPGmean <- function(rast, filename, plotmain, addMap){
+plotJPGmean <- function(raster, lon, lat, filename, plotmain, addMap){
     jpeg(paste0(output_dir,filename), height = 600, width = 900)
-    quilt.plot(data.frame(lon=as.vector(subset(rast, varname[[1]])),lat=as.vector(subset(rast,varname[[2]])),pr=as.vector(subset(rast, 1))), nx=412, ny=424,
+    quilt.plot(data.frame(lon=as.vector(lon),lat=as.vector(lat),pr=as.vector(raster)), nx=412, ny=424,
     col=rev(heat.colors(9)), breaks = c(0.0:9.0)*1.8, main=plotmain, na.rm=TRUE, lab.breaks=c(0.0:9.0)*1.8)
-    #quilt.plot(data.frame(lon=as.vector(subset(rast, 'longitude')),lat=as.vector(subset(rast,'latitude')),pr=as.vector(subset(rast, 1))), nx=412, ny=424,
+    #quilt.plot(data.frame(lon=as.vector(subset(raster, 'longitude')),lat=as.vector(subset(raster,'latitude')),pr=as.vector(subset(raster, 1))), nx=412, ny=424,
     #col=rev(heat.colors(9)), breaks = c(0.0:9.0)*1.8, main=plotmain, na.rm=TRUE, lab.breaks=c(0.0:9.0)*1.8)
     if(!is.null(addMap) & addMap == TRUE){
         map(add=TRUE, col='black')
@@ -27,11 +27,11 @@ plotJPGobs <- function(rast, filename, plotmain, addMap){
     print(paste0("plotted ", filename))
 }
 
-plotJPGq90 <- function(rast, filename, plotmain, addMap){
+plotJPGq90 <- function(raster, lon, lat, filename, plotmain, addMap){
     jpeg(paste0(output_dir,filename), height = 600, width = 900)
-    quilt.plot(data.frame(lon=as.vector(subset(rast, varname[[1]])),lat=as.vector(subset(rast,varname[[2]])),pr=as.vector(subset(rast, 1))), nx=412, ny=424,
+    quilt.plot(data.frame(lon=as.vector(lon),lat=as.vector(lat),pr=as.vector(raster)), nx=412, ny=424,
     col=rev(heat.colors(9)), breaks = c(0.0:9.0)*5, main=plotmain, na.rm=TRUE, lab.breaks=c(0.0:9.0)*5)
-    #quilt.plot(data.frame(lon=as.vector(subset(rast, 'longitude.coordinate')),lat=as.vector(subset(rast,'latitude.coordinate')),pr=as.vector(subset(rast, 1))), nx=412, ny=424,
+    #quilt.plot(data.frame(lon=as.vector(subset(raster, 'longitude.coordinate')),lat=as.vector(subset(raster,'latitude.coordinate')),pr=as.vector(subset(raster, 1))), nx=412, ny=424,
     #col=rev(heat.colors(9)), breaks = c(0.0:9.0)*1.8, main=plotmain, na.rm=TRUE, lab.breaks=c(0.0:9.0)*1.8)
     if(!is.null(addMap) & addMap == TRUE){
         map(add=TRUE, col='black')
@@ -39,9 +39,9 @@ plotJPGq90 <- function(rast, filename, plotmain, addMap){
     dev.off()
     print(paste0("plotted ", filename))
 }
-plotJPGq99 <- function(rast, filename, plotmain, addMap){
+plotJPGq99 <- function(raster, lon, lat, filename, plotmain, addMap){
     jpeg(paste0(output_dir,filename), height = 600, width = 900)
-    quilt.plot(data.frame(lon=as.vector(subset(rast, varname[[1]])),lat=as.vector(subset(rast,varname[[2]])),pr=as.vector(subset(rast, 1))), nx=412, ny=424,
+    quilt.plot(data.frame(lon=as.vector(lon),lat=as.vector(lat),pr=as.vector(raster)), nx=412, ny=424,
     col=rev(heat.colors(9)), breaks = c(0.0:9.0)*14, main=plotmain, na.rm=TRUE, lab.breaks=c(0.0:9.0)*14)
 
     if(!is.null(addMap) & addMap == TRUE){

@@ -13,6 +13,7 @@ source("precip.R")
 source("plot.R")
 source("files.R")
 source("compare.R")
+source("OBS_functions.R")
 #library(ggplot2)
 #library(rasterVis)
 
@@ -20,6 +21,7 @@ source("compare.R")
 ALP3=FALSE
 varname = c("longitude.coordinate", "latitude.coordinate")
 input_file_obs <- "../E-OBS/rr_ens_mean_0.1deg_reg_1995-2010_v20.0e.nc"
+input_file_obs_remapped <- "../E-OBS/pr_remapped_obs412424.nc"
 time_list_obs <- c("1995", "1996", "1997", "1998", "1999", "2000", "2001", "2002", "2003", "2004", "2005")
 output_dir <- "../Results/"
 if(ALP3==TRUE)
@@ -54,12 +56,13 @@ Q99 <- function(x){quantile(x,probs = c(.90,.99), na.rm=TRUE)}
 ###
 
 
+
 #pr <- getPrecipAtDay(input_file_sim, 100)
 
 
 ###OBSERVATION
-
-'obs <- getPrecipObs(input_file_obs)
+'
+obs <- getPrecipObs(input_file_obs)
 mobs<-getAnnualMeanObs(obs)
 for(i in 1:11)
 {
@@ -138,7 +141,7 @@ for(i in 1:11)
 ###
 ### Q99 calculations EVAL
 
-for(i in 1:length(time_list_eval))
+'for(i in 1:length(time_list_eval))
 {
     prs <- getPrecip(input_files_eval_pr[[i]])
     print("Q99")
@@ -155,7 +158,7 @@ for(i in 1:length(time_list_eval))
     writeRaster(qprs, paste0("../Results/q90q99prs", time_list_eval[i], "eval.nc"), overwrite=TRUE, format="CDF",
     varname="Q90Q99", varunit="mm", longname="90 and 99 Quantile Percipitation", xname="X", yname="Y",zname="nbands", zunit="numeric")
 }
-
+'
 ### Q99 calculations HIST
 '
 for(i in 1:length(time_list_hist))
@@ -183,6 +186,46 @@ print("now compare")
 compareQ99(simulated=prs, observated=ob)
 print("compare finshed")
 '
+####################################################
+###### REMAPPED OBSERVATION DATA ###################
+################## Q90Q99 ##########################
+####################################################
+'
+observation <- getRemappedObs(input_file_obs_remapped)
+quantile_observations<-getRemappedAnnualQuantileObs(observation)
+lon <- raster(input_file_obs_remapped, varname="lon")
+lat <- raster(input_file_obs_remapped, varname="lat")
+writeRaster(addLayer(addLayer(quantile_observations, lon), lat), "../Results/q90q99_obs_remapped.nc", overwrite=TRUE, format="CDF",
+varname="90and99Quantile", varunit="mm", longname="90and99Quantile", xname="X", yname="Y",zname="nbands", zunit="numeric")
+for(i in 1:11)
+{
+    print("Q99")
+    print(paste("lon lat and q99 for", time_list_obs[i], "done"))
+    plotJPGq90(raster=quantile_observations[[(i*2)-1]], lon=lon, lat=lat, paste0("q90", time_list_obs[i],"obs_remapped.jpg"), paste0("90. Quantile of percipitation[mm/day] in year ",
+    time_list_obs[i]," in remapped observation data"), addMap=TRUE)
+    plotJPGq99(raster=quantile_observations[[(i*2)]], lon=lon, lat=lat, paste0("q99", time_list_obs[i],"obs_remapped.jpg"), paste0("99. Quantile of percipitation[mm/day] in year ",
+    time_list_obs[i]," in remapped observation data"), addMap=TRUE)
+}
+'
+####################################################
+###### REMAPPED OBSERVATION DATA ###################
+##############  MEAN   #############################
+####################################################
+
+observation <- getRemappedObs(input_file_obs_remapped)
+mean_observations<-getAnnualMeanObs(observation)
+lon <- raster(input_file_obs_remapped, varname="lon")
+lat <- raster(input_file_obs_remapped, varname="lat")
+writeRaster(addLayer(addLayer(quantile_observations, lon), lat), "../Results/mean_obs_remapped.nc", overwrite=TRUE, format="CDF",
+varname="mean_pr", varunit="mm", longname="Mean Percipitation", xname="X", yname="Y",zname="nbands", zunit="numeric")
+for(i in 1:11)
+{
+    plotJPGmean(rast=, filename, plotmain, addMap)
+    plotJPGmean(raster=mean_observations[[i]], lon=lon, lat=lat, paste0("mprs", time_list_obs[i],"obs_remapped.jpg"), paste0("Annual mean percipitation[mm/day] ",
+    time_list_obs[i]," in remapped observation data"), addMap=TRUE)
+}
+
+
 ###
 
 #mprs<-mean(prs)
