@@ -3,13 +3,23 @@
 
 \usepackage{graphicx}
 \usepackage{ngerman}
-\usepackage[a4paper, width=150mm, top=25mm, bottom=25mm, bindingoffset=6mm]{geometry}
+\usepackage[a4paper, width=150mm, top=20mm, bottom=25mm, bindingoffset=6mm]{geometry}
 
 \usepackage{fancyhdr}
 \pagestyle{fancy} %% there the header is been set up 
 \fancyfoot{}
 \fancyfoot[LO,RE]{\thepage}
 \fancyhead[LE,RO]{\rightmark}
+\renewcommand{\footrulewidth}{0.3pt}% Line at the footer visible
+
+\fancypagestyle{plain}{
+	\fancyhf{}
+	\fancyfoot[LO,RE]{\thepage}
+	\renewcommand{\headrulewidth}{0pt}% Line at the header invisible
+	\renewcommand{\footrulewidth}{0.3pt}% Line at the footer visible
+}
+
+
 %\fancyhead{}
 \usepackage{biblatex}
 \addbibresource{chapters/references.bib}

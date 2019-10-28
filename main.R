@@ -212,15 +212,14 @@ for(i in 1:11)
 ##############  MEAN   #############################
 ####################################################
 
-observation <- getRemappedObs(input_file_obs_remapped)
-mean_observations<-getAnnualMeanObs(observation)
+#observation <- getRemappedObs(input_file_obs_remapped)
+#mean_observations<-getAnnualMeanObs(observation)
 lon <- raster(input_file_obs_remapped, varname="lon")
 lat <- raster(input_file_obs_remapped, varname="lat")
-writeRaster(addLayer(addLayer(quantile_observations, lon), lat), "../Results/mean_obs_remapped.nc", overwrite=TRUE, format="CDF",
+writeRaster(addLayer(addLayer(mean_observations, lon), lat), "../Results/mean_obs_remapped.nc", overwrite=TRUE, format="CDF",
 varname="mean_pr", varunit="mm", longname="Mean Percipitation", xname="X", yname="Y",zname="nbands", zunit="numeric")
 for(i in 1:11)
 {
-    plotJPGmean(rast=, filename, plotmain, addMap)
     plotJPGmean(raster=mean_observations[[i]], lon=lon, lat=lat, paste0("mprs", time_list_obs[i],"obs_remapped.jpg"), paste0("Annual mean percipitation[mm/day] ",
     time_list_obs[i]," in remapped observation data"), addMap=TRUE)
 }
