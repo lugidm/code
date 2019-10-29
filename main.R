@@ -9,6 +9,7 @@ library(RColorBrewer)
 library(rasterVis)
 library(pbdDMAT)
 library(lfstat)
+library(diffeR)
 source("precip.R")
 source("plot.R")
 source("files.R")
@@ -22,6 +23,9 @@ ALP3=FALSE
 varname = c("longitude.coordinate", "latitude.coordinate")
 input_file_obs <- "../E-OBS/rr_ens_mean_0.1deg_reg_1995-2010_v20.0e.nc"
 input_file_obs_remapped <- "../E-OBS/pr_remapped_obs412424.nc"
+input_file_obs_remapped_alp3 <- "../E-OBS/pr_obs_remapped_ALP3.nc"
+dump_file_mprs_obs_eur11 <- "../Results/mean_obs_remapped_eur11.nc"
+dump_file_mprs_eval_eur11 <- "../Results/mprs_eval_eur11.nc"
 time_list_obs <- c("1995", "1996", "1997", "1998", "1999", "2000", "2001", "2002", "2003", "2004", "2005")
 output_dir <- "../Results/"
 if(ALP3==TRUE)
@@ -41,26 +45,29 @@ if(ALP3==TRUE)
     input_files_rcp_pr <- getEUR11rcp85PR()
     time_list_rcp <- c("2090", "2091", "2092", "2093", "2094", "2095", "2096", "2097", "2098", "2099")
 }
-### GLOBAL VARIABLES
+
+###############################
+### GLOBAL VARIABLES ##########
 nc_data<-nc_open(input_files_eval_pr[[2]])
-fVal_sim <- ncatt_get(nc_data, "pr", "_FillValue")
+if(ALP3 == TRUE)
+{
+    fVal_sim <- ncatt_get(nc_data, "TOT_PREC", "_FillValue")
+}else{
+    fVal_sim <- ncatt_get(nc_data, "pr", "_FillValue")
+}
 nc_close(nc_data)
 nc_data<-nc_open(input_file_obs)
 fVal_obs <- ncatt_get(nc_data, "rr", "_FillValue")
 nc_close(nc_data)
-###
 
-### HELPER FUNCTIONS
+################################
+### HELPER FUNCTIONS ###########
 Q99 <- function(x){quantile(x,probs = c(.90,.99), na.rm=TRUE)}
+################################
 
-###
-
-
-
-#pr <- getPrecipAtDay(input_file_sim, 100)
-
-
-###OBSERVATION
+########################################################################################################################
+########################### NOT REMAPPED OBSERVATION MEAN CALCULATIONS #################################################
+########################################################################################################################
 '
 obs <- getPrecipObs(input_file_obs)
 mobs<-getAnnualMeanObs(obs)
@@ -72,26 +79,57 @@ for(i in 1:11)
     varname="MPercipitation", varunit="mm", longname="Mean Percipitation", xname="X", yname="Y",zname="nbands", zunit="numeric")
 }
 '
+########################################################################################################################
+########################### NOT REMAPPED OBSERVATION Q90Q99 CALCULATIONS ###############################################
+########################################################################################################################
 
-###EVAL DATA
 '
+obs <- getPrecipObs(input_file_obs)
+qobs<-getAnnualQuantileObs(obs)
+for(i in 1:11)
+{
+    plotJPGobsq90(qobs[[(i*2)-1]], paste0("q90", time_list_obs[i],"obs.jpg"), paste0("90. Quantile of percipitation[mm/day] in year",
+    time_list_obs[i]," in observation data"), addMap=TRUE)
+    plotJPGobsq99(qobs[[(i*2)]], paste0("q99", time_list_obs[i],"obs.jpg"), paste0("99. Quantile of percipitation[mm/day] in year",
+    time_list_obs[i]," in observation data"), addMap=TRUE)
+    writeRaster(subset(qobs, c((i*2)-1,i*2)), paste0("../Results/q90q99", time_list_obs[i], "obs.nc"), overwrite=TRUE, format="CDF",
+    varname="90and99Quantile", varunit="mm", longname="90and99Quantile", xname="X", yname="Y",zname="nbands", zunit="numeric")
+}
+'
+
+########################################################################################################################
+######################################## EUR -11 ++MEAN ++ CALCULATIONS #################################################
+########################################################################################################################
+
+#######################################################
+#################  EVAL DATA  #########################
+#######################################################
+'
+lon <- raster(input_files_eval_pr[[1]], varname="lon")
+lat <- raster(input_files_eval_pr[[1]], varname="lat")
 for(i in 1:length(time_list_eval))
 {
     prs <- getPrecip(input_files_eval_pr[[i]])
-    mprs <- calc((prs*3600*24), fun=mean)
-    lon <- raster(input_files_eval_pr[[i]], varname="lon")
-    lat <- raster(input_files_eval_pr[[i]], varname="lat")
-    print(paste("lon lat and mean for", time_list_eval[i], "done"))
-    mprs<-addLayer(mprs, lon)
-    mprs<-addLayer(mprs, lat)
-
-    plotJPGmean(mprs, paste0("msim", time_list_eval[i],"eval.jpg"), paste0("Annual mean percipitation[mm/day] ",
+    mprs <- stackApply(prs, indices=c(1), fun=mean)
+    print(paste("mean for", time_list_eval[i], "done"))
+    plotJPGmean(raster=mprs, lon=lon, lat=lat, paste0("mprs", time_list_eval[i],"eval_eur11.jpg"), paste0("Annual mean percipitation[mm/day] ",
     time_list_eval[i]," in EUR-11 evaluation-data"), addMap=TRUE)
-    writeRaster(mprs, paste0("../Results/mprs", time_list_eval[i], "eval.nc"), overwrite=TRUE, format="CDF",
-    varname="MPercipitation", varunit="mm", longname="Mean Percipitation", xname="X", yname="Y",zname="nbands", zunit="numeric")
+    if(i>1){
+        old_raster <- raster(dump_file_mprs_eval_eur11)
+        writeRaster(addLayer(old_raster, mprs), dump_file_mprs_eval_eur11, overwrite=TRUE, format="CDF",
+        varname="MPercipitation", varunit="mm", longname="Mean Percipitation", xname="X", yname="Y",zname="nbands", zunit="numeric")
+    }else{
+        writeRaster(mprs, dump_file_mprs_eval_eur11, overwrite=TRUE, format="CDF", varname="MPercipitation",
+        varunit="mm", longname="Mean Percipitation", xname="X", yname="Y",zname="nbands", zunit="numeric")
+    }
 }
+old_raster <- raster(dump_file_mprs_eval_eur11)
+writeRaster(addLayer(addLayer(old_raster, lon),lat), dump_file_mprs_eval_eur11, overwrite=TRUE, format="CDF",
+varname="MPercipitation", varunit="mm", longname="Mean Percipitation", xname="X", yname="Y",zname="nbands", zunit="numeric")
 '
-### MEAN HIST DATA
+#######################################################
+#################  HIST DATA  #########################
+#######################################################
 '
 for(i in 1:length(time_list_hist))
 {
@@ -106,9 +144,11 @@ for(i in 1:length(time_list_hist))
     writeRaster(mprs, paste0("../Results/mprs", time_list_hist[i], "hist.nc"), overwrite=TRUE, format="CDF",
     varname="MPercipitation", varunit="mm", longname="Mean Percipitation", xname="X", yname="Y",zname="nbands", zunit="numeric")
 }
-
-
-#mean_rcp <- list()
+'
+#######################################################
+#################  RCP85 DATA  ########################
+#######################################################
+'
 for(i in 1:length(time_list_rcp))
 {
     prs <- getPrecip(input_files_rcp_pr[[i]])
@@ -123,25 +163,13 @@ for(i in 1:length(time_list_rcp))
     varname="MPercipitation", varunit="mm", longname="Mean Percipitation", xname="X", yname="Y",zname="nbands", zunit="numeric")
 }
 '
-
-### Q99 calculations in OBSERVATION DATA
+########################################################################################################################
+######################################## EUR -11 ++ Q90Q99 ++ CALCULATIONS #############################################
+########################################################################################################################
+#################  EVAL DATA  #########################
+#######################################################
 '
-obs <- getPrecipObs(input_file_obs)
-qobs<-getAnnualQuantileObs(obs)
-for(i in 1:11)
-{
-    plotJPGobsq90(qobs[[(i*2)-1]], paste0("q90", time_list_obs[i],"obs.jpg"), paste0("90. Quantile of percipitation[mm/day] in year",
-    time_list_obs[i]," in observation data"), addMap=TRUE)
-    plotJPGobsq99(qobs[[(i*2)]], paste0("q99", time_list_obs[i],"obs.jpg"), paste0("99. Quantile of percipitation[mm/day] in year",
-    time_list_obs[i]," in observation data"), addMap=TRUE)
-    writeRaster(subset(qobs, c((i*2)-1,i*2)), paste0("../Results/q90q99", time_list_obs[i], "obs.nc"), overwrite=TRUE, format="CDF",
-    varname="90and99Quantile", varunit="mm", longname="90and99Quantile", xname="X", yname="Y",zname="nbands", zunit="numeric")
-}'
-
-###
-### Q99 calculations EVAL
-
-'for(i in 1:length(time_list_eval))
+for(i in 1:length(time_list_eval))
 {
     prs <- getPrecip(input_files_eval_pr[[i]])
     print("Q99")
@@ -159,7 +187,9 @@ for(i in 1:11)
     varname="Q90Q99", varunit="mm", longname="90 and 99 Quantile Percipitation", xname="X", yname="Y",zname="nbands", zunit="numeric")
 }
 '
-### Q99 calculations HIST
+#######################################################
+#################  HIST DATA  #########################
+#######################################################
 '
 for(i in 1:length(time_list_hist))
 {
@@ -179,15 +209,10 @@ for(i in 1:length(time_list_hist))
     varname="Q90Q99", varunit="mm", longname="90 and 99 Quantile Percipitation", xname="X", yname="Y",zname="nbands", zunit="numeric")
 }
 '
-'obs <- getPrecipObs(input_file_obs)
-ob<-subset(obs, which(getZ(obs)<as.Date("1996-01-01")))
-prs <- getPrecip(input_files_eval_pr[[1]])
-print("now compare")
-compareQ99(simulated=prs, observated=ob)
-print("compare finshed")
-'
-####################################################
-###### REMAPPED OBSERVATION DATA ###################
+
+########################################################################################################################
+################################ EUR-11 REMAPPED OBSERVATION CALCULATIONS ##############################################
+########################################################################################################################
 ################## Q90Q99 ##########################
 ####################################################
 '
@@ -208,29 +233,93 @@ for(i in 1:11)
 }
 '
 ####################################################
-###### REMAPPED OBSERVATION DATA ###################
 ##############  MEAN   #############################
 ####################################################
-
-#observation <- getRemappedObs(input_file_obs_remapped)
-#mean_observations<-getAnnualMeanObs(observation)
+'
+observation <- getRemappedObs(input_file_obs_remapped)
+mean_observations<-getAnnualMeanObs(observation)
 lon <- raster(input_file_obs_remapped, varname="lon")
 lat <- raster(input_file_obs_remapped, varname="lat")
-writeRaster(addLayer(addLayer(mean_observations, lon), lat), "../Results/mean_obs_remapped.nc", overwrite=TRUE, format="CDF",
+writeRaster(addLayer(addLayer(mean_observations, lon), lat), dump_file_mprs_obs_eur11, overwrite=TRUE, format="CDF",
 varname="mean_pr", varunit="mm", longname="Mean Percipitation", xname="X", yname="Y",zname="nbands", zunit="numeric")
 for(i in 1:11)
 {
     plotJPGmean(raster=mean_observations[[i]], lon=lon, lat=lat, paste0("mprs", time_list_obs[i],"obs_remapped.jpg"), paste0("Annual mean percipitation[mm/day] ",
     time_list_obs[i]," in remapped observation data"), addMap=TRUE)
 }
+'
 
+########################################################################################################################
+##################### ALP-3 ****************************************** CALCULATIONS ####################################
+########################################################################################################################
+
+####################################################
+###### REMAPPED OBSERVATION DATA FOR ALP-3 #########
+################## Q90Q99 ##########################
+####################################################
+'
+observation <- getRemappedObs(input_file_obs_remapped)
+quantile_observations<-getRemappedAnnualQuantileObs(observation)
+lon <- raster(input_file_obs_remapped, varname="lon")
+lat <- raster(input_file_obs_remapped, varname="lat")
+writeRaster(addLayer(addLayer(quantile_observations, lon), lat), "../Results/q90q99_obs_remapped.nc", overwrite=TRUE, format="CDF",
+varname="90and99Quantile", varunit="mm", longname="90and99Quantile", xname="X", yname="Y",zname="nbands", zunit="numeric")
+for(i in 1:11)
+{
+    print("Q99")
+    print(paste("lon lat and q99 for", time_list_obs[i], "done"))
+    plotJPGq90(raster=quantile_observations[[(i*2)-1]], lon=lon, lat=lat, paste0("q90", time_list_obs[i],"obs_remapped.jpg"), paste0("90. Quantile of percipitation[mm/day] in year ",
+    time_list_obs[i]," in remapped observation data"), addMap=TRUE)
+    plotJPGq99(raster=quantile_observations[[(i*2)]], lon=lon, lat=lat, paste0("q99", time_list_obs[i],"obs_remapped.jpg"), paste0("99. Quantile of percipitation[mm/day] in year ",
+    time_list_obs[i]," in remapped observation data"), addMap=TRUE)
+}
+'
+####################################################
+###### REMAPPED OBSERVATION DATA ALP3 ##############
+##############  MEAN   #############################
+####################################################
+'
+observation_alp3 <- getRemappedObs(input_file_obs_remapped_alp3)
+mean_observations_alp3<-getAnnualMeanObs(observation_alp3)
+lon <- raster(input_file_obs_remapped_alp3, varname="lon")
+lat <- raster(input_file_obs_remapped_alp3, varname="lat")
+writeRaster(addLayer(addLayer(mean_observations_alp3, lon), lat), "../Results/mean_obs_remapped_alp3.nc", overwrite=TRUE, format="CDF",
+varname="mean_pr", varunit="mm", longname="Mean Percipitation", xname="X", yname="Y",zname="nbands", zunit="numeric")
+for(i in 1:11)
+{
+    plotJPGmean(raster=mean_observations_alp3[[i]], lon=lon, lat=lat, paste0("mprs", time_list_obs[i],"obs_remapped_alp3.jpg"),
+    paste0("Annual mean percipitation[mm/day] ", time_list_obs[i]," in remapped observation data for ALP-3"), addMap=TRUE)
+}
+'
+#####################################################
+################## EVAL DATA ########################
+#################### MEAN ###########################
+#####################################################
+'
+lon <- raster(input_files_eval_pr[[1]], varname="lon")
+lat <- raster(input_files_eval_pr[[1]], varname="lat")
+for(i in 1:length(time_list_eval))
+{
+    prs <- getPrecip(input_files_eval_pr[[i]])
+    mprs <- stackApply(prs, indices=c(1), fun=mean)
+    print(paste("mean for", time_list_eval[i], "done"))
+    plotJPGmean(raster=mprs, lon=lon, lat=lat, paste0("mprs", time_list_eval[i],"eval_alp3.jpg"), paste0("Annual mean percipitation[mm/day] ",
+    time_list_eval[i]," in ALP-3 evaluation-data"), addMap=TRUE)
+    if(i>1){
+        old_raster <- raster("../Results/mprs_eval_alp3.nc")
+        writeRaster(addLayer(old_raster, mprs), "../Results/mprs_eval_alp3.nc", overwrite=TRUE, format="CDF",
+        varname="MPercipitation", varunit="mm", longname="Mean Percipitation", xname="X", yname="Y",zname="nbands", zunit="numeric")
+    }else{
+    writeRaster(mprs, "../Results/mprs_eval_alp3.nc", overwrite=TRUE, format="CDF", varname="MPercipitation",
+    varunit="mm", longname="Mean Percipitation", xname="X", yname="Y",zname="nbands", zunit="numeric")
+    }
+}
+old_raster <- raster("../Results/mprs_eval_alp3.nc")
+writeRaster(addLayer(addLayer(old_raster, lon),lat), "../Results/mprs_eval_alp3.nc", overwrite=TRUE, format="CDF",
+varname="MPercipitation", varunit="mm", longname="Mean Percipitation", xname="X", yname="Y",zname="nbands", zunit="numeric")
+'
 
 ###
-
-#mprs<-mean(prs)
-#mprs<-mprs*3600*24 # to get mm
-
-#plotJPG(mprs, "msim96.jpg", "Annual mean percipitation[mm/day] 1996 in EUR-11 evaluation-data", addMap=TRUE)
 
 #pr <- getPR(input_file, 1)
 #levelplot(pr)

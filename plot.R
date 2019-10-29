@@ -6,8 +6,14 @@
 
 plotJPGmean <- function(raster, lon, lat, filename, plotmain, addMap){
     jpeg(paste0(output_dir,filename), height = 600, width = 900)
-    quilt.plot(data.frame(lon=as.vector(lon),lat=as.vector(lat),pr=as.vector(raster)), nx=412, ny=424,
-    col=rev(heat.colors(9)), breaks = c(0.0:9.0)*1.8, main=plotmain, na.rm=TRUE, lab.breaks=c(0.0:9.0)*1.8)
+    if(ALP3==TRUE)
+    {
+        quilt.plot(data.frame(lon=as.vector(lon),lat=as.vector(lat),pr=as.vector(raster)), nx=240, ny=424,
+        col=rev(heat.colors(9)), main=plotmain, na.rm=TRUE)
+    }else{
+        quilt.plot(data.frame(lon=as.vector(lon),lat=as.vector(lat),pr=as.vector(raster)), nx=412, ny=424,
+        col=rev(heat.colors(9)), breaks = c(0.0:9.0)*1.8, main=plotmain, na.rm=TRUE, lab.breaks=c(0.0:9.0)*1.8)
+    }
     #quilt.plot(data.frame(lon=as.vector(subset(raster, 'longitude')),lat=as.vector(subset(raster,'latitude')),pr=as.vector(subset(raster, 1))), nx=412, ny=424,
     #col=rev(heat.colors(9)), breaks = c(0.0:9.0)*1.8, main=plotmain, na.rm=TRUE, lab.breaks=c(0.0:9.0)*1.8)
     if(!is.null(addMap) & addMap == TRUE){

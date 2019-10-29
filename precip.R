@@ -15,9 +15,14 @@ getPrecipObs <- function(inputfile, layers){
 }
 
 getPrecip <- function(inputfile){
-    pr<-stack(inputfile, varname = "pr")
+    if(ALP3 == TRUE)
+    {
+        pr<-stack(inputfile, varname = "TOT_PREC")
+    }else{
+        pr<-stack(inputfile, varname = "pr")
+    }
     #values(pr)[values(pr) == fVal_sim$value]=NA
-    print("fillValue Done")
+    #print("fillValue Done")
     return(pr)
 }
 
