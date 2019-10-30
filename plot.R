@@ -76,3 +76,30 @@ plotJPGobsq90 <- function(rast, filename, plotmain, addMap){
     dev.off()
     print(paste0("plotted ", filename))
 }
+
+
+plotDifferences <- function(frequencies, raster, lon, lat, filename, plotmain, addMap){
+    #jpeg(paste0(output_dir,filename), height = 300, width = 300)
+    for(i in 1:nlayers(raster))
+    {
+        jpeg(paste0(output_dir,toString(i+1995),filename), height = 400, width = 650)
+        if(ALP3==TRUE)
+        {
+            quilt.plot(data.frame(lon=as.vector(lon),lat=as.vector(lat),pr=as.vector(raster)), nx=240, ny=424,
+            col=rev(heat.colors(9)), main=paste0(plotmain, "in", toString(i+1995)), na.rm=TRUE)
+        }else{
+            quilt.plot(data.frame(lon=as.vector(lon),lat=as.vector(lat),pr=as.vector(raster[[i]])), nx=412, ny=424,
+            col=rev(heat.colors(9)), main=paste0(plotmain, "in", toString(i+1995)))#breaks = c(0.0:9.0)*2, main=plotmain, na.rm=TRUE, lab.breaks=c(0.0:9.0)*1.8)
+        }
+        #quilt.plot(data.frame(lon=as.vector(subset(raster, 'longitude')),lat=as.vector(subset(raster,'latitude')),pr=as.vector(subset(raster, 1))), nx=412, ny=424,
+        #col=rev(heat.colors(9)), breaks = c(0.0:9.0)*1.8, main=plotmain, na.rm=TRUE, lab.breaks=c(0.0:9.0)*1.8)
+        if(!is.null(addMap) & addMap == TRUE){
+            map(add=TRUE, col='black')
+        }
+        dev.off()
+        jpeg(paste0(output_dir,toString(i+1995),"frequencies", filename), height = 400, width = 650)
+        plot(frequencies[[i]], type="l", col="black", xlab="divergence", ylab="over all appearance", main=paste0("Frequency plot in ", toString(i+1995)))
+        dev.off()
+        print(paste0("plotted ", names(raster[[i]])))
+    }
+}

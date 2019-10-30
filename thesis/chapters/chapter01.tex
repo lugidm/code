@@ -13,11 +13,33 @@ Zu Abb. \ref{fig:mobs99}: Man erkennt gut die starken Regenfälle an der Westkü
 \end{figure}
  \\
 Zu Abb. \ref{fig:meval99}: Man sieht generell gute Übereinstimmungen an der Küste Norwegens und Englands, der Regen in Island und einigen Teilen des Alpenraumes fielen im Modell zu stark aus. Auch in Georgien am Kaukasus liefert das Modell einen zu starken Regen. Da das Klimamodell CCLM4-8-17 eine Parametrisierung der Konvektion vornimmt, ist die geringe Übereinstimmung in gebirgigen Gebieten nicht überraschend. Der Unterschied zur folgenden Abbildung \ref{fig:mhist99} ist lediglich die Quelle der Daten für das downscalen: hier wurde das CCLM mit Re-Analysedaten betrieben, im folgenden mit dem GCM MPI-ESM-LR.\\
-
+\hfill
 \begin{figure}[h]
 	\includegraphics[width=15cm]{mean/msim1999hist.jpg}
 	\caption{Jährliches Mittel über den Niederschlag im Jahr 1999 im historical Datensatz von EUR-11}
 	\label{fig:mhist99}
 \end{figure}
+\hfill\\
 Zu Abb. \ref{fig:mhist99}: Der Regen an der norwegischen Westküste fällt bei dieser Modellaufnahme um einiges schwächer aus als in der Aufnahme des Evaluation Datensatzes zuvor. Dies ist noch auffallender im Vergleich mit den Beobachtungsdaten. Mit dem Niederschlag an der britischen Westküste verhält es sich ähnlich, Auffallend sind besonders die Erscheinungen im Süden Frankreichs, wo aus unersichtlichen Gründen im Flachland um Toulouse größere Regenmengen \glqq voraus \grqq-gesagt wurden. Die Analyse des Alpenraums und des Kaukasusgebiets fallen fast gleich aus wie die im Evaluationsdatensatz (Abb. \ref{fig:meval99}). Bei dieser Herangehensweise wurde das CCLM mit dem GCM MPI-ESM-LR für die historische Periode 1999 angetrieben. Es sind darin wohl einige Abweichungen zum tatsächlichen Globalen Klima vorhanden oder aber das downscaling hat diese Erscheinungen hervorgebracht.
-LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOKKKKKKKKKKKK Dies wird erst im Vergleich zum feineren ALP-3 ersichtlich.
+LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOKKKKKKKKKKKK Dies wird erst im Vergleich zum feineren ALP-3 ersichtlich.\hfill\\
+
+\begin{figure}[h]
+	\centering
+	\begin{subfigure}[b]{0.49\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{mean/1999dif_mprs_eval-obs.jpg}
+		\caption{Differenz des Beobachtungsdatensatzes und des evaluation-Datensatzes}
+		\label{fig:eval_dif}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.49\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{mean/1999frequenciesdif_mprs_eval-obs.jpg}
+		\caption{Häufigkeit der Abweichungen über das gesamte Gitter}
+		\label{fig:eval_freq_dif}
+	\end{subfigure}
+	\caption{Differenz für den evaluation-Datensatz}
+\end{figure}
+
+\hfill\\
+Wie man gut in Abb. \ref{fig:eval_dif} erkennen kann ist im allgemeinen über den orthographisch gediegenen Gegenden die Abweichung vom Beobachtungsdatensatz gering. Wieder ist leicht zu erkennen, dass die Abweichungen in gebirgigen Gegenden überwiegend groß sind. Wie auch in Abb. \ref{fig:eval_freq_dif} zu sehen ist, überwiegt eine Abweichung von 0, auch wenn die Kurve leicht ins rechte verschoben ist - dies bedeutet dass mehr Niederschlage simuliert wurde als es tatsächlich gab.\\
+Im folgenden sollen alle Jahre verglichen werden um eine Allgemeinaussage treffen zu können.

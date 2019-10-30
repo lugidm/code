@@ -25,6 +25,8 @@ input_file_obs <- "../E-OBS/rr_ens_mean_0.1deg_reg_1995-2010_v20.0e.nc"
 input_file_obs_remapped <- "../E-OBS/pr_remapped_obs412424.nc"
 input_file_obs_remapped_alp3 <- "../E-OBS/pr_obs_remapped_ALP3.nc"
 dump_file_mprs_obs_eur11 <- "../Results/mean_obs_remapped_eur11.nc"
+dump_file_mprs_hist_eur11 <- "../Results/mprs_hist_eur11.nc"
+dump_file_mprs_rcp_eur11 <- "../Results/mprs_rcp85_eur11.nc"
 dump_file_mprs_eval_eur11 <- "../Results/mprs_eval_eur11.nc"
 time_list_obs <- c("1995", "1996", "1997", "1998", "1999", "2000", "2001", "2002", "2003", "2004", "2005")
 output_dir <- "../Results/"
@@ -107,61 +109,66 @@ for(i in 1:11)
 '
 lon <- raster(input_files_eval_pr[[1]], varname="lon")
 lat <- raster(input_files_eval_pr[[1]], varname="lat")
+names(lon)<-"lon"
+names(lat)<-"lat"
+mprs_stack <- raster()
 for(i in 1:length(time_list_eval))
 {
     prs <- getPrecip(input_files_eval_pr[[i]])
-    mprs <- stackApply(prs, indices=c(1), fun=mean)
+    mprs <- calc(prs*3600*24, fun=mean)
+    names(mprs)<-time_list_eval[i]
     print(paste("mean for", time_list_eval[i], "done"))
     plotJPGmean(raster=mprs, lon=lon, lat=lat, paste0("mprs", time_list_eval[i],"eval_eur11.jpg"), paste0("Annual mean percipitation[mm/day] ",
     time_list_eval[i]," in EUR-11 evaluation-data"), addMap=TRUE)
-    if(i>1){
-        old_raster <- raster(dump_file_mprs_eval_eur11)
-        writeRaster(addLayer(old_raster, mprs), dump_file_mprs_eval_eur11, overwrite=TRUE, format="CDF",
-        varname="MPercipitation", varunit="mm", longname="Mean Percipitation", xname="X", yname="Y",zname="nbands", zunit="numeric")
-    }else{
-        writeRaster(mprs, dump_file_mprs_eval_eur11, overwrite=TRUE, format="CDF", varname="MPercipitation",
-        varunit="mm", longname="Mean Percipitation", xname="X", yname="Y",zname="nbands", zunit="numeric")
-    }
+    mprs_stack<-addLayer(mprs_stack, mprs)
 }
-old_raster <- raster(dump_file_mprs_eval_eur11)
-writeRaster(addLayer(addLayer(old_raster, lon),lat), dump_file_mprs_eval_eur11, overwrite=TRUE, format="CDF",
-varname="MPercipitation", varunit="mm", longname="Mean Percipitation", xname="X", yname="Y",zname="nbands", zunit="numeric")
+writeRaster(addLayer(addLayer(mprs_stack, lon),lat), dump_file_mprs_eval_eur11, overwrite=TRUE, format="CDF",
+varname="mean_pr", varunit="mm", longname="Mean Percipitation", xname="X", yname="Y", zunit="numeric")
 '
 #######################################################
 #################  HIST DATA  #########################
 #######################################################
-'
+
+lon <- raster(input_files_hist_pr[[1]], varname="lon")
+lat <- raster(input_files_hist_pr[[1]], varname="lat")
+names(lon)<-"lon"
+names(lat)<-"lat"
+mprs_stack <- raster()
 for(i in 1:length(time_list_hist))
 {
     prs <- getPrecip(input_files_hist_pr[[i]])
     mprs <- calc((prs*3600*24), fun=mean)
-    lon <- raster(input_files_hist_pr[[i]], varname="lon")
-    lat <- raster(input_files_hist_pr[[i]], varname="lat")
-    mprs<-addLayer(mprs, lon)
-    mprs<-addLayer(mprs, lat)
-    plotJPGmean(mprs, paste0("msim", time_list_hist[i],"hist.jpg"), paste0("Annual mean percipitation[mm/day] ",
+    names(mprs)<-time_list_hist[i]
+    print(paste("mean for", time_list_hist[i], "done"))
+    plotJPGmean(raster=mprs, lon=lon, lat=lat, paste0("mprs", time_list_hist[i],"hist_eur11.jpg"), paste0("Annual mean percipitation[mm/day] ",
     time_list_hist[i]," in EUR-11 historical-data"), addMap=TRUE)
-    writeRaster(mprs, paste0("../Results/mprs", time_list_hist[i], "hist.nc"), overwrite=TRUE, format="CDF",
-    varname="MPercipitation", varunit="mm", longname="Mean Percipitation", xname="X", yname="Y",zname="nbands", zunit="numeric")
+    mprs_stack<-addLayer(mprs_stack, mprs)
+
 }
-'
+writeRaster(addLayer(addLayer(mprs_stack, lon),lat), dump_file_mprs_hist_eur11, overwrite=TRUE, format="CDF",
+varname="mean_pr", varunit="mm", longname="Mean Percipitation", xname="X", yname="Y", zunit="numeric")
+
 #######################################################
 #################  RCP85 DATA  ########################
 #######################################################
 '
+lon <- raster(input_files_rcp_pr[[1]], varname="lon")
+lat <- raster(input_files_rcp_pr[[1]], varname="lat")
+names(lon)<-"lon"
+names(lat)<-"lat"
+mprs_stack <- raster()
 for(i in 1:length(time_list_rcp))
 {
     prs <- getPrecip(input_files_rcp_pr[[i]])
     mprs <- calc((prs*3600*24), fun=mean)
-    lon <- raster(input_files_rcp_pr[[i]], varname="lon")
-    lat <- raster(input_files_rcp_pr[[i]], varname="lat")
-    mprs<-addLayer(mprs, lon)
-    mprs<-addLayer(mprs, lat)
-    plotJPGmean(mprs, paste0(paste0("msim", time_list_rcp[i]),"rcp85.jpg"), paste0(paste0("Annual mean percipitation[mm/day] ",
-    time_list_rcp[i])," in EUR-11 rcp85-data"), addMap=TRUE)
-    writeRaster(mprs, paste0("../Results/mprs", time_list_rcp[i], "rcp85.nc"), overwrite=TRUE, format="CDF",
-    varname="MPercipitation", varunit="mm", longname="Mean Percipitation", xname="X", yname="Y",zname="nbands", zunit="numeric")
+    names(mprs)<-time_list_rcp[i]
+    print(paste("mean for", time_list_rcp[i], "done"))
+    plotJPGmean(raster=mprs, lon=lon, lat=lat, paste0("mprs", time_list_rcp[i],"rcp85_eur11.jpg"), paste0("Annual mean percipitation[mm/day] ",
+    time_list_rcp[i]," in EUR-11 rcp85-data"), addMap=TRUE)
+    mprs_stack<-addLayer(mprs_stack, mprs)
 }
+writeRaster(addLayer(addLayer(mprs_stack, lon),lat), dump_file_mprs_rcp_eur11, overwrite=TRUE, format="CDF",
+varname="mean_pr", varunit="mm", longname="Mean Percipitation", xname="X", yname="Y", zunit="numeric")
 '
 ########################################################################################################################
 ######################################## EUR -11 ++ Q90Q99 ++ CALCULATIONS #############################################
@@ -240,6 +247,8 @@ observation <- getRemappedObs(input_file_obs_remapped)
 mean_observations<-getAnnualMeanObs(observation)
 lon <- raster(input_file_obs_remapped, varname="lon")
 lat <- raster(input_file_obs_remapped, varname="lat")
+names(lon)<-"lon"
+names(lat)<-"lat"
 writeRaster(addLayer(addLayer(mean_observations, lon), lat), dump_file_mprs_obs_eur11, overwrite=TRUE, format="CDF",
 varname="mean_pr", varunit="mm", longname="Mean Percipitation", xname="X", yname="Y",zname="nbands", zunit="numeric")
 for(i in 1:11)
@@ -318,6 +327,23 @@ old_raster <- raster("../Results/mprs_eval_alp3.nc")
 writeRaster(addLayer(addLayer(old_raster, lon),lat), "../Results/mprs_eval_alp3.nc", overwrite=TRUE, format="CDF",
 varname="MPercipitation", varunit="mm", longname="Mean Percipitation", xname="X", yname="Y",zname="nbands", zunit="numeric")
 '
+########################################################################################################################
+#############################################   COMPARISIONS EUR 11 ####################################################
+########################################################################################################################
+'mean_pr_eval <- stack(dump_file_mprs_eval_eur11, varname = "mean_pr")
+mean_pr_obs <- stack(dump_file_mprs_obs_eur11, varname = "mean_pr")
+compareSUB(mean_pr_eval, mean_pr_obs)
+'
+
+mean_pr_hist <- stack(dump_file_mprs_hist_eur11, varname = "mean_pr")
+mean_pr_obs <- stack(dump_file_mprs_obs_eur11, varname = "mean_pr")
+compareSUB(mean_pr_hist, mean_pr_obs)
+
+'mean_pr_eval <- stack(dump_file_mprs_eval_eur11, varname = "mean_pr")
+mean_pr_obs <- stack(dump_file_mprs_obs_eur11, varname = "mean_pr")
+compareSUB(mean_pr_eval, mean_pr_obs)
+'
+
 
 ###
 
