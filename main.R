@@ -65,6 +65,9 @@ nc_close(nc_data)
 ################################
 ### HELPER FUNCTIONS ###########
 Q99 <- function(x){quantile(x,probs = c(.90,.99), na.rm=TRUE)}
+GREATESTDIFF <- function(x){
+    if(length(which.max( abs(unlist(na.omit(x)))) == 0)){return(NA)}
+    return_val=x[which.max( abs(unlist(na.omit(x))))]}
 ################################
 
 ########################################################################################################################
@@ -345,7 +348,6 @@ return_val<-compareSUB(mean_pr_hist, mean_pr_obs, EVAL=FALSE)
 dif_hist <- return_val[[1]]
 names(dif_hist)<-time_list_hist
 freq_hist <- return_val[[2]]
-
 compareAllYears(differences=dif_eval, frequencies=freq_eval, lon=lon, lat=lat, EVAL=TRUE)
 compareAllYears(differences=dif_hist, frequencies=freq_hist, lon=lon, lat=lat, EVAL=FALSE)
 

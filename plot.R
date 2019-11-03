@@ -165,3 +165,44 @@ plotMeanDifferences <- function(differences, frequencies, lon, lat, filename, EV
     print("plotted frequencies")
     dev.off()
 }
+
+plotQ90Q99Differences <- function(differences, frequencies, lon, lat, filename, plotmain, EVAL)
+{
+    jpeg(paste0(output_dir,filename), height = 600, width = 900)
+    if(ALP3==TRUE)
+    {
+        quilt.plot(data.frame(lon=as.vector(lon),lat=as.vector(lat),pr=as.vector(differences)), nx=240, ny=424,
+        col=rev(heat.colors(9)), main="Mean differnces between ssssssssssssssssssssssssssssssssss", na.rm=TRUE)
+    }else{
+        if(EVAL){
+            quilt.plot(data.frame(lon=as.vector(lon),lat=as.vector(lat),pr=as.vector(differences)), nx=412, ny=424,
+            col=rev(heat.colors(9)), main=paste0(plotmain, " in evaluation-observated differences for period 1996-2005"))
+        }else{
+            quilt.plot(data.frame(lon=as.vector(lon),lat=as.vector(lat),pr=as.vector(differences)), nx=412, ny=424,
+            col=rev(heat.colors(9)), main=paste0(plotmain, " in historical-observated differences for period 1995-2005"))
+        }
+    }
+    map(add=TRUE, col='black')
+    print("plotted raster")
+    dev.off()
+
+    if(EVAL){
+        jpeg(paste0(output_dir, "frequencies", filename), height = 600, width = 900)
+        plot(frequencies, type="l", col="black", xlab="quantile", ylab="over all mean-appearance",
+        main=paste0(plotmain, " frequencies plot in evaluation-observated differences for period 1996-2005"))
+        #,xaxp=c(round(min(frequencies[,1])), round(max(frequencies[,1])), 26))
+        #axis(1, seq(round(min(frequencies[,1])), round(max(frequencies[,1])), by = 0.5))
+        abline(h=seq(round(min(frequencies[,2])), round(max(frequencies[,2])), by=500), v=seq(round(min(frequencies[,1])),
+        round(max(frequencies[,1])), by=0.5), col="gray", lty=3)
+    }else{
+        jpeg(paste0(output_dir,"frequencies", filename), height = 600, width = 900)
+        plot(frequencies, type="l", col="black", xlab="quantile", ylab="over all mean-appearance",
+        main=paste0(plotmain, " frequencies plot in historical-observated differences for period 1995-2005"))
+        #,xaxp=c(round(min(frequencies[,1])), round(max(frequencies[,1])), 28))
+        #axis(1, seq(round(min(frequencies[,1])), round(max(frequencies[,1])), by = 0.5))
+        abline(h=seq(round(min(frequencies[,2])), round(max(frequencies[,2])), by=500), v=seq(round(min(frequencies[,1])),
+        round(max(frequencies[,1])), by=0.5), col="gray", lty=3)
+    }
+    print("plotted frequencies")
+    dev.off()
+}

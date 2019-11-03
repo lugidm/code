@@ -49,7 +49,7 @@ LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
 		\caption{Häufigkeit der Abweichungen über das gesamte Gitter für den historical-Datensatz}
 		\label{fig:hist_freq_dif}
 	\end{subfigure}
-	\caption{Differenzen für den evaluation- und historical- Datensatz}
+	\caption{Differenzen für den evaluation- und historical- Datensatz im Jahr 1999}
 \end{figure}
 
 \vfill
@@ -69,9 +69,6 @@ Im folgenden sollen alle Jahre gemittelt verglichen werden um eine Allgemeinauss
 		\caption{Gemittelte Häufigkeit der Abweichungen von den Beobachtungsdaten über die gesamte Periode für den EUR-11 Evaluations-Datensatz}
 		\label{fig:freq_mean_dif_eval}
 	\end{subfigure}
-	\caption{Gemittelte Abweichungen im EUR-11 evaluation-Datensatz}
-\end{figure}
-\begin{figure}[h]
 	\begin{subfigure}[h]{0.49\textwidth}
 	\centering
 	\includegraphics[width=\textwidth]{mean/dif_mean_hist.jpg}
@@ -84,8 +81,39 @@ Im folgenden sollen alle Jahre gemittelt verglichen werden um eine Allgemeinauss
 		\caption{Gemittelte Häufigkeit der Abweichungen von den Beobachtungsdaten über die gesamte Periode für den EUR-11  historical-Datensatz}
 		\label{fig:freq_mean_dif_hist}
 	\end{subfigure}
-	\caption{Gemittelte Abweichungen im EUR-11 historical-Datensatz}
+	\caption{Gemittelte Abweichungen im EUR-11 Datensatz}
 \end{figure}
 \hfill\\
 Die Abweichungen für den historical-Datensatz, die wir zuvor für das Jahr 1999 berechnet haben scheint sich im Mittel auch für die gesamte Periode abzubilden. Man erkennt beim vergleichen der Abb. \ref{fig:mean_dif_hist} und \ref{fig:hist_dif}, dass sich der Mittelwert der Verteilungskurve noch weiter ins positive verschoben hat. Man erhält eine mittlere Abweichung von $0.5568$. Es wurde also im Mittel auch zu viel Niederschlag simuliert.\\
-Die gemittelten Abweichungen beim evaluation-Datensatz zeichnen sich auch dem Jahre 1999 entsprechend ab, wobei auch hier im Durchschnitt eine Verschiebung ins Positive stattgefunden hat: die höchste Häufigkeit liegt zwar immer noch über $0$ aber die mittlere Abweichung liegt bei $0.1297$ was um $0.0289	$ über dem Jahre 1999 liegt.
+Die gemittelten Abweichungen beim evaluation-Datensatz zeichnen sich auch dem Jahre 1999 entsprechend ab, wobei auch hier im Durchschnitt eine Verschiebung ins Positive stattgefunden hat: die höchste Häufigkeit liegt zwar immer noch über $0$ aber die mittlere Abweichung liegt bei $0.1297$ was um $0.0289$ über dem Jahre 1999 liegt.\\ \hfill \\
+\begin{figure}[h]
+	
+	\begin{subfigure}[h]{0.49\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{mean/dif_q90_eval.jpg}
+		\caption{90. Quantil der Abweichungen von den Beobachtungsdaten über die gesamte Periode für den EUR-11 evaluation-Datensatz}
+		\label{fig:q90_dif_eval}
+	\end{subfigure}
+	\begin{subfigure}[h]{0.49\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{mean/frequenciesdif_q90_eval.jpg}
+		\caption{Häufigkeit des 90. Quantil in der Abweichungen von den Beobachtungsdaten über die gesamte Periode für den EUR-11 evaluation-Datensatz}
+		\label{fig:q90_freq_dif_eval}
+	\end{subfigure}
+	\begin{subfigure}[h]{0.49\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{mean/dif_q90_hist.jpg}
+		\caption{90. Quantil der Abweichungen von den Beobachtungsdaten über die gesamte Periode für den EUR-11 historical-Datensatz}
+		\label{fig:q90_dif_hist}
+	\end{subfigure}
+	\begin{subfigure}[h]{0.49\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{mean/frequenciesdif_q90_hist.jpg}
+		\caption{Häufigkeit des 90. Quantil in der Abweichungen von den Beobachtungsdaten über die gesamte Periode für den EUR-11 historical-Datensatz}
+		\label{fig:q90_freq_dif_hist}
+	\end{subfigure}
+	\caption{90. Quantil der Abweichungen im EUR-11 Datensatz}
+\end{figure}
+
+Wie in den Abbildungen \ref{fig:q90_dif_eval} und \ref{fig:q90_dif_hist} zu erkennen ist, herrscht die größte Abweichung in den Gebirgen (Südküste Islands, Westküste Norwegens, Alpen ,Pyrenäen, Kantabrisches Gebirge und Kaukasus) jedoch reicht auch dort das 90. Quantil nicht weit über 10mm/Tag hinaus (siehe Abb.\ref{fig:q90_freq_dif_eval} und Abb.\ref{fig:q90_freq_dif_hist}), was eine einigermaßen gute Übereinstimmung mit der beobachteten Wetterlage auszeichnet. Im folgenden Kapitel werden die Daten direkt über das 90te und 99te Quantil verglichen um die Starkregenereignisse allein untersuchen zu können.
+\pagebreak

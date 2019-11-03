@@ -4,7 +4,6 @@
 # Created on: 21.10.19
 
 
-
 compareSUB <- function(simulated, observated, EVAL)
 {
     obs_without_lon <- dropLayer(observated, c(nlayers(observated)-1, nlayers(observated)))
@@ -29,6 +28,7 @@ compareSUB <- function(simulated, observated, EVAL)
 
 compareAllYears<-function(differences, frequencies, lon, lat, EVAL)
 {
+
     differences_mean<-stackApply(differences, indices=c(1), fun=mean)
     print("mean diff:")
     print(mean(na.omit(values(differences_mean))))
@@ -43,19 +43,36 @@ compareAllYears<-function(differences, frequencies, lon, lat, EVAL)
     ######################   QUANTILE ##################################################################################
     ####################################################################################################################
     print("doit")
-    differences <- stack(differences)
-    print(differences)
-    differences_quantile<-calc(differences, fun=Q99, forcefun=TRUE)
+    differences_quantile<-calc(differences,fun=Q99,forceapply=TRUE)
+
+
     print("did it")
    # print(mean(na.omit(values(differences_quantile))))
     frequencies_quantile<-freq(differences_quantile, digits = 1, cum = TRUE, valid=TRUE, total=TRUE, useNA="no")
     if(EVAL)
     {
-        plotMeanDifferences(differences_quantile[[1]], frequencies_quantile, lon, lat, filename="dif_q90_eval.jpg", EVAL=EVAL)
-        plotMeanDifferences(differences_quantile[[2]], frequencies_quantile, lon, lat, filename="dif_q99_eval.jpg", EVAL=EVAL)
+        plotQ90Q99Differences(differences_quantile[[1]], frequencies_quantile[[1]], lon, lat, filename="dif_q90_eval.jpg",
+        plotmain = "90. quantile", EVAL=EVAL)
+        plotQ90Q99Differences(differences_quantile[[2]], frequencies_quantile[[2]], lon, lat, filename="dif_q99_eval.jpg",
+        plotmain = "99. quantile", EVAL=EVAL)
     }else{
-        plotMeanDifferences(differences_quantile[[1]], frequencies_quantile, lon, lat, filename="dif_q90_hist.jpg", EVAL=EVAL)
-        plotMeanDifferences(differences_quantile[[2]], frequencies_quantile, lon, lat, filename="dif_q99_hist.jpg", EVAL=EVAL)
+        plotQ90Q99Differences(differences_quantile[[1]], frequencies_quantile[[1]], lon, lat, filename="dif_q90_hist.jpg",
+        plotmain = "90. quantile", EVAL=EVAL)
+        plotQ90Q99Differences(differences_quantile[[2]], frequencies_quantile[[2]], lon, lat, filename="dif_q99_hist.jpg",
+        plotmain= "99. quantile", EVAL=EVAL)
     }
+
+    'max_diff<-calc(differences,fun=GREATESTDIFF,forcefun=TRUE)
+    frequencies_quantile<-freq(max_diff, digits = 1, cum = TRUE, valid=TRUE, total=TRUE, useNA="no")
+    if(EVAL)
+    {
+        plotQ90Q99Differences(max_diff, frequencies_quantile, lon, lat, filename="dif_max_eval.jpg",
+        plotmain = "maximal differences", EVAL=EVAL)
+    }else{
+        plotQ90Q99Differences(max_diff, frequencies_quantile, lon, lat, filename="dif_max_hist.jpg",
+        plotmain= "maximal differences", EVAL=EVAL)
+    }'
+
+
 
 }
