@@ -128,7 +128,7 @@ varname="mean_pr", varunit="mm", longname="Mean Percipitation", xname="X", yname
 #######################################################
 #################  HIST DATA  #########################
 #######################################################
-
+'
 lon <- raster(input_files_hist_pr[[1]], varname="lon")
 lat <- raster(input_files_hist_pr[[1]], varname="lat")
 names(lon)<-"lon"
@@ -147,7 +147,7 @@ for(i in 1:length(time_list_hist))
 }
 writeRaster(addLayer(addLayer(mprs_stack, lon),lat), dump_file_mprs_hist_eur11, overwrite=TRUE, format="CDF",
 varname="mean_pr", varunit="mm", longname="Mean Percipitation", xname="X", yname="Y", zunit="numeric")
-
+'
 #######################################################
 #################  RCP85 DATA  ########################
 #######################################################
@@ -330,14 +330,24 @@ varname="MPercipitation", varunit="mm", longname="Mean Percipitation", xname="X"
 ########################################################################################################################
 #############################################   COMPARISIONS EUR 11 ####################################################
 ########################################################################################################################
-'mean_pr_eval <- stack(dump_file_mprs_eval_eur11, varname = "mean_pr")
+mean_pr_eval <- stack(dump_file_mprs_eval_eur11, varname = "mean_pr")
 mean_pr_obs <- stack(dump_file_mprs_obs_eur11, varname = "mean_pr")
-compareSUB(mean_pr_eval, mean_pr_obs)
-'
+lon=subset(mean_pr_obs, nlayers(mean_pr_obs)-1)
+lat=subset(mean_pr_obs, nlayers(mean_pr_obs))
+return_val <-compareSUB(mean_pr_eval, mean_pr_obs, EVAL=TRUE)
+dif_eval <- return_val[[1]]
+names(dif_eval)<-time_list_eval
+freq_eval <- return_val[[2]]
 
 mean_pr_hist <- stack(dump_file_mprs_hist_eur11, varname = "mean_pr")
 mean_pr_obs <- stack(dump_file_mprs_obs_eur11, varname = "mean_pr")
-compareSUB(mean_pr_hist, mean_pr_obs)
+return_val<-compareSUB(mean_pr_hist, mean_pr_obs, EVAL=FALSE)
+dif_hist <- return_val[[1]]
+names(dif_hist)<-time_list_hist
+freq_hist <- return_val[[2]]
+
+compareAllYears(differences=dif_eval, frequencies=freq_eval, lon=lon, lat=lat, EVAL=TRUE)
+compareAllYears(differences=dif_hist, frequencies=freq_hist, lon=lon, lat=lat, EVAL=FALSE)
 
 'mean_pr_eval <- stack(dump_file_mprs_eval_eur11, varname = "mean_pr")
 mean_pr_obs <- stack(dump_file_mprs_obs_eur11, varname = "mean_pr")

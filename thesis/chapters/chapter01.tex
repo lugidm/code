@@ -25,21 +25,67 @@ LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
 
 \begin{figure}[h]
 	\centering
-	\begin{subfigure}[b]{0.49\textwidth}
+	\begin{subfigure}[h]{0.49\textwidth}
 		\centering
 		\includegraphics[width=\textwidth]{mean/1999dif_mprs_eval-obs.jpg}
 		\caption{Differenz des Beobachtungsdatensatzes und des evaluation-Datensatzes}
 		\label{fig:eval_dif}
 	\end{subfigure}
-	\begin{subfigure}[b]{0.49\textwidth}
+	\begin{subfigure}[h]{0.49\textwidth}
 		\centering
 		\includegraphics[width=\textwidth]{mean/1999frequenciesdif_mprs_eval-obs.jpg}
 		\caption{Häufigkeit der Abweichungen über das gesamte Gitter}
 		\label{fig:eval_freq_dif}
 	\end{subfigure}
-	\caption{Differenz für den evaluation-Datensatz}
+	\begin{subfigure}[h]{0.49\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{mean/1999dif_mprs_hist-obs.jpg}
+		\caption{Differenz des Beobachtungsdatensatzes und des historical-Datensatzes}
+		\label{fig:hist_dif}
+	\end{subfigure}
+	\begin{subfigure}[h]{0.49\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{mean/1999frequenciesdif_mprs_hist-obs.jpg}
+		\caption{Häufigkeit der Abweichungen über das gesamte Gitter für den historical-Datensatz}
+		\label{fig:hist_freq_dif}
+	\end{subfigure}
+	\caption{Differenzen für den evaluation- und historical- Datensatz}
 \end{figure}
 
+\vfill
+Wie man gut in Abb. \ref{fig:eval_dif} erkennen kann ist im allgemeinen über den orthographisch gediegenen Gegenden die Abweichung vom Beobachtungsdatensatz gering. Es ist gut ersichtlich, dass die Abweichungen in überwiegend gebirgigen Gegenden größer sind. Wie auch in Abb. \ref{fig:eval_freq_dif} zu sehen ist, überwiegt eine Abweichung von 0, auch wenn die Kurve leicht ins rechte verschoben ist - dies bedeutet dass mehr Niederschlage simuliert wurde als es tatsächlich gab. Der Mittelwert der Abweichungen in diesem Datensatz beträgt für das Jahr 1999 $+0.1009$.\\
+Man kann auch gut erkennen, dass im historical-Datensatz (siehe Abb. \ref{fig:hist_dif}) die Abweichungen größer sind als im evaluation Datensatz, was darauf zurückzuführen ist, dass für den historical-Datensatz die Auswirkungen eines simulierten globalen Klimas auf regionale Ebene berechnet wurden, und dadurch Abweichungen zur tatsächlichen Konstellation der Atmosphäre von vornherein herrschen. Der Mittelwert der Abweichungen in diesem Datensatz beträgt für das Jahr 1999 $+0.4590$. Dies ist bedeutend höher als im evaluation-Datensatz. Man kann dies auch gut in der Abbildung \ref{fig:hist_freq_dif} erkennen, wo die maximale Häufigkeit nicht mehr über $0$ sondern über ca. $+0.3$ liegt.\\
+Im folgenden sollen alle Jahre gemittelt verglichen werden um eine Allgemeinaussage über das GCM MPI-ESM-LR und das betreffende CCLM4-8-17 treffen zu können:
+\begin{figure}[h]
+	\begin{subfigure}[h]{0.49\textwidth}
+	\centering
+	\includegraphics[width=\textwidth]{mean/dif_mean_eval.jpg}
+	\caption{Gemittelte Abweichungen von den Beobachtungsdaten über die gesamte Periode für den EUR-11 Evaluations-Datensatz}
+	\label{fig:mean_dif_eval}
+	\end{subfigure}
+	\begin{subfigure}[h]{0.49\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{mean/frequenciesdif_mean_eval.jpg}
+		\caption{Gemittelte Häufigkeit der Abweichungen von den Beobachtungsdaten über die gesamte Periode für den EUR-11 Evaluations-Datensatz}
+		\label{fig:freq_mean_dif_eval}
+	\end{subfigure}
+	\caption{Gemittelte Abweichungen im EUR-11 evaluation-Datensatz}
+\end{figure}
+\begin{figure}[h]
+	\begin{subfigure}[h]{0.49\textwidth}
+	\centering
+	\includegraphics[width=\textwidth]{mean/dif_mean_hist.jpg}
+	\caption{Gemittelte Abweichungen von den Beobachtungsdaten über die gesamte Periode für den EUR-11 historical-Datensatz}
+	\label{fig:mean_dif_hist}
+	\end{subfigure}
+	\begin{subfigure}[h]{0.49\textwidth}
+			\centering
+		\includegraphics[width=\textwidth]{mean/frequenciesdif_mean_hist.jpg}
+		\caption{Gemittelte Häufigkeit der Abweichungen von den Beobachtungsdaten über die gesamte Periode für den EUR-11  historical-Datensatz}
+		\label{fig:freq_mean_dif_hist}
+	\end{subfigure}
+	\caption{Gemittelte Abweichungen im EUR-11 historical-Datensatz}
+\end{figure}
 \hfill\\
-Wie man gut in Abb. \ref{fig:eval_dif} erkennen kann ist im allgemeinen über den orthographisch gediegenen Gegenden die Abweichung vom Beobachtungsdatensatz gering. Wieder ist leicht zu erkennen, dass die Abweichungen in gebirgigen Gegenden überwiegend groß sind. Wie auch in Abb. \ref{fig:eval_freq_dif} zu sehen ist, überwiegt eine Abweichung von 0, auch wenn die Kurve leicht ins rechte verschoben ist - dies bedeutet dass mehr Niederschlage simuliert wurde als es tatsächlich gab.\\
-Im folgenden sollen alle Jahre verglichen werden um eine Allgemeinaussage treffen zu können.
+Die Abweichungen für den historical-Datensatz, die wir zuvor für das Jahr 1999 berechnet haben scheint sich im Mittel auch für die gesamte Periode abzubilden. Man erkennt beim vergleichen der Abb. \ref{fig:mean_dif_hist} und \ref{fig:hist_dif}, dass sich der Mittelwert der Verteilungskurve noch weiter ins positive verschoben hat. Man erhält eine mittlere Abweichung von $0.5568$. Es wurde also im Mittel auch zu viel Niederschlag simuliert.\\
+Die gemittelten Abweichungen beim evaluation-Datensatz zeichnen sich auch dem Jahre 1999 entsprechend ab, wobei auch hier im Durchschnitt eine Verschiebung ins Positive stattgefunden hat: die höchste Häufigkeit liegt zwar immer noch über $0$ aber die mittlere Abweichung liegt bei $0.1297$ was um $0.0289	$ über dem Jahre 1999 liegt.
