@@ -41,7 +41,7 @@ getAnnualMeanObs <- function(allDays){
     #values(pr_by_year)[values(pr_by_year) == fVal_obs$value]=NA
     #pr_by_year<-calc(pr_by_year, fun=mean)
     pr_by_year<-raster()
-    for(i in 1995:2005){
+    for(i in 1996:2005){
         date_string_start <- paste0(toString(i), "-01-01")
         date_string_end <- paste0(toString(i+1), "-01-01")
         extract_ids <- which((getZ(allDays) < as.Date(date_string_end))& (getZ(allDays) >= as.Date(date_string_start)))

@@ -45,3 +45,30 @@ getAnnualQuantileObs <- function(allDays){
     }
     return(qt_by_year)
 }
+
+getAPGDAnnualStack <- function(filenames){
+    return(stack(filenames, varname="PRECIPITATION"))
+
+}
+
+#### FOR ALP3-REMAPPED ##########
+getAnnualMean <- function(inputfiles, time_list, data_type){
+    output_raster <- raster()
+    for(i in 1:length(inputfiles))
+    {
+        prs <- getPrecip(inputfiles[[i]])
+        print("MEAN")
+        cells<-cellFromXY(prs, cropMatrix(xmin=1, xmax=10, ymin=1,ymax=80))
+        for(j in 1:nlayers(prs)){prs[[j]][cells]<-NA}
+        mprs <- calc((prs), fun=mean)
+        names(mprs)<-time_list[i]
+        output_raster<-addLayer(output_raster, mprs)
+        lon <- raster(inputfiles[[i]], varname="lon")
+        lat <- raster(inputfiles[[i]], varname="lat")
+        plotJPGmean(raster=mprs, lon=lon, lat=lat, filename=paste0("mprs-", time_list[i],data_type,"-alp3.jpg"),plotmain=
+        paste0("Mean precipitation[mm/day] in year ", time_list[i]," in ALP-3 ", data_type, "-data"), addMap=TRUE)
+    }
+    writeRaster(addLayer(addLayer(output_raster, lon), lat), paste0(output_dir,"mprs-alp3-", data_type,".nc"), overwrite=TRUE, format="CDF",
+    varname="mprs", varunit="mm/day", longname="Annual mean precipitation", xname="X", yname="Y")
+    return(addLayer(addLayer(output_raster, lon), lat))
+}

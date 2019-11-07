@@ -1,12 +1,15 @@
 Wie im Abstrakt bekanntgegeben, werden in dieser Arbeit verschieden Methoden zur Evaluierung angewendet. Durch diese mehrfachen Vergleiche können unterschiedliche Wetterphänomene nachgewiesen werden.\\
 
-\begin{tabularx}{\textwidth}{|X|X|X|}
+\begin{table}[h]
+	\begin{tabularx}{\textwidth}{|X|X|X|}
 		\hline
 		\textbf{Methode} & \textbf{nachgewiesenes Phänomen}& \textbf{Einschränkungen}\\
 		\hline
 		Jahresmittel [Kap. \ref{chap:mean}] & Übereinstimmung der geographischen Regenzonen & Starkregenereignisse werden nicht abgebildet.\\
 		\hline
-\end{tabularx}
-\\ \hfill \\
-
-Um die Beobachtungsdaten aus dem E-OBS Datensatz mit den simulierten Daten (EUR-11 und ALP-3) vergleichen zu können wurden die Beobachtungsdaten mittels cdo (für weitere Informationen siehe \cite{cdo}) auf dasselbe Raster wie die Simulationsdaten gebracht - das gröbere Gitter wurde für die Vergleiche verwendet um Phänomene, die das feinere Gitter abbilden nicht un-fairerweise mit zu vergleichen.
+	\end{tabularx}
+\caption{Verwendete Evaluierungsmethoden}
+\end{table}
+\hfill\\
+Um die Beobachtungsdaten aus dem E-OBS Datensatz mit den simulierten Daten (EUR-11) vergleichen zu können wurden die Beobachtungsdaten mittels cdo (für weitere Informationen siehe \cite{cdo}) auf dasselbe Raster wie die Simulationsdaten gebracht - das gröbere Gitter wurde für die Vergleiche verwendet um Phänomene, die das feinere Gitter abbilden nicht un-fairerweise mit zu vergleichen.\\
+Um die Daten des simulierten ALP-3 Datensatzes mit den Beobachtungsdaten (APGD \cite{meteoswiss}) vergleichen zu können wurden die Simulationsdaten auf ein 5x5km Gitter gebracht, das dem des APGD entspricht.
