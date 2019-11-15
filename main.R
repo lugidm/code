@@ -16,6 +16,7 @@ source("files.R")
 source("compare.R")
 source("OBS_functions.R")
 source("APGD_functions.R")
+source("split.R")
 #library(ggplot2)
 #library(rasterVis)
 
@@ -66,7 +67,7 @@ nc_close(nc_data)
 nc_data<-nc_open(input_files_APGD[[4]])
 fVal_apgd <- ncatt_get(nc_data, "PRECIPITATION", "_FillValue")
 nc_close(nc_data)
-
+filename_obs_by_month_basis <- "monthly_obs_remapped_eur-11"
 ################################
 ### HELPER FUNCTIONS ###########
 Q99 <- function(x){quantile(x,probs = c(.90,.99), na.rm=TRUE)}
@@ -297,6 +298,7 @@ varname="MPercipitation", varunit="mm", longname="Mean Percipitation", xname="X"
 ########################################################################################################################
 #############################################   COMPARISIONS EUR 11 ####################################################
 ########################################################################################################################
+'
 mean_pr_eval <- stack(dump_file_mprs_eval_eur11, varname = "mean_pr")
 mean_pr_obs <- stack(dump_file_mprs_obs_eur11, varname = "mean_pr")
 lon=subset(mean_pr_obs, nlayers(mean_pr_obs)-1)
@@ -314,7 +316,7 @@ names(dif_hist)<-time_list_hist
 freq_hist <- return_val[[2]]
 mean_eval<-compareAllYears(differences=dif_eval, frequencies=freq_eval, lon=lon, lat=lat, EVAL=TRUE)
 mean_hist<-compareAllYears(differences=dif_hist, frequencies=freq_hist, lon=lon, lat=lat, EVAL=FALSE)
-
+'
 
 ########################################################################################################################
 ##################### ALP-3 ****************************************** CALCULATIONS ####################################
@@ -382,7 +384,11 @@ for(i in 1:11)
 }
 '
 
+ids_by_month<-splitMonthlyOBS(all_days=stack(input_file_obs_remapped, varname="rr"), lon=stack(input_files_eval_pr[[1]], varname="lon"),
+                lat=raster(input_files_eval_pr[[1]], varname="lat"), new_filename=filename_obs_by_month_basis)
 
+splitMonthlyEUR11((allInputFiles=getPrecipAll(input_files_eval_pr), lon=stack(input_files_eval_pr[[1]], varname="lon"),
+lat=raster(input_files_eval_pr[[1]], varname="lat"), new_filename=filename_obs_by_month_basis))
 
 
 

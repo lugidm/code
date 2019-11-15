@@ -13,7 +13,19 @@ getPrecipObs <- function(inputfile, layers){
     #pr[pr==fVal_obs$value]<-NA
     return(pr)
 }
-
+getPrecipAll <- function(inputfiles){
+    pr<-raster()
+    for(inputfile in inputfiles)
+    {
+        if(ALP3 == TRUE)
+        {
+            pr<-addLayer(stack(inputfile, varname = "TOT_PREC"))
+        }else{
+            pr<-addLayer(stack(inputfile, varname = "pr"))
+        }
+    }
+    return(pr)
+}
 getPrecip <- function(inputfile){
     if(ALP3 == TRUE)
     {
