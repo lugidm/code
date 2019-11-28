@@ -19,18 +19,24 @@ In diesem Unterkapitel wird ausschließlich der EUR-11 Datensatz evaluiert, welc
 		\caption{Jährliches Mittel über den Niederschlag im Jahr 1999 im historical Datensatz von EUR-11}
 		\label{fig:mhist99}
 	\end{subfigure}
-	\begin{subfigure}{\textwidth}
+	\begin{subfigure}{0.49\textwidth}
 		\centering
 		\includegraphics[width=\textwidth]{mean/msim1999eval.jpg}
 		\caption{Jährliches Mittel über den Niederschlag im Jahr 1999 im evaluation Datensatz von EUR-11}
 		\label{fig:meval99}
 	\end{subfigure}
-	\caption{Jährliches Mittel über den Niederschlag im EUR-11 Datensatz für das Jahr 1999}
+	\begin{subfigure}{0.49\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{mean/mprs2099rcp85_eur11.jpg}
+		\caption{Jährliches Mittel über den Niederschlag im Jahr \textbf{2099} im rcp Datensatz von EUR-11}
+		\label{fig:mrcp99}
+	\end{subfigure}
+	\caption{Jährliches Mittel über den Niederschlag im EUR-11 Datensatz}
 \end{figure}
 \\
 Zu Abb. \ref{fig:mobs99}: Man erkennt gut die starken Regenfälle an der Westküste Norwegens und Englands (bis zu 12.6 mm). Der Niederschlag an Irlands Westküste und im Alpenbereich fielen 1999 im Mittel schwach aus (bis zu 7.2mm). Über Deutschland, Frankreich und weiten Teilen Europas fielen im Schnitt 3.6-5.4 mm Regen am Tag.\\
 \\
-Zu Abb. \ref{fig:mhist99}: Der Regen an der norwegischen Westküste fällt bei dieser Modellaufnahme um einiges schwächer aus als in der Aufnahme des Evaluation Datensatzes zuvor. Dies ist noch auffallender im Vergleich mit den Beobachtungsdaten. Mit dem Niederschlag an der britischen Westküste verhält es sich ähnlich, Auffallend sind besonders die Erscheinungen im Süden Frankreichs, wo aus unersichtlichen Gründen im Flachland um Toulouse größere Regenmengen \glqq voraus \grqq-gesagt wurden. Die Analyse des Alpenraums und des Kaukasusgebiets fallen fast gleich aus wie die im Evaluationsdatensatz (Abb. \ref{fig:meval99}). Bei dieser Herangehensweise wurde das CCLM mit dem GCM MPI-ESM-LR für die historische Periode 1999 angetrieben. Es sind darin wohl einige Abweichungen zum tatsächlichen Globalen Klima vorhanden, aber auch das downscaling hat diese Abweichungen hervorgebracht. Dies wird im nächsten Unterkapitel beim Vergleichen mit den Ergebnissen einer konvektionserlaubenden Simulation (ALP-3 Daten) ersichtlich.\\
+Zu Abb. \ref{fig:mhist99}: Der Regen an der norwegischen Westküste fällt bei dieser Modellaufnahme um einiges schwächer aus als in der Aufnahme des Evaluation Datensatzes zuvor. Dies ist noch auffallender im Vergleich mit den Beobachtungsdaten. Mit dem Niederschlag an der britischen Westküste verhält es sich ähnlich, Auffallend sind besonders die Erscheinungen im Süden Frankreichs, wo aus unersichtlichen Gründen im Flachland um Toulouse größere Regenmengen \glqq voraus \grqq-gesagt wurden. Die Analyse des Alpenraums und des Kaukasusgebiets fallen fast gleich aus wie die im Evaluationsdatensatz (Abb. \ref{fig:meval99}). Bei dieser Herangehensweise wurde das CCLM mit dem GCM MPI-ESM-LR für die historische Periode 1999 angetrieben. Es sind darin wohl einige Abweichungen zum tatsächlichen Globalen Klima vorhanden, aber auch das downscaling hat diese Abweichungen hervorgebracht. Dies wird im nächsten Unterkapitel beim Vergleichen mit den Ergebnissen einer konvektionserlaubenden Simulation (ALP-3 Daten) ersichtlich. Zur Abbildung \ref{fig:mrcp99}: man erkennt dass sich die Niederschlagsmuster über den gesamten Raum kaum geändert haben, was eine gutes miteinbeziehen der Gebirgsgruppen verspricht. Auffallend ist aber der stark erhöhte Niederschlag am nordwestlichen Rande des Beobachtungsraumes, an der Küste Grünlands, was man als Ausreißer betrachten kann.\\
 \begin{figure}[hbt!]
 	\centering
 	\begin{subfigure}{0.49\textwidth}
@@ -56,6 +62,16 @@ Zu Abb. \ref{fig:mhist99}: Der Regen an der norwegischen Westküste fällt bei d
 		\includegraphics[width=\textwidth]{mean/1999frequenciesdif_mprs_hist-obs.jpg}
 		\caption{Häufigkeit der Abweichungen über das gesamte Gitter für den historical-Datensatz}
 		\label{fig:hist_freq_dif}
+	\end{subfigure}
+	\begin{subfigure}{0.49\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{mean/boxplot_eval_99.jpg}
+		\caption{Boxplot der mittleren Differenzen im evaluation - Datensatz}
+	\end{subfigure}
+	\begin{subfigure}{0.49\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{mean/boxplot_hist_99.jpg}
+		\caption{Boxplot der mittleren Differenzen im historical - Datensatz}
 	\end{subfigure}
 	\caption{Differenzen für den evaluation- und historical- Datensatz im Jahr 1999}
 \end{figure}
@@ -93,7 +109,7 @@ Im folgenden sollen alle Jahre gemittelt verglichen werden um eine Allgemeinauss
 \\
 Die Differenzen vom historical-Datensatz zu den Beobachtungsdaten, die wir zuvor für das Jahr 1999 zeigen konnten, scheint sich im Mittel auch für die gesamte Periode 1995-2005 abzubilden. Man erkennt beim vergleichen der Abb. \ref{fig:mean_dif_hist} und \ref{fig:hist_dif}, dass sich der Mittelwert in der Verteilungskurve noch weiter ins positive verschoben hat. Man erhält eine mittlere Abweichung von $0.5568$. Somit wurde auch gemittelt zu viel Niederschlag simuliert.\\
 Auch die mittleren Abweichungen im evaluation-Datensatz sind ähnlich, es zeichnet sich dasselbe Muster wie im Jahre 1999 ab. Wobei auch hier, wie im historical-Datenatz der Durchschnitt leicht ins Positive verschoben ist(vgl. dazu Abb.\ref{fig:freq_mean_dif_eval} und Abb.\ref{fig:eval_freq_dif}): die höchste Häufigkeit liegt zwar immer noch über $0$ aber die mittlere Abweichung liegt bei $0.1297$ was um $0.0289$ über der des Jahres 1999 liegt. Somit entspricht das über die gesamte Periode gemittelte Maß für den Niederschlag noch weniger dem Beobachteten Werten.\\
-Wie in den Abbildungen \ref{fig:q90_dif_eval} und \ref{fig:q90_dif_hist} zu erkennen ist, herrscht die größte Abweichung in den Gebirgen (Südküste Islands, Westküste Norwegens, Alpen ,Pyrenäen, Kantabrisches Gebirge und Kaukasus) jedoch reicht auch dort das 90. Quantil nicht weit über 10mm/Tag hinaus (siehe Abb.\ref{fig:q90_freq_dif_eval} und Abb.\ref{fig:q90_freq_dif_hist}), was eine einigermaßen gute Übereinstimmung mit der beobachteten Wetterlage auszeichnet. Im Mittel wurden dementsprechend maximal 10mm zu viel simuliert, was der fehlenden Simulation der Konvektion zuzuschreiben ist, wir werden im folgenden Kapitel sehen, dass die Abweichung weitaus geringer ausfällt, wenn diese simuliert wird. \\
+Wie in den Abbildungen \ref{fig:q90_dif_eval} und \ref{fig:q90_dif_hist} zu erkennen ist, herrscht die größte Abweichung in den Gebirgen (Südküste Islands, Westküste Norwegens, Alpen ,Pyrenäen, Kantabrisches Gebirge und Kaukasus) jedoch reicht auch dort das 90. Quantil nicht weit über 10mm/Tag hinaus (siehe Abb.\ref{fig:q90_freq_dif_eval} und Abb.\ref{fig:q90_freq_dif_hist}), was eine einigermaßen gute Übereinstimmung mit der beobachteten Wetterlage auszeichnet. Im Mittel wurden dementsprechend maximal 10mm zu viel simuliert, was der fehlenden Simulation der Konvektion zuzuschreiben ist, wir werden im folgenden Kapitel sehen, dass die Abweichung weitaus geringer ausfällt, wenn diese simuliert wird.
 \begin{figure}[hbt!]
 	\begin{subfigure}{0.49\textwidth}
 		\centering
@@ -122,7 +138,6 @@ Wie in den Abbildungen \ref{fig:q90_dif_eval} und \ref{fig:q90_dif_hist} zu erke
 	\caption{90. Quantil der mittleren Abweichungen im EUR-11 Datensatz}
 \end{figure}
 \\
-\pagebreak
 
 \section{ALP-3 - Datensatz}
 In diesem Unterkapitel wird ausschließlich der ALP-3 Datensatz mit dem APGD -Datensatz von MeteoSwiss \cite{apgd} verglichen. Dieser Datensatz bildet den Alpenraum und nordöstlichen Bereich des Mittelmeers ab, die APGD Daten reichen wie weiter unten ersichtlich nicht über den gesamten Bereich, die Vergleichsberechnungen ziehen natürlich nur die von beiden Datensätzen abgedeckten Flächen in Betracht.\\
@@ -216,6 +231,12 @@ Im Folgenden soll analog zum EUR-11-Datensatz die Differenz über alle Jahre gem
 		\caption{Absolute Häufigkeit des 90. Quantils der jährlich gemittelten Differenzen über das gesamt Gitter für die Periode 1996-2005}
 		\label{fig:freq_dif_hist_apgd_q90}
 	\end{subfigure}
+	\centering{
+	\begin{subfigure}{0.9\textwidth}
+		\includegraphics[width=\textwidth]{mean/ALP3/boxplot-mean-alp3-hist.jpg}
+		\caption{Boxplot der Differenzen der historical - Daten des von den APGD-Daten in der gesamten Periode}
+	\end{subfigure}
+	}
 	\caption{Differenzen des Niederschlags über die Periode 1996-2005 des historical-Datensatzes}
 	\label{fig:mean_apgd_hist}
 \end{figure}
@@ -242,45 +263,42 @@ Man erkennt gut in Abb. \ref{fig:dif_hist_apgd_mean} und \ref{fig:dif_hist_apgd_
 		\caption{Absolute Häufigkeit des 90. Quantils der jährlich gemittelten Differenzen über das gesamt Gitter für die Periode 1996-2005}
 		\label{fig:freq_dif_eval_apgd_q90}
 	\end{subfigure}
+	\centering{
+	\begin{subfigure}{0.9\textwidth}
+		\includegraphics[width=\textwidth]{mean/ALP3/boxplot-mean-alp3-eval.jpg}
+		\caption{Boxplot der Differenzen der evaluation Daten von den APGD-Daten in der gesamten Periode}
+	\end{subfigure}
+	}
 	\caption{Differenzen des Niederschlags über die Periode 1996-2005 des evaluation-Datensatzes}
 	\label{fig:mean_apgd_eval}
 \end{figure}
 \\
-Die Berechnungen im evaluation-Datensatz scheinen ein um einiges besseres Ergebnis zu generieren als die des historical-Datensatzes (vgl. dazu Abb.\ref{fig:dif_eval_apgd_mean} und \ref{fig:dif_eval_apgd_q90}) die größte Abweichung im 99. Quantil beträgt $6.184$ und über der Mittelwert der Differenzen über alle Jahre gemittelt beträgt $0.1612$ was ungefähr der mittleren Abweichung im EUR-11 Datensatz entspricht: $0.1297$. Sie liegt zudem wie auch schon zuvor bei den EUR-11 Daten beobachtet über dem Mittelwert vom Jahr 1999 $0.1357$.\\
-\vfill
-\pagebreak[4]
-\hfill
-\vfill
-\pagebreak[4]
-\hfill
-\vfill
-\pagebreak[4]
-\vfill
+Die Berechnungen im evaluation-Datensatz scheinen ein um einiges besseres Ergebnis zu generieren als die des historical-Datensatzes (vgl. dazu Abb.\ref{fig:dif_eval_apgd_mean} und \ref{fig:dif_eval_apgd_q90}) die größte Abweichung im 99. Quantil beträgt $6.184$ und über der Mittelwert der Differenzen über alle Jahre gemittelt beträgt $0.1612$ was ungefähr der mittleren Abweichung im EUR-11 Datensatz entspricht: $0.1297$. Sie liegt zudem wie auch schon zuvor bei den EUR-11 Daten beobachtet über dem Mittelwert vom Jahr 1999 $0.1357$.\\ \pagebreak
 \section{Zusammenfassung}
 \begin{table}[hbt!]
 	\begin{tabu}to \textwidth{|X[2]|X|X|X|X|}
 		\hline
-		Typus& \textbf{EUR-11 historical} & \textbf{EUR-11 evaluation} &\textbf{ALP-3 hisstorical} & \textbf{ALP-3 evaluation}\\[0.2mm]
+		\centering{Datensatz/\vfil \vfil Wertbezeichnung}& \textbf{EUR-11 historical} & \textbf{EUR-11 evaluation} &\textbf{ALP-3 hisstorical} & \textbf{ALP-3 evaluation}\\[0.2mm]
 		\hline
-		mW(M.d.D.(1999)) &$+0.4590$& $+0.1009$ &$+0.8304$& $+0.1612$\\
+		mW(D.d.M.(1999)) &$+0.4590$& $+0.1009$ &$+0.8304$& $+0.1612$\\
 		\hline
-		mW(M.d.D.(g.P)). &$+0.5568$ &$+0.1297$&$+1.5583$&$+0.1612$\\
+		mW(D.d.M.(g.P)). &$+0.5568$ &$+0.1297$&$+1.5583$&$+0.1612$\\
 		\hline
-		max(M.d.D.(g.P))& $+10.8842$ & $+9.7163$ &$12.1646$ &$+4.9447$\\
+		max(D.d.M.(g.P))& $+10.8842$ & $+9.7163$ &$12.1646$ &$+4.9447$\\
 		\hline
-		min(M.d.D.(g.P))& $-2.6776$  &$-2.8346$  &$-2.4807$ &$-3.6535$\\
+		min(D.d.M.(g.P))& $-2.6776$  &$-2.8346$  &$-2.4807$ &$-3.6535$\\
 		\hline
-		max(Q90(g.P)) & $13.7059$ & $13.3413$ & $15.7433$ & $6.1232$\\
+		sD(D.d.M(1999)) & $0.7713$ & $0.5955$ & $1.2559$ & $1.1039$\\
 		\hline
-		min(Q90(g.P)) & $-2.0376$ & $-2.2838$ & $-1.6056$ & $-3.0018$\\
+		sD(D.d.M.(g.P)) & $0.7647$ & $0.5593$ & $1.4119$ & $0.9831$\\
 		\hline
 	\end{tabu}
-	\caption{Zahlenwerte der mittleren Abweichung\\M.d.D. ... Mittelwerte der Differenzen; \\g.P. ... gesamte Periode (1996-2005) bzw. für EUR-11 historical 1995-2005;\\mW ... Mittelwert\\Q90 ... 90.Quantile der jährlichen Mittelwerte über die gesamte Periode}
+	\caption{Zahlenwerte der mittleren Abweichung\\D.d.M. ... Differenzen der Mittelwerte\\g.P. ... gesamte Periode (1996-2005) bzw. für EUR-11 historical 1995-2005;\\mW ... Mittelwert\\sD ... standard derivation = Standardabweichung}
 	\label{tab:Mean_Values}
 \end{table}
-Wie man in Tabelle \ref{tab:Mean_Values} sehen kann, sticht die ALP3-Simulation mit Evaluation-Daten betrieben als bestes Ergebnis hervor. Dies ist nicht überraschend, da das downscaling in diesem Fall mit konvektionserlaubender Simulation betrieben und mit Re-Analysedaten gefüttert wurde. Überraschend sind die bedeutend höheren Abweichungs-Werte des ALP3 historical Datensatzes der um einiges schlechter abschneidet wie der historical Datensatz im EUR-11. Die Zahlen des EUR-11 evaluation und historical - Datensatzes ähneln sich abgesehen vom Mittelwert über die Mittelwerte der gesamten Periode sehr, da durch das relativ große Gitter die Orthographie im Mittel nicht so stark ins Gewicht fällt- es gehen die Extremwert unter.
+Wie man in Tabelle \ref{tab:Mean_Values} sehen kann, sticht die ALP3-Simulation mit Evaluation-Daten betrieben als bestes Ergebnis hervor. Hier liegen die maximalen Abweichungen zwischen $-3.65$ und $+4.945$. Bei der Standardabweichung und dem Mittelwerts muss in Betracht gezogen werden, dass das betrachtete Gebiet im EUR-11 - Datensatz um einiges größer ist, und die orthographischen Gegebenheiten in der Gesamtheit weniger ins Gewicht fallen. Die guten Ergebnisse im ALP-3-evaluation Datensatz sind nicht überraschend, da das downscaling in diesem Fall mit konvektionserlaubender Simulation betrieben und mit Re-Analysedaten gefüttert wurde. Überraschend sind die bedeutend höheren Abweichungs-Werte des ALP3 historical Datensatzes der um einiges schlechter abschneidet wie der historical Datensatz im EUR-11. Die Zahlen des EUR-11 evaluation und historical - Datensatzes ähneln sich abgesehen vom Mittelwert über die Mittelwerte der gesamten Periode sehr, da durch das relativ große Gitter die Orthographie im Mittel nicht so stark ins Gewicht fällt- es gehen die Extremwert unter.
 Bisher wurden die jährlichen Mittelwerte betrachtet, um die allgemeine Übereinstimmung der Daten zu betrachten, dies war für den evaluation Datensatz gegeben. Der historical Datensatz zeigt eine starke Abweichung von den Beobachtungsdaten. Um zu zeigen, wie sich eine Korrektion des Datensatzes über die Mittelwerte einer Beobachteten Periode auswirkt habe ich die das Jahr 1999 mit den Mittelwerten der gesamten Periode korrigiert, da die Ergebnisse mit den Abbildungen \ref{fig:dif_eval_apgd_1999} und \ref{fig:dif_hist_apgd_1999} gut zu vergleichen sind.
-Das Ergebnis der Mittelwert-Korrektion findet man in Abb. \ref{fig:dif_new_1999}. Man erkennt in Abb.\ref{fig:dif_new_1999}, dass die Abweichung beinahe $0$ beträgt, auch über den Alpen hat die Abweichung einen Wert zwischen $0$ und $-2$. Die höchste Häufigkeit des liegt nun zwar leicht im negativen, mit einer mittleren Abweichung $-0.7292$
+Das Ergebnis der Mittelwert-Korrektion findet man in Abb. \ref{fig:dif_new_1999}. Man erkennt in Abb.\ref{fig:dif_new_1999}, dass die Abweichung beinahe $0$ beträgt, auch über den Alpen hat die Abweichung einen Wert zwischen $0$ und $-2$. Die höchste Häufigkeit des liegt nun zwar leicht im negativen, mit einer mittleren Abweichung von $-0.7292$ und einer Standardabweichung von $0.5907$, was gut in der Abb. \ref{fig:dif_new_1999_boxplot} ersichtlich ist.
 
 
 \begin{figure}[hbt!]
@@ -294,5 +312,38 @@ Das Ergebnis der Mittelwert-Korrektion findet man in Abb. \ref{fig:dif_new_1999}
 		\caption{Häufigkeit der Differenzen des Mittelwert-korrigierten Jahres 1999 von den APGD-Daten}
 		\label{fig:dif_new_1999_freq}
 	\end{subfigure}
-\caption{Ergebnisse der Mittelwert-Korrigierten mittleren Niederschläge des Jahre 1999}
+	\centering{
+	\begin{subfigure}{0.75\textwidth}
+		\includegraphics[width=\textwidth]{mean/ALP3/boxplot-mean-newalp3-hist.jpg}
+		\caption{Boxplot der Differenzen von den Mittelwert-korrigierten historical Daten des Jahres 1999 von den APGD-Daten}
+		\label{fig:dif_new_1999_boxplot}
+	\end{subfigure}
+	}
+	
+\caption{Ergebnisse der Mittelwert-Korrigierten mittleren Niederschläge des Jahre 1999 für den historical Datensatz} 
+\end{figure}
+\hfil\\
+Da die Übereinstimmung der Mittelwert-korrigierten historical-Daten mit den Beobachtungsdaten durchaus vielversprechend ist, habe ich mich entschlossen, diese Korrektur auch auf die RCP Daten anzuwenden. Wie man im Vergleich der Abbildungen \ref{fig:boxplot_rcp} und \ref{fig:boxplot_corrected_rcp} erkennen kann, wurden vor allem die Extremniederschläge weg-korrigiert. Dies ist also eine Herangehensweise, die zwar eine gute Korrelation mit den Beobachtungsdaten im Anbetracht der gemittelten Niederschläge erreicht (siehe \ref{fig:dif_new_1999} und \ref{fig:dif_new_1999_boxplot}), jedoch die Extremniederschläge außen-vor lässt. Im nächsten Kapitel soll eine Herangehensweise genommen werden, die durch das Betrachten von ausschließlich Extremereignissen eine BIAS-Korrektur des Niederschlags berechnet.\\
+\begin{figure}[hbt!]
+	\begin{subfigure}{0.49\textwidth}
+		\includegraphics[width=\textwidth]{mean/ALP3/mprs-2099rcp85-alp3.jpg}
+		\caption{Unkorrigierte Daten des gemittelten Niederschlags der RCP85- Daten aus ALP-3 für das Jahr 2099}
+		\label{fig:rcp}
+	\end{subfigure}
+	\begin{subfigure}{0.49\textwidth}
+		\includegraphics[width=\textwidth]{mean/ALP3/boxplot_rcp_2099.jpg}
+		\caption{Boxplot des unkorrigierten gemittelten Niederschlags der RCP85- Daten aus ALP-3 für das Jahr 2099}
+		\label{fig:boxplot_rcp}
+	\end{subfigure}
+	\begin{subfigure}{0.49\textwidth}
+	\includegraphics[width=\textwidth]{mean/ALP3/corrected_rcp.jpg}
+	\caption{Mittelwert-korrigierte Daten des gemittelten Niederschlags der RCP85- Daten aus ALP-3 für das Jahr 2099}
+	\label{fig:corrected_rcp}
+	\end{subfigure}
+	\begin{subfigure}{0.49\textwidth}
+		\includegraphics[width=\textwidth]{mean/ALP3/boxplot_corrected_rcp_2099.jpg}
+		\caption{Boxplot des Mittelwert-korrigierten gemittelten Niederschlags der RCP85- Daten aus ALP-3 für das Jahr 2099}
+		\label{fig:boxplot_corrected_rcp}
+	\end{subfigure}
+	\caption{Abbildungen des gemittelten RCP85-Datensatzes für das Jahr 2099}
 \end{figure}

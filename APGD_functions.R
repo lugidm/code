@@ -29,7 +29,7 @@ getMeanAPGD<-function(allDays, lon, lat){
         paste0("Annual mean precipitation[mm/day] of APGD-Dataset in year ",toString(i)), addMap=TRUE)
         pr_by_year <- addLayer(pr_by_year, dummy)
     }
-    writeRaster(addLayer(addLayer(pr_by_year, lon), lat), paste0(output_dir,"mprs-apgd.nc"), overwrite=TRUE, format="CDF",
+    writeRaster(addLayer(addLayer(pr_by_year, lon), lat), paste0(dump_file_mprs_apgd), overwrite=TRUE, format="CDF",
     varname="mprs", varunit="mm/day", longname="Annual mean precipitation", xname="X", yname="Y", )
     return(addLayer(addLayer(pr_by_year, lon), lat))
 }

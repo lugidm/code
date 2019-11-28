@@ -19,9 +19,9 @@ getPrecipAll <- function(inputfiles){
     {
         if(ALP3 == TRUE)
         {
-            pr<-addLayer(stack(inputfile, varname = "TOT_PREC"))
+            pr<-addLayer(pr,stack(inputfile, varname = "TOT_PREC"))
         }else{
-            pr<-addLayer(stack(inputfile, varname = "pr"))
+            pr<-addLayer(pr,stack(inputfile, varname = "pr"))
         }
     }
     return(pr)
@@ -70,8 +70,8 @@ getAnnualMean <- function(inputfiles, time_list, data_type){
     {
         prs <- getPrecip(inputfiles[[i]])
         print("MEAN")
-        cells<-cellFromXY(prs, cropMatrix(xmin=1, xmax=10, ymin=1,ymax=80))
-        for(j in 1:nlayers(prs)){prs[[j]][cells]<-NA}
+        #cells<-cellFromXY(prs, cropMatrix(xmin=1, xmax=10, ymin=1,ymax=80))
+        #for(j in 1:nlayers(prs)){prs[[j]][cells]<-NA}
         mprs <- calc((prs), fun=mean)
         names(mprs)<-time_list[i]
         output_raster<-addLayer(output_raster, mprs)

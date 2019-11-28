@@ -21,7 +21,7 @@ source("split.R")
 #library(rasterVis)
 
 
-ALP3=FALSE
+ALP3=TRUE
 varname = c("longitude.coordinate", "latitude.coordinate")
 input_file_obs <- "../E-OBS/rr_ens_mean_0.1deg_reg_1995-2010_v20.0e.nc"
 input_file_obs_remapped <- "../E-OBS/pr_remapped_obs412424.nc"
@@ -31,6 +31,9 @@ dump_file_mprs_obs_eur11 <- "../Results/mean_obs_remapped_eur11.nc"
 dump_file_mprs_hist_eur11 <- "../Results/mprs_hist_eur11.nc"
 dump_file_mprs_rcp_eur11 <- "../Results/mprs_rcp85_eur11.nc"
 dump_file_mprs_eval_eur11 <- "../Results/mprs_eval_eur11.nc"
+dump_file_mprs_hist_alp3 <- "../Results/mprs-alp3-historical.nc"
+dump_file_mprs_eval_alp3 <- "../Results/mprs-alp3-evaluation.nc"
+dump_file_mprs_apgd <- "../Results/mprs-apgd.nc"
 time_list_obs <- c("1995", "1996", "1997", "1998", "1999", "2000", "2001", "2002", "2003", "2004", "2005")
 output_dir <- "../Results/"
 if(ALP3==TRUE)
@@ -57,8 +60,10 @@ nc_data<-nc_open(input_files_eval_pr[[2]])
 if(ALP3 == TRUE)
 {
     fVal_sim <- ncatt_get(nc_data, "TOT_PREC", "_FillValue")
+    filename_eval_monthly <- "monthly_eval_alp3"
 }else{
     fVal_sim <- ncatt_get(nc_data, "pr", "_FillValue")
+    filename_eval_monthly <- "monthly_eval_eur11"
 }
 nc_close(nc_data)
 nc_data<-nc_open(input_file_obs)
@@ -322,6 +327,12 @@ mean_hist<-compareAllYears(differences=dif_hist, frequencies=freq_hist, lon=lon,
 ##################### ALP-3 ****************************************** CALCULATIONS ####################################
 ########################################################################################################################
 
+#---------------- RCP85 #############################
+rcp85<-getAnnualMean(inputfiles=input_files_rcp_pr, data_type="rcp85", time_list = time_list_rcp)
+
+
+
+
 ####################################################
 ###### REMAPPED APGD OBSERVATION DATA FOR ALP-3 ####
 ################## MEAN ##########################
@@ -384,11 +395,11 @@ for(i in 1:11)
 }
 '
 
-ids_by_month<-splitMonthlyOBS(all_days=stack(input_file_obs_remapped, varname="rr"), lon=stack(input_files_eval_pr[[1]], varname="lon"),
-                lat=raster(input_files_eval_pr[[1]], varname="lat"), new_filename=filename_obs_by_month_basis)
+#ids_by_month<-splitMonthlyOBS(all_days=stack(input_file_obs_remapped, varname="rr"), lon=stack(input_files_eval_pr[[1]], varname="lon"),
+#                lat=raster(input_files_eval_pr[[1]], varname="lat"), new_filename=filename_obs_by_month_basis)
 
-splitMonthlyEUR11((allInputFiles=getPrecipAll(input_files_eval_pr), lon=stack(input_files_eval_pr[[1]], varname="lon"),
-lat=raster(input_files_eval_pr[[1]], varname="lat"), new_filename=filename_obs_by_month_basis))
+#ids_by_month<-splitMonthlySim(allInputfiles=input_files_eval_pr, lon=stack(input_files_eval_pr[[1]], varname="lon"),
+#lat=raster(input_files_eval_pr[[1]], varname="lat"), new_filename=filename_eval_monthly)
 
 
 
