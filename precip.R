@@ -24,6 +24,8 @@ getPrecipAll <- function(inputfiles){
             pr<-addLayer(pr,stack(inputfile, varname = "pr"))
         }
     }
+    pr<-setZ(pr, as.Date("1996-01-01")+0:(nlayers(pr)-1))
+    print(pr)
     return(pr)
 }
 getPrecip <- function(inputfile){
