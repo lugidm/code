@@ -8,6 +8,8 @@ stackAPGD<-function(inputfiles){
     {
         all<-addLayer(all, stack(inputfiles[[i]]))
     }
+    pr<-setZ(pr, as.Date("1996-01-01")+0:(nlayers(pr)-1))
+    print(pr)
     return(all)
 }
 getMeanAPGD<-function(allDays, lon, lat){

@@ -52,9 +52,9 @@ if(ALP3==TRUE)
     
 }else
 {
-    filename_obs_monthly <- "EUR11/monthly_obs_remapped_eur-11"
-    filename_eval_monthly <- "EUR11/monthly_eval_remapped_eur-11"
-    filename_hist_monthly <- "EUR11/monthly_hist_remapped_eur-11"
+    filename_obs_monthly <- "EUR11/monthly_obs_remapped_eur-11,"
+    filename_eval_monthly <- "EUR11/monthly_eval_remapped_eur-11,"
+    filename_hist_monthly <- "EUR11/monthly_hist_remapped_eur-11,"
     input_files_eval_pr <- getEUR11evalPR()
     time_list_eval <- c("1996", "1997", "1998", "1999", "2000", "2001", "2002", "2003", "2004", "2005")
     input_files_hist_pr <- getEUR11histPR()
@@ -405,7 +405,7 @@ for(i in 1:11)
 #-------------------split all files -----------------------###########
 ######################################################################
 ids_by_month<-splitMonthlyOBS(all_days=stack(input_file_obs_remapped, varname="rr"), lon=stack(input_files_eval_pr[[1]], varname="lon"),
-                lat=raster(input_files_eval_pr[[1]], varname="lat"), new_filename=filename_obs_by_month_basis)
+                lat=raster(input_files_eval_pr[[1]], varname="lat"), new_filename=filename_obs_monthly)
 
 ids_by_month<-splitMonthlySim(allInputfiles=input_files_eval_pr, lon=stack(input_files_eval_pr[[1]], varname="lon"),
 lat=raster(input_files_eval_pr[[1]], varname="lat"), new_filename=filename_eval_monthly)
