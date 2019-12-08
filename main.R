@@ -17,11 +17,13 @@ source("~/Bacc/code/compare.R")
 source("~/Bacc/code/OBS_functions.R")
 source("~/Bacc/code/APGD_functions.R")
 source("~/Bacc/code/split.R")
+source("~/Bacc/code/monthly.R")
+
 #library(ggplot2)
 #library(rasterVis)
 
 
-ALP3=FALSE
+ALP3=TRUE
 varname = c("longitude.coordinate", "latitude.coordinate")
 input_file_obs <- "../E-OBS/rr_ens_mean_0.1deg_reg_1995-2010_v20.0e.nc"
 input_file_obs_remapped <- "../E-OBS/pr_remapped_obs412424.nc"
@@ -81,7 +83,7 @@ fVal_apgd <- ncatt_get(nc_data, "PRECIPITATION", "_FillValue")
 nc_close(nc_data)
 ################################
 ### HELPER FUNCTIONS ###########
-Q99 <- function(x){quantile(x,probs = c(.90,.99), na.rm=TRUE)}
+Q99 <- function(x){quantile(x, probs = c(.90,.99), na.rm=TRUE)}
 GREATESTDIFF <- function(x){
     if(length(which.max( abs(unlist(na.omit(x)))) == 0)){return(NA)}
     return_val=x[which.max( abs(unlist(na.omit(x))))]}
@@ -402,20 +404,44 @@ for(i in 1:11)
 '
 
 ######################################################################
-#-------------------split all files -----------------------###########
+#-----  --------------split all files and place them into .nc dumpfiles -----------------------###########
 ######################################################################
-ids_by_month<-splitMonthlyOBS(all_days=stack(input_file_obs_remapped, varname="rr"), lon=stack(input_files_eval_pr[[1]], varname="lon"),
-                lat=raster(input_files_eval_pr[[1]], varname="lat"), new_filename=filename_obs_monthly)
+#ids_by_month<-splitMonthlyOBS(all_days=stack(input_file_obs_remapped, varname="rr"), lon=stack(input_files_eval_pr[[1]], varname="lon"),
+#                lat=raster(input_files_eval_pr[[1]], varname="lat"), new_filename=filename_obs_monthly)
 
-ids_by_month<-splitMonthlySim(allInputfiles=input_files_eval_pr, lon=stack(input_files_eval_pr[[1]], varname="lon"),
-lat=raster(input_files_eval_pr[[1]], varname="lat"), new_filename=filename_eval_monthly)
-ids_by_month<-splitMonthlySim(allInputfiles=input_files_hist_pr, lon=raster(input_files_hist_pr[[1]], varname="lon"),
-                              lat=raster(input_files_hist_pr[[1]], varname="lat"), new_filename=filename_hist_monthly)
-ids_by_month<-splitMonthlyOBS(all_days = stackAPGD(inputfiles = input_files_APGD), lon = raster(input_files_APGD[[1]], varname="lon"),
-                              lat=raster(input_files_APGD[[1]], varname="lat"), new_filename = filename_obs_monthly)
+#ids_by_month<-splitMonthlySim(allInputfiles=input_files_eval_pr, lon=stack(input_files_eval_pr[[1]], varname="lon"),
+#lat=raster(input_files_eval_pr[[1]], varname="lat"), new_filename=filename_eval_monthly)
+#ids_by_month<-splitMonthlySim(allInputfiles=input_files_hist_pr, lon=raster(input_files_hist_pr[[1]], varname="lon"),
+#                              lat=raster(input_files_hist_pr[[1]], varname="lat"), new_filename=filename_hist_monthly)
+#ids_by_month<-splitMonthlyOBS(all_days = stackAPGD(inputfiles = input_files_APGD), lon = raster(input_files_APGD[[1]], varname="lon"),
+#                              lat=raster(input_files_APGD[[1]], varname="lat"), new_filename = filename_obs_monthly)
 
 
+#########################################################################################################
+#########################################################################################################
+############### --------------------- compare differences monthly ---------------- ######################
+#########################################################################################################
+#########################################################################################################
 
+differences<-list()
+for(months in 1:12){differences[[months]]<-list(1,2)}
+for(months in 1:12){
+    hist<-getMonthlyList(filename_hist_monthly, months, months)
+    obs<-getMonthlyList(filename_obs_monthly, months, months)
+    extent(obs[[1]])<-extent(hist[[1]])
+    hist_q<-calc(hist[[1]][[-(nlayers(hist[[1]])-1):-(nlayers(hist[[1]]))]], fun=Q99)
+    obs_q<-calc(obs[[1]][[-(nlayers(obs[[1]])-1):-(nlayers(obs[[1]]))]], fun=Q99)
+    #extent(obs[[1]])<-extent(hist[[1]])
+    differences[[months]][[1]]<-overlay(hist_q[[1]], obs_q[[1]], fun=function(x,y){x-y})
+    differences[[months]][[2]]<-overlay(hist_q[[2]], obs_q[[2]], fun=function(x,y){x-y})
+}
+
+
+#hist<-getMonthlyList(filename_hist_monthly, 1, 1)
+
+#obs<-getMonthlyList(filename_obs_monthly, 1, 1)
+
+#eval<-getMonthlyList(filename_eval_monthly, 1, 1)
 ###
 
 #pr <- getPR(input_file, 1)
