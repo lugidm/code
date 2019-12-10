@@ -423,18 +423,11 @@ for(i in 1:11)
 #########################################################################################################
 #########################################################################################################
 
-differences<-list()
-for(months in 1:12){differences[[months]]<-list(1,2)}
-for(months in 1:12){
-    hist<-getMonthlyList(filename_hist_monthly, months, months)
-    obs<-getMonthlyList(filename_obs_monthly, months, months)
-    extent(obs[[1]])<-extent(hist[[1]])
-    hist_q<-calc(hist[[1]][[-(nlayers(hist[[1]])-1):-(nlayers(hist[[1]]))]], fun=Q99)
-    obs_q<-calc(obs[[1]][[-(nlayers(obs[[1]])-1):-(nlayers(obs[[1]]))]], fun=Q99)
-    #extent(obs[[1]])<-extent(hist[[1]])
-    differences[[months]][[1]]<-overlay(hist_q[[1]], obs_q[[1]], fun=function(x,y){x-y})
-    differences[[months]][[2]]<-overlay(hist_q[[2]], obs_q[[2]], fun=function(x,y){x-y})
-}
+#differences_eval<-compareMonthly(monthly_filename=filename_eval_monthly) # Get q90 and q99 differences
+#differences_hist<-compareMonthly(monthly_filename=filename_hist_monthly)
+dyed_eval<-dyeMaxMinDifferences(differences=differences_eval, num_maximas=20)
+dyed_hist<-dyeMaxMinDifferences(differences=differences_hist, num_maximas=20) #Get a raster with num_maximas maximal differences
+
 
 
 #hist<-getMonthlyList(filename_hist_monthly, 1, 1)

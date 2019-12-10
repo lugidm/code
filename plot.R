@@ -3,6 +3,12 @@
 # Created by: lugi
 # Created on: 07.10.19
 
+monthly_colors = c("#00FFFF", "#009999", "#00CC66", "#006600", "#66CC00", "#CCCC00", "#CC6600", "#CC0000", "#CC0066", "#990099", "#66B2FF", "#3333FF")
+recttext <- function(xl, yb, xr, yt, text, rectArgs = NULL, textArgs = NULL) {
+    center <- c(mean(c(xl, xr)), mean(c(yb, yt)))
+    do.call('rect', c(list(xleft = xl, ybottom = yb, xright = xr, ytop = yt), rectArgs))
+    do.call('text', c(list(x = center[1], y = center[2], labels = text), textArgs))
+}
 
 plotJPGmean <- function(raster, lon, lat, filename, plotmain, addMap){
     jpeg(paste0(output_dir,filename), height = 600, width = 900)
