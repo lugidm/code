@@ -425,9 +425,17 @@ for(i in 1:11)
 
 #differences_eval<-compareMonthly(monthly_filename=filename_eval_monthly) # Get q90 and q99 differences
 #differences_hist<-compareMonthly(monthly_filename=filename_hist_monthly)
-dyed_eval<-dyeMaxMinDifferences(differences=differences_eval, num_maximas=20)
-dyed_hist<-dyeMaxMinDifferences(differences=differences_hist, num_maximas=20) #Get a raster with num_maximas maximal differences
-
+cells<-cellFromXY(differences_eval[[1]][[1]], cropMatrix(xmin=220, xmax=243, ymin=0,ymax=20))
+cropped_hist<-differences_hist
+cropped_eval<-differences_eval
+for(months in 1:12){
+    cropped_hist[[months]][[1]][cells]<-NA
+    cropped_eval[[months]][[1]][cells]<-NA
+    cropped_hist[[months]][[2]][cells]<-NA
+    cropped_eval[[months]][[2]][cells]<-NA
+}
+dyed_eval<-dyeMaxMinDifferences(differences=cropped_eval, num_maximas=20)
+dyed_hist<-dyeMaxMinDifferences(differences=cropped_hist, num_maximas=20) #Get a raster with num_maximas maximal differences
 
 
 #hist<-getMonthlyList(filename_hist_monthly, 1, 1)
