@@ -44,4 +44,3 @@ cropMatrix<-function(xmin, xmax, ymin, ymax){
     }
     return(c)
 }
-cropMatrix

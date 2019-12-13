@@ -437,6 +437,53 @@ for(months in 1:12){
 dyed_eval<-dyeMaxMinDifferences(differences=cropped_eval, num_maximas=20)
 dyed_hist<-dyeMaxMinDifferences(differences=cropped_hist, num_maximas=20) #Get a raster with num_maximas maximal differences
 
+q90_winter_extent<-list() #two crop matrices
+q90_winter_extent[[1]]<-extent(c(xmin=212, xmax=240, ymin=22,ymax=40))
+q90_winter_extent[[2]]<-extent(c(xmin=122, xmax=130, ymin=23,ymax=35))
+q90_spring_extent<-list()
+q90_spring_extent[[1]]<-extent(c(xmin=172, xmax=201, ymin=97,ymax=111))
+q90_spring_extent[[2]]<-extent(c(xmin=153, xmax=171, ymin=87,ymax=98))
+q90_autumn_extent<-list()
+q90_autumn_extent[[1]]<-extent(c(xmin=170, xmax=190, ymin=71,ymax=82))
+q90_autumn_extent[[2]]<-extent(c(xmin=197, xmax=210, ymin=42,ymax=62))
+q90_summer_extent<-list()
+q90_summer_extent[[1]]<-extent(c(xmin=105, xmax=125, ymin=60,ymax=72))
+q90_summer_extent[[2]]<-extent(c(xmin=99, xmax=109, ymin=79,ymax=92))
+dyed_q90<-drawRectangle(dyed_hist[[1]], dyed_eval[[1]], q90_spring_extent, q90_summer_extent, q90_autumn_extent, q90_winter_extent)
+quilt.plot(data.frame(lon=as.vector(lon),lat=as.vector(lat),pr=as.vector(dyed_q90)), 
+           nx=ncol(dyed_q90)+1, ny=nrow(dyed_q90)+1,
+           main="First 20 maximal and minimal 90.quantile differences sorted by months in historical data (1=January, 12=December)", 
+           col=monthly_colors, na.rm = TRUE)
+
+
+spring<-list(q90=list(), q99=list())
+spring$q90[[1]]<-crop(dyed_eval[[1]], q90_spring_extent[[1]])
+spring$q90[[2]]<-crop(dyed_eval[[1]], q90_spring_extent[[2]]) #second area as second element in list
+spring_lon<-list(q90=list(), q99=list())
+spring_lat<-list(q90=list(), q99=list())
+spring_lon$q90[[1]]<-crop((raster(input_files_eval_pr[[1]], varname="lon")), q90_spring_extent[[1]])
+spring_lat$q90[[1]]<-crop(raster(input_files_eval_pr[[1]], varname="lat"), q90_spring_extent[[1]])
+spring_lon$q90[[2]]<-crop((raster(input_files_eval_pr[[1]], varname="lon")), q90_spring_extent[[2]])
+spring_lat$q90[[2]]<-crop(raster(input_files_eval_pr[[1]], varname="lat"), q90_spring_extent[[2]])
+quilt.plot(data.frame(lon=as.vector(spring_lon$q90[[1]]),lat=as.vector(spring_lat$q90[[1]]),pr=as.vector(spring$q90[[1]])), 
+           nx=ncol(spring$q90[[1]])+1, ny=nrow(spring$q90[[1]])+1,
+           main="First 20 maximal and minimal 90.quantile differences sorted by months in historical data (1=January, 12=December)", 
+           col=monthly_colors, na.rm = FALSE)
+
+summer<-list(q90=list(), q99=list())
+summer$q90[[1]]<-crop(dyed_eval, q90_summer_extent[[1]])
+summer$q90[[2]]<-crop(dyed_eval, q90_summer_extent[[2]]) #second area as second element in list
+summer_lon<-list(q90=list(), q99=list())
+summer_lat<-list(q90=list(), q99=list())
+summer_lon$q90[[1]]<-crop((raster(input_files_eval_pr[[1]], varname="lon")), q90_summer_extent[[1]])
+summer_lat$q90[[1]]<-crop(raster(input_files_eval_pr[[1]], varname="lat"), q90_summer_extent[[1]])
+summer_lon$q90[[2]]<-crop((raster(input_files_eval_pr[[1]], varname="lon")), q90_summer_extent[[2]])
+summer_lat$q90[[2]]<-crop(raster(input_files_eval_pr[[1]], varname="lat"), q90_summer_extent[[2]])
+quilt.plot(data.frame(lon=as.vector(summer_lon$q90[[1]]),lat=as.vector(summer_lat$q90[[1]]),pr=as.vector(summer$q90[[1]])), 
+           nx=ncol(summer$q90[[1]])-1, ny=nrow(summer$q90[[1]])-1,nlevel=12, 
+           main="First 20 maximal and minimal 90.quantile differences sorted by months in historical data (1=January, 12=December)", 
+           col=monthly_colors, na.rm = TRUE)
+
 
 #hist<-getMonthlyList(filename_hist_monthly, 1, 1)
 
