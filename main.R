@@ -75,9 +75,10 @@ if(ALP3 == TRUE)
     fVal_sim <- ncatt_get(nc_data, "pr", "_FillValue")
 }
 nc_close(nc_data)
-nc_data<-nc_open(input_file_obs)
+'nc_data<-nc_open(input_file_obs)
 fVal_obs <- ncatt_get(nc_data, "rr", "_FillValue")
 nc_close(nc_data)
+'
 nc_data<-nc_open(input_files_APGD[[4]])
 fVal_apgd <- ncatt_get(nc_data, "PRECIPITATION", "_FillValue")
 nc_close(nc_data)
@@ -425,7 +426,7 @@ for(i in 1:11)
 
 #differences_eval<-compareMonthly(monthly_filename=filename_eval_monthly) # Get q90 and q99 differences
 #differences_hist<-compareMonthly(monthly_filename=filename_hist_monthly)
-cells<-cellFromXY(differences_eval[[1]][[1]], cropMatrix(xmin=220, xmax=243, ymin=0,ymax=20))
+'cells<-cellFromXY(differences_eval[[1]][[1]], cropMatrix(xmin=220, xmax=243, ymin=0,ymax=20))
 cropped_hist<-differences_hist
 cropped_eval<-differences_eval
 for(months in 1:12){
@@ -455,36 +456,60 @@ quilt.plot(data.frame(lon=as.vector(lon),lat=as.vector(lat),pr=as.vector(dyed_q9
            main="First 20 maximal and minimal 90.quantile differences sorted by months in historical data (1=January, 12=December)", 
            col=monthly_colors, na.rm = TRUE)
 
+spring_eval<-cropSeasons(extents=q90_spring_extent, initial_rasters=getMonthlyList(filename_eval_monthly, 2,5))
+spring_hist<-cropSeasons(extents=q90_spring_extent, initial_rasters=getMonthlyList(filename_hist_monthly, 2,5))
 
-spring<-list(q90=list(), q99=list())
-spring$q90[[1]]<-crop(dyed_eval[[1]], q90_spring_extent[[1]])
-spring$q90[[2]]<-crop(dyed_eval[[1]], q90_spring_extent[[2]]) #second area as second element in list
-spring_lon<-list(q90=list(), q99=list())
-spring_lat<-list(q90=list(), q99=list())
-spring_lon$q90[[1]]<-crop((raster(input_files_eval_pr[[1]], varname="lon")), q90_spring_extent[[1]])
-spring_lat$q90[[1]]<-crop(raster(input_files_eval_pr[[1]], varname="lat"), q90_spring_extent[[1]])
-spring_lon$q90[[2]]<-crop((raster(input_files_eval_pr[[1]], varname="lon")), q90_spring_extent[[2]])
-spring_lat$q90[[2]]<-crop(raster(input_files_eval_pr[[1]], varname="lat"), q90_spring_extent[[2]])
-quilt.plot(data.frame(lon=as.vector(spring_lon$q90[[1]]),lat=as.vector(spring_lat$q90[[1]]),pr=as.vector(spring$q90[[1]])), 
+summer_eval<-cropSeasons(extents=q90_summer_extent, initial_rasters=getMonthlyList(filename_eval_monthly, 2,5))
+summer_hist<-cropSeasons(extents=q90_summer_extent, initial_rasters=getMonthlyList(filename_hist_monthly, 2,5))
+
+autumn_eval<-cropSeasons(extents=q90_autumn_extent, initial_rasters=getMonthlyList(filename_eval_monthly, 2,5))
+autumn_hist<-cropSeasons(extents=q90_autumn_extent, initial_rasters=getMonthlyList(filename_hist_monthly, 2,5))
+
+winter_eval<-cropSeasons(extents=q90_winter_extent, initial_rasters=getMonthlyList(filename_eval_monthly, 2,5))
+winter_hist<-cropSeasons(extents=q90_winter_extent, initial_rasters=getMonthlyList(filename_hist_monthly, 2,5))
+
+spring_lon_q90<-list()
+spring_lat_q90<-list()
+spring_lon_q90[[1]]<-crop((raster(input_files_eval_pr[[1]], varname="lon")), q90_spring_extent[[1]])
+spring_lat_q90[[1]]<-crop(raster(input_files_eval_pr[[1]], varname="lat"), q90_spring_extent[[1]])
+spring_lon_q90[[2]]<-crop((raster(input_files_eval_pr[[1]], varname="lon")), q90_spring_extent[[2]])
+spring_lat_q90[[2]]<-crop(raster(input_files_eval_pr[[1]], varname="lat"), q90_spring_extent[[2]])
+'
+'quilt.plot(data.frame(lon=as.vector(spring_lon$q90[[1]]),lat=as.vector(spring_lat$q90[[1]]),pr=as.vector(spring$q90[[1]])), 
            nx=ncol(spring$q90[[1]])+1, ny=nrow(spring$q90[[1]])+1,
            main="First 20 maximal and minimal 90.quantile differences sorted by months in historical data (1=January, 12=December)", 
            col=monthly_colors, na.rm = FALSE)
+'
+'
+spring_lon_q90<-list()
+spring_lat_q90<-list()
+spring_lon_q90[[1]]<-crop((raster(input_files_eval_pr[[1]], varname="lon")), q90_spring_extent[[1]])
+spring_lat_q90[[1]]<-crop(raster(input_files_eval_pr[[1]], varname="lat"), q90_spring_extent[[1]])
+spring_lon_q90[[2]]<-crop((raster(input_files_eval_pr[[1]], varname="lon")), q90_spring_extent[[2]])
+spring_lat_q90[[2]]<-crop(raster(input_files_eval_pr[[1]], varname="lat"), q90_spring_extent[[2]])
 
-summer<-list(q90=list(), q99=list())
-summer$q90[[1]]<-crop(dyed_eval, q90_summer_extent[[1]])
-summer$q90[[2]]<-crop(dyed_eval, q90_summer_extent[[2]]) #second area as second element in list
-summer_lon<-list(q90=list(), q99=list())
-summer_lat<-list(q90=list(), q99=list())
-summer_lon$q90[[1]]<-crop((raster(input_files_eval_pr[[1]], varname="lon")), q90_summer_extent[[1]])
-summer_lat$q90[[1]]<-crop(raster(input_files_eval_pr[[1]], varname="lat"), q90_summer_extent[[1]])
-summer_lon$q90[[2]]<-crop((raster(input_files_eval_pr[[1]], varname="lon")), q90_summer_extent[[2]])
-summer_lat$q90[[2]]<-crop(raster(input_files_eval_pr[[1]], varname="lat"), q90_summer_extent[[2]])
-quilt.plot(data.frame(lon=as.vector(summer_lon$q90[[1]]),lat=as.vector(summer_lat$q90[[1]]),pr=as.vector(summer$q90[[1]])), 
-           nx=ncol(summer$q90[[1]])-1, ny=nrow(summer$q90[[1]])-1,nlevel=12, 
-           main="First 20 maximal and minimal 90.quantile differences sorted by months in historical data (1=January, 12=December)", 
-           col=monthly_colors, na.rm = TRUE)
+summer_lon_q90<-list()
+summer_lat_q90<-list()
+summer_lon_q90[[1]]<-crop((raster(input_files_eval_pr[[1]], varname="lon")), q90_summer_extent[[1]])
+summer_lat_q90[[1]]<-crop(raster(input_files_eval_pr[[1]], varname="lat"), q90_summer_extent[[1]])
+summer_lon_q90[[2]]<-crop((raster(input_files_eval_pr[[1]], varname="lon")), q90_summer_extent[[2]])
+summer_lat_q90[[2]]<-crop(raster(input_files_eval_pr[[1]], varname="lat"), q90_summer_extent[[2]])
 
+autumn_lon_q90<-list()
+autumn_lat_q90<-list()
+autumn_lon_q90[[1]]<-crop((raster(input_files_eval_pr[[1]], varname="lon")), q90_autumn_extent[[1]])
+autumn_lat_q90[[1]]<-crop(raster(input_files_eval_pr[[1]], varname="lat"), q90_autumn_extent[[1]])
+autumn_lon_q90[[2]]<-crop((raster(input_files_eval_pr[[1]], varname="lon")), q90_autumn_extent[[2]])
+autumn_lat_q90[[2]]<-crop(raster(input_files_eval_pr[[1]], varname="lat"), q90_autumn_extent[[2]])
 
+winter_lon_q90<-list()
+winter_lat_q90<-list()
+winter_lon_q90[[1]]<-crop((raster(input_files_eval_pr[[1]], varname="lon")), q90_winter_extent[[1]])
+winter_lat_q90[[1]]<-crop(raster(input_files_eval_pr[[1]], varname="lat"), q90_winter_extent[[1]])
+winter_lon_q90[[2]]<-crop((raster(input_files_eval_pr[[1]], varname="lon")), q90_winter_extent[[2]])
+winter_lat_q90[[2]]<-crop(raster(input_files_eval_pr[[1]], varname="lat"), q90_winter_extent[[2]])
+
+'
 #hist<-getMonthlyList(filename_hist_monthly, 1, 1)
 
 #obs<-getMonthlyList(filename_obs_monthly, 1, 1)

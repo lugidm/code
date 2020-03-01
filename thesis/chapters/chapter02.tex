@@ -2,14 +2,14 @@ Für eine eventuelle BIAS-Korrektur kommt eine bisherige Herangehensweise nicht 
 \section{Herangehensweise}
 \begin{itemize}
 	\item Zunächst wurden die am stärksten von Abweichungen betroffenen Regionen ausgemacht. Dies erfolgte über die Jahreszeiten bzw. Monate.
-	\item Als nächster Schritt werden die Jahreszeiten einzeln betrachtet, da in ihnen typische Korrelationen herrschen.
+	\item Als nächster Schritt werden die Jahreszeiten einzeln betrachtet, da in ihnen typische Korrelationen herrschen. In den obengenannten Regionen wird dann die Korrelation zwischen Temperatur und Niederschlag betrachtet um die Ursache der starken Abweichungen herauszufinden.
 \end{itemize}
 
 \section{Am stärksten abweichende Regionen}
 Die betreffenden Datensätze (historical, evaluation und APGD) wurden zunächst in monatliche Abschnitte unterteilt. Diese wurden dann einer Quantil-Berechnung über alle Jahre unterzogen. In Folge wurden die 20 größten und 20 kleinsten Abweichungen von den entsprechenden Quantilen des Beobachtungsdatensatzes den Monaten entsprechend auf einer Karte abgebildet um die am stärksten betroffenen Regionen zu erkennen.\\
 Wie man in Abb.\ref{fig:decision_plot_q99-eval} erkennen kann befindet sich in der südöstlichen Region (um die Stadt Split) eine Zone, die extreme Abweichungen im 99.Quantil über alle Monate zeigt, dies deutet sich bereits in der Abbildung des 90. Quantils ab (Abb. \ref{fig:decision_plot_q90-eval}). Um die Darstellung zu verbessern und die Ausreißer zu minimieren wird diese Region zunächst aus den folgenden Berechnungen ausgeschnitten und außen vor gelassen. Die plots mit den ausgeschnittenen Ausreißer-Bereichen sind in Abb. \ref{fig:cropped_decision_plot_q90-hist}-\ref{fig:cropped_decision_plot_q99-eval} abgebildet. Die in Rechtecken gekennzeichneten Regionen werden in Folge näher betrachtet, da in ihnen die größten Abweichungen herrschen und sie konstant über die Monate einer Jahreszeit verteilt sind. Man erkennt im Vergleich der plots für das 90. Quantil des evaluation-Datensatzes und des historical-Datensatzes, dass die gekennzeichneten Regionen großteils an der selben Stelle sind. Diese werden für die folgenden Berechnungen zusammengelegt und ihre verschiedenen Positionen überlappt.\\
-Für das 99. Quantil der beiden Datensätze herrscht leider keine solche allgemeine Übereinstimmung der Positionen für die maximalen Abweichungen (siehe Abb. \ref{fig:cropped_decision_plot_q99-hist} und Abb. \ref{fig:cropped_decision_plot_q99-eval}). Nur ein Teil der maximalen Abweichungen im Winter und im Frühling sind an derselben Stelle. Deshalb werden für das 99. Quantil nur diese beiden Jahreszeiten weiter betrachtet, da sonst eine zu große Region betrachtet werden müsste, was die Aussagekraft der folgenden Berechnungen stark einschränken würde, beziehungsweise diese zu Unübersichtlich machen würde.
-
+Für das 99. Quantil der beiden Datensätze herrscht leider keine solche allgemeine Übereinstimmung der Positionen für die maximalen Abweichungen (siehe Abb. \ref{fig:cropped_decision_plot_q99-hist} und Abb. \ref{fig:cropped_decision_plot_q99-eval}). Nur ein Teil der maximalen Abweichungen im Winter und im Frühling sind an derselben Stelle. Deshalb werden für das 99. Quantil nur diese beiden Jahreszeiten weiter betrachtet, da sonst eine zu große Region betrachtet werden müsste, was die Aussagekraft der folgenden Berechnungen stark einschränken würde, beziehungsweise diese zu Unübersichtlich machen würde.\\
+Die in Abb. \ref{fig:cropped_decision_plot_q90-hist} - \ref{fig:cropped_decision_plot_q90-hist} gekennzeichneten Regionen werden in Abb. \ref{fig:final_seasons} zusammengeführt und die Übereinstimmungen in finalen Ausschnitten zusammengeführt. Auf diese wird dann im nächsten Unterkapitel näher eingegangen.
 
 \begin{figure}[h!]
 	\centering{
@@ -50,5 +50,11 @@ Für das 99. Quantil der beiden Datensätze herrscht leider keine solche allgeme
 		\end{subfigure}
 	}
 \end{figure}
+\begin{figure}[h]
+	\includegraphics[width=\textwidth]{/quantile/final_seasons.png}
+	\caption{Die finalen Regionen der Jahreszeiten: grün = Frühling, rot = Sommer, violett = Herbst, blau = Winter}
+	\label{fig:final_seasons}
+\end{figure}
 
 \section{Frühling}
+

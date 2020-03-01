@@ -22,8 +22,8 @@ typeS = "curvilinear"       ; type of source grid
 			    ;       ESMF format can be used instead. See details
 			    ;       on NCL website www.ncl.ucar.edu
 ;
-infileS = "../../Lukas_Moser/ALP-3/historical/t2m_2005.nc"    ; name of the input file containing latitude and longitude of source grid
-outfileS = "ALP-3_temp.nc"  ; name of the output SCRIP file for source grid 
+infileS = "../../Lukas_Moser/EUR-11/eval/pr_EUR-11_ECMWF-ERAINT_evaluation_r1i1p1_CLMcom-CCLM4-8-17_v1_day_19970101-19971231.nc"    ; name of the input file containing latitude and longitude of source grid
+outfileS = "EUR-11_pr_eval.nc"  ; name of the output SCRIP file for source grid 
 print("Read file infileS "+infileS)
 fS   = addfile (infileS, "r")   ; open input file
 latS = fS->lat            ; read latitude coordinate             

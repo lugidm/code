@@ -23,8 +23,8 @@ typeS = "rectilinear"       ; type of source grid
 			    ;       on NCL website www.ncl.ucar.edu
 ;
 ; name of the input file containing latitude and longitude of source grid
-infileS = "../../E-OBS/rr_ens_mean_0.1deg_reg_1995-2010_v20.0e.nc"
-outfileS = "OBS_grid.nc"  ; name of the output SCRIP file for source grid 
+infileS = "../../E-OBS/tg_ens_mean_0.1deg_reg_1995-2010_v20.0e.nc"
+outfileS = "EOBS_temp_grid.nc"  ; name of the output SCRIP file for source grid 
 ;
 print("Read file infileS "+infileS)
 fS   = addfile (infileS, "r")   ; open input file

@@ -169,44 +169,86 @@ getALP3rcp85TAS <- function(){
 
 
 getALP3regriddedrcp85PR <- function(){
-    input_file <- "../Lukas_Moser/ALP-3-regridded/rcp85/tot_prec_2090.nc"
-    input_file <- c(input_file, "../Lukas_Moser/ALP-3-regridded/rcp85/tot_prec_2091.nc")
-    input_file <- c(input_file, "../Lukas_Moser/ALP-3-regridded/rcp85/tot_prec_2092.nc")
-    input_file <- c(input_file, "../Lukas_Moser/ALP-3-regridded/rcp85/tot_prec_2093.nc")
-    input_file <- c(input_file, "../Lukas_Moser/ALP-3-regridded/rcp85/tot_prec_2094.nc")
-    input_file <- c(input_file, "../Lukas_Moser/ALP-3-regridded/rcp85/tot_prec_2095.nc")
-    input_file <- c(input_file, "../Lukas_Moser/ALP-3-regridded/rcp85/tot_prec_2096.nc")
-    input_file <- c(input_file, "../Lukas_Moser/ALP-3-regridded/rcp85/tot_prec_2097.nc")
-    input_file <- c(input_file, "../Lukas_Moser/ALP-3-regridded/rcp85/tot_prec_2098.nc")
-    input_file <- c(input_file, "../Lukas_Moser/ALP-3-regridded/rcp85/tot_prec_2099.nc")
+    input_file <- "../Lukas_Moser/ALP_3_to_APGD/rcp85/ALP_3_rcp85_to_APGD2090.nc"
+    input_file <- c(input_file, "../Lukas_Moser/ALP_3_to_APGD/rcp85/ALP_3_rcp85_to_APGD2091.nc")
+    input_file <- c(input_file, "../Lukas_Moser/ALP_3_to_APGD/rcp85/ALP_3_rcp85_to_APGD2092.nc")
+    input_file <- c(input_file, "../Lukas_Moser/ALP_3_to_APGD/rcp85/ALP_3_rcp85_to_APGD2093.nc")
+    input_file <- c(input_file, "../Lukas_Moser/ALP_3_to_APGD/rcp85/ALP_3_rcp85_to_APGD2094.nc")
+    input_file <- c(input_file, "../Lukas_Moser/ALP_3_to_APGD/rcp85/ALP_3_rcp85_to_APGD2095.nc")
+    input_file <- c(input_file, "../Lukas_Moser/ALP_3_to_APGD/rcp85/ALP_3_rcp85_to_APGD2096.nc")
+    input_file <- c(input_file, "../Lukas_Moser/ALP_3_to_APGD/rcp85/ALP_3_rcp85_to_APGD2097.nc")
+    input_file <- c(input_file, "../Lukas_Moser/ALP_3_to_APGD/rcp85/ALP_3_rcp85_to_APGD2098.nc")
+    input_file <- c(input_file, "../Lukas_Moser/ALP_3_to_APGD/rcp85/ALP_3_rcp85_to_APGD2099.nc")
     return(input_file)
 }
 
 getALP3regriddedhistPR <- function(){
-    input_file <- "../Lukas_Moser/ALP-3-regridded/historical/tot_prec_1996.nc"
-    input_file <- c(input_file, "../Lukas_Moser/ALP-3-regridded/historical/tot_prec_1997.nc")
-    input_file <- c(input_file, "../Lukas_Moser/ALP-3-regridded/historical/tot_prec_1998.nc")
-    input_file <- c(input_file, "../Lukas_Moser/ALP-3-regridded/historical/tot_prec_1999.nc")
-    input_file <- c(input_file, "../Lukas_Moser/ALP-3-regridded/historical/tot_prec_2000.nc")
-    input_file <- c(input_file, "../Lukas_Moser/ALP-3-regridded/historical/tot_prec_2001.nc")
-    input_file <- c(input_file, "../Lukas_Moser/ALP-3-regridded/historical/tot_prec_2002.nc")
-    input_file <- c(input_file, "../Lukas_Moser/ALP-3-regridded/historical/tot_prec_2003.nc")
-    input_file <- c(input_file, "../Lukas_Moser/ALP-3-regridded/historical/tot_prec_2004.nc")
-    input_file <- c(input_file, "../Lukas_Moser/ALP-3-regridded/historical/tot_prec_2005.nc")
+    input_file <- "../Lukas_Moser/ALP_3_to_APGD/historical/ALP_3_historical_to_APGD1996.nc"
+    input_file <- c(input_file, "../Lukas_Moser/ALP_3_to_APGD/historical/ALP_3_historical_to_APGD1997.nc")
+    input_file <- c(input_file, "../Lukas_Moser/ALP_3_to_APGD/historical/ALP_3_historical_to_APGD1998.nc")
+    input_file <- c(input_file, "../Lukas_Moser/ALP_3_to_APGD/historical/ALP_3_historical_to_APGD1999.nc")
+    input_file <- c(input_file, "../Lukas_Moser/ALP_3_to_APGD/historical/ALP_3_historical_to_APGD2000.nc")
+    input_file <- c(input_file, "../Lukas_Moser/ALP_3_to_APGD/historical/ALP_3_historical_to_APGD2001.nc")
+    input_file <- c(input_file, "../Lukas_Moser/ALP_3_to_APGD/historical/ALP_3_historical_to_APGD2002.nc")
+    input_file <- c(input_file, "../Lukas_Moser/ALP_3_to_APGD/historical/ALP_3_historical_to_APGD2003.nc")
+    input_file <- c(input_file, "../Lukas_Moser/ALP_3_to_APGD/historical/ALP_3_historical_to_APGD2004.nc")
+    input_file <- c(input_file, "../Lukas_Moser/ALP_3_to_APGD/historical/ALP_3_historical_to_APGD2005.nc")
     return(input_file)
 }
 
 getALP3regriddedevalPR <- function(){
-    input_file <- "../Lukas_Moser/ALP-3-regridded/eval/tot_prec_1996.nc"
-    input_file <- c(input_file, "../Lukas_Moser/ALP-3-regridded/eval/tot_prec_1997.nc")
-    input_file <- c(input_file, "../Lukas_Moser/ALP-3-regridded/eval/tot_prec_1998.nc")
-    input_file <- c(input_file, "../Lukas_Moser/ALP-3-regridded/eval/tot_prec_1999.nc")
-    input_file <- c(input_file, "../Lukas_Moser/ALP-3-regridded/eval/tot_prec_2000.nc")
-    input_file <- c(input_file, "../Lukas_Moser/ALP-3-regridded/eval/tot_prec_2001.nc")
-    input_file <- c(input_file, "../Lukas_Moser/ALP-3-regridded/eval/tot_prec_2002.nc")
-    input_file <- c(input_file, "../Lukas_Moser/ALP-3-regridded/eval/tot_prec_2003.nc")
-    input_file <- c(input_file, "../Lukas_Moser/ALP-3-regridded/eval/tot_prec_2004.nc")
-    input_file <- c(input_file, "../Lukas_Moser/ALP-3-regridded/eval/tot_prec_2005.nc")
+    input_file <- "../Lukas_Moser/ALP_3_to_APGD/eval/ALP_3_eval_to_APGD1996.nc"
+    input_file <- c(input_file, "../Lukas_Moser/ALP_3_to_APGD/eval/ALP_3_eval_to_APGD1997.nc")
+    input_file <- c(input_file, "../Lukas_Moser/ALP_3_to_APGD/eval/ALP_3_eval_to_APGD1998.nc")
+    input_file <- c(input_file, "../Lukas_Moser/ALP_3_to_APGD/eval/ALP_3_eval_to_APGD1999.nc")
+    input_file <- c(input_file, "../Lukas_Moser/ALP_3_to_APGD/eval/ALP_3_eval_to_APGD2000.nc")
+    input_file <- c(input_file, "../Lukas_Moser/ALP_3_to_APGD/eval/ALP_3_eval_to_APGD2001.nc")
+    input_file <- c(input_file, "../Lukas_Moser/ALP_3_to_APGD/eval/ALP_3_eval_to_APGD2002.nc")
+    input_file <- c(input_file, "../Lukas_Moser/ALP_3_to_APGD/eval/ALP_3_eval_to_APGD2003.nc")
+    input_file <- c(input_file, "../Lukas_Moser/ALP_3_to_APGD/eval/ALP_3_eval_to_APGD2004.nc")
+    input_file <- c(input_file, "../Lukas_Moser/ALP_3_to_APGD/eval/ALP_3_eval_to_APGD2005.nc")
+    return(input_file)
+}
+
+getEUR11regridded_eval_pr <- function(){
+    input_file <- "../Lukas_Moser/EUR_11_to_APGD/eval/EUR_11_eval_to_APGD1996.nc"
+    input_file <- c(input_file, "../Lukas_Moser/EUR_11_to_APGD/eval/EUR_11_eval_to_APGD1997.nc")
+    input_file <- c(input_file, "../Lukas_Moser/EUR_11_to_APGD/eval/EUR_11_eval_to_APGD1998.nc")
+    input_file <- c(input_file, "../Lukas_Moser/EUR_11_to_APGD/eval/EUR_11_eval_to_APGD1999.nc")
+    input_file <- c(input_file, "../Lukas_Moser/EUR_11_to_APGD/eval/EUR_11_eval_to_APGD2000.nc")
+    input_file <- c(input_file, "../Lukas_Moser/EUR_11_to_APGD/eval/EUR_11_eval_to_APGD2001.nc")
+    input_file <- c(input_file, "../Lukas_Moser/EUR_11_to_APGD/eval/EUR_11_eval_to_APGD2002.nc")
+    input_file <- c(input_file, "../Lukas_Moser/EUR_11_to_APGD/eval/EUR_11_eval_to_APGD2003.nc")
+    input_file <- c(input_file, "../Lukas_Moser/EUR_11_to_APGD/eval/EUR_11_eval_to_APGD2004.nc")
+    input_file <- c(input_file, "../Lukas_Moser/EUR_11_to_APGD/eval/EUR_11_eval_to_APGD2005.nc")
+    return(input_file)
+}
+
+getEUR11regridded_historical_pr <- function(){
+    input_file <- "../Lukas_Moser/EUR_11_to_APGD/historical/EUR_11_historical_to_APGD1996.nc"
+    input_file <- c(input_file, "../Lukas_Moser/EUR_11_to_APGD/historical/EUR_11_historical_to_APGD1997.nc")
+    input_file <- c(input_file, "../Lukas_Moser/EUR_11_to_APGD/historical/EUR_11_historical_to_APGD1998.nc")
+    input_file <- c(input_file, "../Lukas_Moser/EUR_11_to_APGD/historical/EUR_11_historical_to_APGD1999.nc")
+    input_file <- c(input_file, "../Lukas_Moser/EUR_11_to_APGD/historical/EUR_11_historical_to_APGD2000.nc")
+    input_file <- c(input_file, "../Lukas_Moser/EUR_11_to_APGD/historical/EUR_11_historical_to_APGD2001.nc")
+    input_file <- c(input_file, "../Lukas_Moser/EUR_11_to_APGD/historical/EUR_11_historical_to_APGD2002.nc")
+    input_file <- c(input_file, "../Lukas_Moser/EUR_11_to_APGD/historical/EUR_11_historical_to_APGD2003.nc")
+    input_file <- c(input_file, "../Lukas_Moser/EUR_11_to_APGD/historical/EUR_11_historical_to_APGD2004.nc")
+    input_file <- c(input_file, "../Lukas_Moser/EUR_11_to_APGD/historical/EUR_11_historical_to_APGD2005.nc")
+    return(input_file)
+}
+
+getEUR11regridded_rcp85_pr <- function(){
+    input_file <- "../Lukas_Moser/EUR_11_to_APGD/rcp85/EUR_11_rcp85_to_APGD2090.nc"
+    input_file <- c(input_file, "../Lukas_Moser/EUR_11_to_APGD/rcp85/EUR_11_rcp85_to_APGD2091.nc")
+    input_file <- c(input_file, "../Lukas_Moser/EUR_11_to_APGD/rcp85/EUR_11_rcp85_to_APGD2092.nc")
+    input_file <- c(input_file, "../Lukas_Moser/EUR_11_to_APGD/rcp85/EUR_11_rcp85_to_APGD2093.nc")
+    input_file <- c(input_file, "../Lukas_Moser/EUR_11_to_APGD/rcp85/EUR_11_rcp85_to_APGD2094.nc")
+    input_file <- c(input_file, "../Lukas_Moser/EUR_11_to_APGD/rcp85/EUR_11_rcp85_to_APGD2095.nc")
+    input_file <- c(input_file, "../Lukas_Moser/EUR_11_to_APGD/rcp85/EUR_11_rcp85_to_APGD2096.nc")
+    input_file <- c(input_file, "../Lukas_Moser/EUR_11_to_APGD/rcp85/EUR_11_rcp85_to_APGD2097.nc")
+    input_file <- c(input_file, "../Lukas_Moser/EUR_11_to_APGD/rcp85/EUR_11_rcp85_to_APGD2098.nc")
+    input_file <- c(input_file, "../Lukas_Moser/EUR_11_to_APGD/rcp85/EUR_11_rcp85_to_APGD2099.nc")
     return(input_file)
 }
 
@@ -333,3 +375,4 @@ getAPGD <- function(){
     input_file<-(c(input_file, "../EURO4M-APGD/RapdD_al05.etrs.laea_2001_2008/RapdD_al05.etrs.laea_20051200.nc"))
     return(input_file)
 }
+

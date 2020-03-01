@@ -30,3 +30,17 @@ drawRectangle<-function(dyed_hist, dyed_eval, q90_spring_extent, q90_summer_exte
   }
   return(overall)
 }
+
+cropSeasons<-function(extents, initial_rasters){
+  ret_list<-list(list(), list())
+  for(i in 1:length(initial_rasters)){
+    ret_list[[1]][[i]]<-raster()
+    ret_list[[2]][[i]]<-raster()
+  }
+  print(ret_list)
+  for(i in 1:length(initial_rasters)){
+    ret_list[[1]][[i]]<-addLayer(ret_list[[1]][[i]], crop(initial_rasters[[i]], extents[[1]]))
+    ret_list[[2]][[i]]<-addLayer(ret_list[[2]][[i]], crop(initial_rasters[[i]], extents[[2]]))
+  }
+  return(ret_list)
+}

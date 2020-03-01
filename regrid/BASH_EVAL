@@ -1,0 +1,6 @@
+i=2090
+for file in ~/Bacc/Lukas_Moser/EUR-11/rcp85/pr* 
+do
+	cdo remapbil,APGD_grid.nc -setgrid,EUR-11_pr_eval.nc "$file" "EUR_11_rcp85_to_APGD$i.nc"
+	i=$(( $i + 1 ))
+done
