@@ -63,7 +63,7 @@ compareAllYears<-function(differences, frequencies, lon, lat, EVAL)
     ####################################################################################################################
     ######################   QUANTILE ##################################################################################
     ####################################################################################################################
-    print("doit")
+   ' print("doit")
     differences_quantile<-calc(differences,fun=Q99,forceapply=TRUE)
 
 
@@ -98,7 +98,7 @@ compareAllYears<-function(differences, frequencies, lon, lat, EVAL)
             plotmain= "99. quantile", EVAL=EVAL)
         }
     }
-
+    '
 
     'max_diff<-calc(differences,fun=GREATESTDIFF,forcefun=TRUE)
     frequencies_quantile<-freq(max_diff, digits = 1, cum = TRUE, valid=TRUE, total=TRUE, useNA="no")
@@ -113,61 +113,4 @@ compareAllYears<-function(differences, frequencies, lon, lat, EVAL)
 
     return(list(differences_mean, frequencies_mean, differences_quantile,frequencies_quantile))
 
-}
-
-compareMonthly<-function(monthly_filename){
-    differences<-list()
-    for(months in 1:12){differences[[months]]<-list(1,2)}
-    for(months in 1:12){
-        sim<-getMonthlyList(monthly_filename, months, months)
-        obs<-getMonthlyList(filename_obs_monthly, months, months)
-        extent(obs[[1]])<-extent(sim[[1]])
-        sim<-calc(sim[[1]][[-(nlayers(sim[[1]])-1):-(nlayers(sim[[1]]))]], fun=Q99)
-        obs<-calc(obs[[1]][[-(nlayers(obs[[1]])-1):-(nlayers(obs[[1]]))]], fun=Q99)
-        differences[[months]][[1]]<-overlay(sim[[1]], obs[[1]], fun=function(x,y){x-y})
-        differences[[months]][[2]]<-overlay(sim[[2]], obs[[2]], fun=function(x,y){x-y})
-    }
-    return(differences)
-}
-dyeMaxMinDifferences<-function(differences, num_maximas){
-    
-    dyed_maximal_differences<-differences[[1]][[1]] # first layer is q90
-    dyed_maximal_differences<-addLayer(dyed_maximal_differences, differences[[1]][[2]]) # second layer is q99
-    values(dyed_maximal_differences)<-NA
-    maxmin_positions<-NA
-    maxmin_positions<-list()
-    for(months in 1:12){
-        maxmin_positions[[months]]<-list(q90=0, q99=0)
-        maxmin_positions[[months]]$q90<-list(max=0,min=0)
-        maxmin_positions[[months]]$q99<-list(max=0, min=0)
-    }
-
-    for(months in 1:12){
-        maxmin_positions[[months]]$q90$max<-which.max(differences[[months]][[1]])
-        maxmin_positions[[months]]$q90$min<-which.min(differences[[months]][[1]])
-        maxmin_positions[[months]]$q99$max<-which.max(differences[[months]][[2]])
-        maxmin_positions[[months]]$q99$min<-which.min(differences[[months]][[2]])
-        dyed_maximal_differences[[1]][maxmin_positions[[months]]$q90$max[[1]]]<-months
-        dyed_maximal_differences[[1]][maxmin_positions[[months]]$q90$min[[1]]]<-months
-        dyed_maximal_differences[[2]][maxmin_positions[[months]]$q99$max[[(1)]]]<-months
-        dyed_maximal_differences[[2]][maxmin_positions[[months]]$q99$min[[(1)]]]<-months
-        #print(dyed_maximal_differences)
-        for(maximas in 1:num_maximas)
-        {
-            differences[[months]][[1]][maxmin_positions[[months]]$q90$max[maximas]]<-0
-            differences[[months]][[1]][maxmin_positions[[months]]$q90$min[maximas]]<-0
-            maxmin_positions[[months]]$q90$max<-c(maxmin_positions[[months]]$q90$max, which.max(differences[[months]][[1]]))
-            maxmin_positions[[months]]$q90$min<-c(maxmin_positions[[months]]$q90$min, which.min(differences[[months]][[1]]))
-            dyed_maximal_differences[[1]][maxmin_positions[[months]]$q90$max[[(maximas+1)]]]<-months
-            dyed_maximal_differences[[1]][maxmin_positions[[months]]$q90$min[[(maximas+1)]]]<-months
-            
-            differences[[months]][[2]][maxmin_positions[[months]]$q99$max[maximas]]<-0
-            differences[[months]][[2]][maxmin_positions[[months]]$q99$min[maximas]]<-0
-            maxmin_positions[[months]]$q99$max<-c(maxmin_positions[[months]]$q99$max, which.max(differences[[months]][[2]]))
-            maxmin_positions[[months]]$q99$min<-c(maxmin_positions[[months]]$q99$min, which.min(differences[[months]][[2]]))
-            dyed_maximal_differences[[2]][maxmin_positions[[months]]$q99$max[[(maximas+1)]]]<-months
-            dyed_maximal_differences[[2]][maxmin_positions[[months]]$q99$min[[(maximas+1)]]]<-months
-        }
-    }
-    return(dyed_maximal_differences)
 }

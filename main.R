@@ -23,22 +23,21 @@ source("~/Bacc/code/monthly.R")
 #library(rasterVis)
 
 
-ALP3=TRUE
-varname = c("longitude.coordinate", "latitude.coordinate")
-input_file_obs <- "../E-OBS/rr_ens_mean_0.1deg_reg_1995-2010_v20.0e.nc"
-input_file_obs_remapped <- "../E-OBS/pr_remapped_obs412424.nc"
-input_file_obs_remapped_alp3 <- "../E-OBS/pr_obs_remapped_ALP3.nc"
+###############################
+### GLOBAL VARIABLES ##########
+ALP3=FALSE
 input_files_APGD <- getAPGD()
-dump_file_mprs_obs_eur11 <- "../Results/mean_obs_remapped_eur11.nc"
+'dump_file_mprs_obs_eur11 <- "../Results/mean_obs_remapped_eur11.nc"
 dump_file_mprs_hist_eur11 <- "../Results/mprs_hist_eur11.nc"
-dump_file_mprs_rcp_eur11 <- "../Results/mprs_rcp85_eur11.nc"
-dump_file_mprs_eval_eur11 <- "../Results/mprs_eval_eur11.nc"
+dump_file_mprs_eval_eur11_apgd <- "../Results/mprs_eval_eur11.nc"'
+
+dump_file_mprs_hist_eur11 <- "../Results/mprs_hist_remapped_eur11.nc"
+dump_file_mprs_eval_eur11 <- "../Results/mprs_eval_remapped_eur11.nc"
 dump_file_mprs_hist_alp3 <- "../Results/mprs-alp3-historical.nc"
 dump_file_mprs_eval_alp3 <- "../Results/mprs-alp3-evaluation.nc"
 dump_file_mprs_apgd <- "../Results/mprs-apgd.nc"
 
-
-time_list_obs <- c("1995", "1996", "1997", "1998", "1999", "2000", "2001", "2002", "2003", "2004", "2005")
+time_list_obs <- c("1996", "1997", "1998", "1999", "2000", "2001", "2002", "2003", "2004", "2005")
 output_dir <- "~/Bacc/Results/"
 if(ALP3==TRUE)
 {
@@ -57,16 +56,14 @@ if(ALP3==TRUE)
     filename_obs_monthly <- "EUR11/monthly_obs_remapped_eur-11,"
     filename_eval_monthly <- "EUR11/monthly_eval_remapped_eur-11,"
     filename_hist_monthly <- "EUR11/monthly_hist_remapped_eur-11,"
-    input_files_eval_pr <- getEUR11evalPR()
+    input_files_eval_pr <- getEUR11regridded_eval_pr()
     time_list_eval <- c("1996", "1997", "1998", "1999", "2000", "2001", "2002", "2003", "2004", "2005")
-    input_files_hist_pr <- getEUR11histPR()
-    time_list_hist <- c("1995", "1996", "1997", "1998", "1999", "2000", "2001", "2002", "2003", "2004", "2005")
-    input_files_rcp_pr <- getEUR11rcp85PR()
+    input_files_hist_pr <- getEUR11regridded_historical_pr()
+    time_list_hist <- c("1996", "1997", "1998", "1999", "2000", "2001", "2002", "2003", "2004", "2005")
+    input_files_rcp_pr <- getEUR11regridded_rcp85_pr()
     time_list_rcp <- c("2090", "2091", "2092", "2093", "2094", "2095", "2096", "2097", "2098", "2099")
 }
 
-###############################
-### GLOBAL VARIABLES ##########
 nc_data<-nc_open(input_files_eval_pr[[2]])
 if(ALP3 == TRUE)
 {
@@ -82,45 +79,34 @@ nc_close(nc_data)
 nc_data<-nc_open(input_files_APGD[[4]])
 fVal_apgd <- ncatt_get(nc_data, "PRECIPITATION", "_FillValue")
 nc_close(nc_data)
+
 ################################
 ### HELPER FUNCTIONS ###########
 Q99 <- function(x){quantile(x, probs = c(.90,.99), na.rm=TRUE)}
 GREATESTDIFF <- function(x){
     if(length(which.max( abs(unlist(na.omit(x)))) == 0)){return(NA)}
     return_val=x[which.max( abs(unlist(na.omit(x))))]}
+
+######################################## SPLIT MONTHLY ##########################
+'
+ids_by_month<-splitMonthlyOBS(all_days=stack(input_file_obs_remapped, varname="rr"), lon=stack(input_files_eval_pr[[1]], varname="lon"),
+                lat=raster(input_files_eval_pr[[1]], varname="lat"), new_filename=filename_obs_monthly)
+
+ids_by_month<-splitMonthlySim(allInputfiles=input_files_eval_pr, lon=stack(input_files_eval_pr[[1]], varname="lon"),
+  lat=raster(input_files_eval_pr[[1]], varname="lat"), new_filename=filename_eval_monthly)
+ids_by_month<-splitMonthlySim(allInputfiles=input_files_hist_pr, lon=raster(input_files_hist_pr[[1]], varname="lon"),
+                              lat=raster(input_files_hist_pr[[1]], varname="lat"), new_filename=filename_hist_monthly)
+splitSeasons(allInputfiles = getPrecipAll(input_files_eval_pr), lon=stack(input_files_eval_pr[[1]], varname="lon"),
+             lat=raster(input_files_eval_pr[[1]], varname="lat"), new_filename=filename_eval_monthly)
+splitSeasons(allInputfiles = getPrecipAll(input_files_hist_pr), lon=stack(input_files_hist_pr[[1]], varname="lon"),
+             lat=raster(input_files_hist_pr[[1]], varname="lat"), new_filename=filename_hist_monthly)
+splitSeasons(allInputfiles = stackAPGD(input_files_APGD), lon =stack(input_files_APGD[[1]], varname="lon"),
+             lat=stack(input_files_APGD[[1]], varname="lat"), new_filename = "EUR11/monthly_obs_remapped_eur-11,")
+ids_by_month<-splitMonthlyOBS(all_days = stackAPGD(inputfiles = input_files_APGD), lon = raster(input_files_APGD[[1]], varname="lon"),
+    lat=raster(input_files_APGD[[1]], varname="lat"), new_filename = filename_obs_monthly)
+'
 ################################
 
-########################################################################################################################
-########################### NOT REMAPPED OBSERVATION MEAN CALCULATIONS #################################################
-########################################################################################################################
-'
-obs <- getPrecipObs(input_file_obs)
-mobs<-getAnnualMeanObs(obs)
-for(i in 1:11)
-{
-    plotJPGobs(mobs[[i]], paste0(paste0("mprs", time_list_obs[i]),"obs.jpg"), paste0(paste0("Annual mean percipitation[mm/day] ",
-    time_list_obs[i])," in observation data"), addMap=TRUE)
-    writeRaster(mobs, paste0("../Results/mprs", time_list_obs[i], "obs.nc"), overwrite=TRUE, format="CDF",
-    varname="MPercipitation", varunit="mm", longname="Mean Percipitation", xname="X", yname="Y",zname="nbands", zunit="numeric")
-}
-'
-########################################################################################################################
-########################### NOT REMAPPED OBSERVATION Q90Q99 CALCULATIONS ###############################################
-########################################################################################################################
-
-'
-obs <- getPrecipObs(input_file_obs)
-qobs<-getAnnualQuantileObs(obs)
-for(i in 1:11)
-{
-    plotJPGobsq90(qobs[[(i*2)-1]], paste0("q90", time_list_obs[i],"obs.jpg"), paste0("90. Quantile of percipitation[mm/day] in year",
-    time_list_obs[i]," in observation data"), addMap=TRUE)
-    plotJPGobsq99(qobs[[(i*2)]], paste0("q99", time_list_obs[i],"obs.jpg"), paste0("99. Quantile of percipitation[mm/day] in year",
-    time_list_obs[i]," in observation data"), addMap=TRUE)
-    writeRaster(subset(qobs, c((i*2)-1,i*2)), paste0("../Results/q90q99", time_list_obs[i], "obs.nc"), overwrite=TRUE, format="CDF",
-    varname="90and99Quantile", varunit="mm", longname="90and99Quantile", xname="X", yname="Y",zname="nbands", zunit="numeric")
-}
-'
 
 ########################################################################################################################
 ######################################## EUR -11 ++MEAN ++ CALCULATIONS #################################################
@@ -132,8 +118,6 @@ for(i in 1:11)
 '
 lon <- raster(input_files_eval_pr[[1]], varname="lon")
 lat <- raster(input_files_eval_pr[[1]], varname="lat")
-names(lon)<-"lon"
-names(lat)<-"lat"
 mprs_stack <- raster()
 for(i in 1:length(time_list_eval))
 {
@@ -141,12 +125,12 @@ for(i in 1:length(time_list_eval))
     mprs <- calc(prs*3600*24, fun=mean)
     names(mprs)<-time_list_eval[i]
     print(paste("mean for", time_list_eval[i], "done"))
-    plotJPGmean(raster=mprs, lon=lon, lat=lat, paste0("mprs", time_list_eval[i],"eval_eur11.jpg"), paste0("Annual mean percipitation[mm/day] ",
-    time_list_eval[i]," in EUR-11 evaluation-data"), addMap=TRUE)
+    plotJPGmean(raster=mprs, lon=lon, lat=lat, paste0("mprs", time_list_eval[i],"eval_eur11.jpg"), paste0("Annual mean percipitation",
+    time_list_eval[i]," in EUR-11 evaluation-data [mm/day]"), addMap=TRUE)
     mprs_stack<-addLayer(mprs_stack, mprs)
 }
 writeRaster(addLayer(addLayer(mprs_stack, lon),lat), dump_file_mprs_eval_eur11, overwrite=TRUE, format="CDF",
-varname="mean_pr", varunit="mm", longname="Mean Percipitation", xname="X", yname="Y", zunit="numeric")
+varname="mean_pr", varunit="mm/day", longname="Mean Percipitation", xname="X", yname="Y", zunit="numeric")
 '
 #######################################################
 #################  HIST DATA  #########################
@@ -154,8 +138,6 @@ varname="mean_pr", varunit="mm", longname="Mean Percipitation", xname="X", yname
 '
 lon <- raster(input_files_hist_pr[[1]], varname="lon")
 lat <- raster(input_files_hist_pr[[1]], varname="lat")
-names(lon)<-"lon"
-names(lat)<-"lat"
 mprs_stack <- raster()
 for(i in 1:length(time_list_hist))
 {
@@ -163,8 +145,8 @@ for(i in 1:length(time_list_hist))
     mprs <- calc((prs*3600*24), fun=mean)
     names(mprs)<-time_list_hist[i]
     print(paste("mean for", time_list_hist[i], "done"))
-    plotJPGmean(raster=mprs, lon=lon, lat=lat, paste0("mprs", time_list_hist[i],"hist_eur11.jpg"), paste0("Annual mean percipitation[mm/day] ",
-    time_list_hist[i]," in EUR-11 historical-data"), addMap=TRUE)
+    plotJPGmean(raster=mprs, lon=lon, lat=lat, paste0("mprs", time_list_hist[i],"hist_eur11.jpg"), paste0("Annual mean percipitation ",
+    time_list_hist[i]," in EUR-11 historical-data [mm/day]"), addMap=TRUE)
     mprs_stack<-addLayer(mprs_stack, mprs)
 
 }
@@ -312,26 +294,30 @@ varname="MPercipitation", varunit="mm", longname="Mean Percipitation", xname="X"
 ########################################################################################################################
 #############################################   COMPARISIONS EUR 11 ####################################################
 ########################################################################################################################
-'
+
 mean_pr_eval <- stack(dump_file_mprs_eval_eur11, varname = "mean_pr")
-mean_pr_obs <- stack(dump_file_mprs_obs_eur11, varname = "mean_pr")
+mean_pr_obs <- stack(dump_file_mprs_apgd, varname = "mprs")
 lon=subset(mean_pr_obs, nlayers(mean_pr_obs)-1)
 lat=subset(mean_pr_obs, nlayers(mean_pr_obs))
 return_val <-compareSUB(mean_pr_eval, mean_pr_obs, lon= lon, lat= lat, EVAL=TRUE)
 dif_eval <- return_val[[1]]
-names(dif_eval)<-time_list_eval
+names(dif_hist)<-time_list_hist
 freq_eval <- return_val[[2]]
+biases_eur11_eval<- plotBoxplot(dif_eval, "eur_11_evaluation_boxplot_", main_pattern="evaluation", overall_mean=FALSE)
+
+
 
 mean_pr_hist <- stack(dump_file_mprs_hist_eur11, varname = "mean_pr")
-mean_pr_obs <- stack(dump_file_mprs_obs_eur11, varname = "mean_pr")
+mean_pr_obs <- stack(dump_file_mprs_apgd, varname = "mprs")
 return_val<-compareSUB(mean_pr_hist, mean_pr_obs, lon=lon, lat=lat, EVAL=FALSE)
 dif_hist <- return_val[[1]]
 names(dif_hist)<-time_list_hist
 freq_hist <- return_val[[2]]
+biases_eur11_hist <- plotBoxplot(dif_hist, "eur_11_historical_boxplot_", main_pattern="historical", overall_mean=FALSE)
 mean_eval<-compareAllYears(differences=dif_eval, frequencies=freq_eval, lon=lon, lat=lat, EVAL=TRUE)
 mean_hist<-compareAllYears(differences=dif_hist, frequencies=freq_hist, lon=lon, lat=lat, EVAL=FALSE)
-'
-
+plotBoxplot(mean_eval[[1]], "eur_11_mean_evaluation_boxplot", "evaluation", overall_mean=TRUE)
+plotBoxplot(mean_hist[[1]], "eur_11_mean_historical_boxplot", "historical", overall_mean=TRUE)
 ########################################################################################################################
 ##################### ALP-3 ****************************************** CALCULATIONS ####################################
 ########################################################################################################################
@@ -369,7 +355,6 @@ mean_mean_eval<-compareAllYears(differences=dif_eval_raster, frequencies=dif_eva
 mean_mean_hist<-compareAllYears(differences=dif_hist_raster, frequencies=dif_hist_freq, lon=apgd_lon, lat=apgd_lat, EVAL=FALSE)
 
 '
-
 'observation <- getRemappedObs(input_file_obs_remapped)
 quantile_observations<-getRemappedAnnualQuantileObs(observation)
 lon <- raster(input_file_obs_remapped, varname="lon")
@@ -404,19 +389,27 @@ for(i in 1:11)
 }
 '
 
-######################################################################
-#-----  --------------split all files and place them into .nc dumpfiles -----------------------###########
-######################################################################
-#ids_by_month<-splitMonthlyOBS(all_days=stack(input_file_obs_remapped, varname="rr"), lon=stack(input_files_eval_pr[[1]], varname="lon"),
-#                lat=raster(input_files_eval_pr[[1]], varname="lat"), new_filename=filename_obs_monthly)
+mean_pr_eval_alp3 <- stack(dump_file_mprs_eval_alp3, varname = "mprs")
+mean_pr_obs <- stack(dump_file_mprs_apgd, varname = "mprs")
+lon=subset(mean_pr_obs, nlayers(mean_pr_obs)-1)
+lat=subset(mean_pr_obs, nlayers(mean_pr_obs))
+return_val <-compareSUB(mean_pr_eval_alp3, mean_pr_obs, lon= lon, lat= lat, EVAL=TRUE)
+dif_eval_alp3 <- return_val[[1]]
+freq_eval_alp3 <- return_val[[2]]
+biases_alp3_eval<-plotBoxplot(dif_eval_alp3, "alp3_evaluation_boxplot_", main_pattern="evaluation", overall_mean=FALSE)
 
-#ids_by_month<-splitMonthlySim(allInputfiles=input_files_eval_pr, lon=stack(input_files_eval_pr[[1]], varname="lon"),
-#lat=raster(input_files_eval_pr[[1]], varname="lat"), new_filename=filename_eval_monthly)
-#ids_by_month<-splitMonthlySim(allInputfiles=input_files_hist_pr, lon=raster(input_files_hist_pr[[1]], varname="lon"),
-#                              lat=raster(input_files_hist_pr[[1]], varname="lat"), new_filename=filename_hist_monthly)
-#ids_by_month<-splitMonthlyOBS(all_days = stackAPGD(inputfiles = input_files_APGD), lon = raster(input_files_APGD[[1]], varname="lon"),
-#                              lat=raster(input_files_APGD[[1]], varname="lat"), new_filename = filename_obs_monthly)
 
+
+mean_pr_hist_alp3 <- stack(dump_file_mprs_hist_alp3, varname = "mprs")
+mean_pr_obs <- stack(dump_file_mprs_apgd, varname = "mprs")
+return_val<-compareSUB(mean_pr_hist_alp3, mean_pr_obs, lon=lon, lat=lat, EVAL=FALSE)
+dif_hist_alp3 <- return_val[[1]]
+freq_hist_alp3 <- return_val[[2]]
+biases_alp3_hist<-plotBoxplot(dif_hist_alp3, "alp3_historical_boxplot_", main_pattern="historical", overall_mean=FALSE)
+mean_eval_alp3<-compareAllYears(differences=dif_eval_alp3, frequencies=freq_eval, lon=lon, lat=lat, EVAL=TRUE)
+mean_hist_alp3<-compareAllYears(differences=dif_hist_alp3, frequencies=freq_hist_alp3, lon=lon, lat=lat, EVAL=FALSE)
+plotBoxplot(mean_eval_alp3[[1]], "alp3_mean_evaluation_boxplot", "evaluation", overall_mean=TRUE)
+plotBoxplot(mean_hist_alp3[[1]], "alp3_mean_historical_boxplot", "historical", overall_mean=TRUE)
 
 #########################################################################################################
 #########################################################################################################
@@ -424,8 +417,9 @@ for(i in 1:11)
 #########################################################################################################
 #########################################################################################################
 
-#differences_eval<-compareMonthly(monthly_filename=filename_eval_monthly) # Get q90 and q99 differences
-#differences_hist<-compareMonthly(monthly_filename=filename_hist_monthly)
+
+differences_eval<-compareMonthly(monthly_filename=filename_eval_monthly) # Get q90 and q99 differences
+differences_hist<-compareMonthly(monthly_filename=filename_hist_monthly)
 'cells<-cellFromXY(differences_eval[[1]][[1]], cropMatrix(xmin=220, xmax=243, ymin=0,ymax=20))
 cropped_hist<-differences_hist
 cropped_eval<-differences_eval

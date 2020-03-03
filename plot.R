@@ -15,10 +15,10 @@ plotJPGmean <- function(raster, lon, lat, filename, plotmain, addMap){
     if(ALP3==TRUE)
     {
         quilt.plot(data.frame(lon=as.vector(lon),lat=as.vector(lat),pr=as.vector(raster)), nx=ncol(raster)-1, ny=nrow(raster)-1,
-        col=rev(heat.colors(9)), main=plotmain)# na.rm=TRUE)
+        main=plotmain)# na.rm=TRUE)
     }else{
         quilt.plot(data.frame(lon=as.vector(lon),lat=as.vector(lat),pr=as.vector(raster)), nx=ncol(raster)-1, ny=nrow(raster)-1,
-        col=rev(heat.colors(9)), breaks = c(0.0:9.0)*1.8, main=plotmain, na.rm=TRUE, lab.breaks=c(0.0:9.0)*1.8)
+        'col=rev(heat.colors(9)), breaks = c(0.0:9.0)*1.8', main=plotmain, na.rm=TRUE, 'lab.breaks=c(0.0:9.0)*1.8')
     }
     #quilt.plot(data.frame(lon=as.vector(subset(raster, 'longitude')),lat=as.vector(subset(raster,'latitude')),pr=as.vector(subset(raster, 1))), nx=412, ny=424,
     #col=rev(heat.colors(9)), breaks = c(0.0:9.0)*1.8, main=plotmain, na.rm=TRUE, lab.breaks=c(0.0:9.0)*1.8)
@@ -31,7 +31,7 @@ plotJPGmean <- function(raster, lon, lat, filename, plotmain, addMap){
 
 plotJPGobs <- function(rast, filename, plotmain, addMap){
     jpeg(paste0(output_dir,filename), height = 600, width = 900)
-    plot(rast, main=plotmain, breaks= c(0:9)*1.8, col=rev(heat.colors(n=9)))
+    plot(rast, main=plotmain, breaks= c(0:9)*1.8)
     if(!is.null(addMap) & addMap == TRUE){
         map(add=TRUE, col='black')
     }
@@ -101,7 +101,7 @@ plotDifferences <- function(frequencies, raster, lon, lat, filename, plotmain, a
             main=paste0(plotmain, " in ", toString(i+1995)))#breaks = c(0.0:9.0)*2, main=plotmain, na.rm=TRUE, lab.breaks=c(0.0:9.0)*1.8)
             }else{
                 quilt.plot(data.frame(lon=as.vector(lon),lat=as.vector(lat),pr=as.vector(raster[[i]])), nx=ncol(raster)-1, ny=nrow(raster)-1,
-                col=rev(heat.colors(9)), main=paste0(plotmain, " in ", toString(i+1994)))
+                main=paste0(plotmain, " in ", toString(i+1994)))
             }
         }
         #quilt.plot(data.frame(lon=as.vector(subset(raster, 'longitude')),lat=as.vector(subset(raster,'latitude')),pr=as.vector(subset(raster, 1))), nx=412, ny=424,
@@ -151,7 +151,7 @@ plotMeanDifferences <- function(differences, frequencies, lon, lat, filename, EV
             main="Mean difference in evaluation-observated differences for period 1996-2005")
         }else{
             quilt.plot(data.frame(lon=as.vector(lon),lat=as.vector(lat),pr=as.vector(differences)), nx=ncol(differences)-1, ny=nrow(differences)-1,
-            main="Mean difference in historical-observated differences for period 1995-2005")
+            main="Mean difference in historical-observated differences for period 1996-2005")
         }
     }
     map(add=TRUE, col='black')
@@ -274,4 +274,23 @@ plotTwoFrequencies <- function(freq_eval, freq_hist, filename, data_type){
     legend(x=1300,y=NULL, legend=c("Evaluation-APGD", "Historical-APGD)"),
     col=c("red", "green"), lty=1:2)
     dev.off()
+}
+
+plotBoxplot<-function(raster_brick, filename_pattern, main_pattern, overall_mean){
+  no_na<-list(layer1=NULL, layer2=NULL, layer3=NULL, layer4=NULL, layer5=NULL, layer6=NULL, layer7=NULL, layer8=NULL, layer9=NULL,layer10=NULL)
+  biases<-list()
+  for(i in 1:nlayers(raster_brick)){
+    no_na[[i]]<-values(raster_brick[[i]])
+    no_na[[i]]<-no_na[[i]][!is.na(no_na[[i]])]
+    biases<-unlist(list(unlist(biases), bias(no_na[[i]])))
+    if(overall_mean==TRUE){
+      jpeg(paste0(output_dir, filename_pattern,".jpg"), height = 400, width = 500)
+      boxplot(no_na[[i]], ylab="Mean difference from observated data [mm/day]",  main=paste0("Mean boxplot of ",main_pattern," data, mean over all years. Bias = ", round(bias(no_na[[i]]),5)))
+    }else{
+      jpeg(paste0(output_dir, filename_pattern, i+1995, ".jpg"), height = 400, width = 500)
+      boxplot(no_na[[i]], ylab="Mean difference from observated data [mm/day]",  main=paste0("Mean boxplot of ",main_pattern," data in year: ", i+1995, ", Bias = ", round(bias(no_na[[i]]),5)))
+    }
+      dev.off()
+  }
+  return(biases)
 }
