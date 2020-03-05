@@ -294,3 +294,15 @@ plotBoxplot<-function(raster_brick, filename_pattern, main_pattern, overall_mean
   }
   return(biases)
 }
+
+plotBiases <- function(biases_alp3_eval, biases_alp3_hist, biases_eur11_eval, biases_eur11_hist, fn){
+  #tada<-cbind(timeline=as.integer(time_list_eval), biases_alp3_eval, biases_alp3_hist, biases_eur11_eval, biases_eur11_hist)
+  tada<-data.frame(timeline=as.integer(time_list_eval), biases=c(biases_alp3_eval, biases_alp3_hist, biases_eur11_eval, biases_eur11_hist), 
+                   grouping=structure(c(rep(1L, 10), rep(2L,10), rep(3L, 10), rep(4L, 10)),
+                   .Label=c("mean bias of alp3-evaluation data","mean bias of alp3-historical data", "mean bias of eur11-evaluation data", "mean bias of eur11-historical data"),class="factor"))
+  jpeg(paste0(output_dir, fn, ".jpg"), width = 900, height=600)
+    print(paste0(output_dir, fn, ".jpg"))
+    ggplot(tada) +aes(x=as.Date.yearmon(timeline), y=biases, col=grouping) + geom_line() + ylab("Mean Biases [mm/day]") +xlab("Years") + guides(col=guide_legend(title="Dataset")) + ggtitle("Yearly Mean Biases")
+  dev.off()  
+}
+

@@ -411,6 +411,10 @@ mean_hist_alp3<-compareAllYears(differences=dif_hist_alp3, frequencies=freq_hist
 plotBoxplot(mean_eval_alp3[[1]], "alp3_mean_evaluation_boxplot", "evaluation", overall_mean=TRUE)
 plotBoxplot(mean_hist_alp3[[1]], "alp3_mean_historical_boxplot", "historical", overall_mean=TRUE)
 
+
+
+########################BIASES#################
+plotBiases(biases_alp3_eval, biases_alp3_hist, biases_eur11_eval, biases_eur11_hist, fn="yearly_mean_biases")
 #########################################################################################################
 #########################################################################################################
 ############### --------------------- compare differences monthly ---------------- ######################
