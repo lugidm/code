@@ -114,3 +114,5 @@ compareAllYears<-function(differences, frequencies, lon, lat, EVAL)
     return(list(differences_mean, frequencies_mean))
 
 }
+
+

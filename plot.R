@@ -101,7 +101,7 @@ plotDifferences <- function(frequencies, raster, lon, lat, filename, plotmain, a
             main=paste0(plotmain, " in ", toString(i+1995)))#breaks = c(0.0:9.0)*2, main=plotmain, na.rm=TRUE, lab.breaks=c(0.0:9.0)*1.8)
             }else{
                 quilt.plot(data.frame(lon=as.vector(lon),lat=as.vector(lat),pr=as.vector(raster[[i]])), nx=ncol(raster)-1, ny=nrow(raster)-1,
-                main=paste0(plotmain, " in ", toString(i+1994)))
+                main=paste0(plotmain, " in ", toString(i+1995)))
             }
         }
         #quilt.plot(data.frame(lon=as.vector(subset(raster, 'longitude')),lat=as.vector(subset(raster,'latitude')),pr=as.vector(subset(raster, 1))), nx=412, ny=424,
@@ -119,13 +119,13 @@ plotDifferences <- function(frequencies, raster, lon, lat, filename, plotmain, a
             round(max(frequencies[[i]][,1]))), col="gray", lty=3)
             print(paste0("plotted ", i+1995))
         }else{
-            jpeg(paste0(output_dir,toString(i+1994),"frequencies", filename), height = 400, width = 650)
+            jpeg(paste0(output_dir,toString(i+1995),"frequencies", filename), height = 400, width = 650)
             plot(frequencies[[i]] , type="l", col="black", xlab="divergence", ylab="over all appearance",
-            main=paste0("Frequency plot in ", toString(i+1994)))
+            main=paste0("Frequency plot in ", toString(i+1995)))
             axis(1, seq(round(min(frequencies[[i]][,1])), round(max(frequencies[[i]][,1])), by = 1.0))
             abline(h=seq(round(min(frequencies[[i]][,2])), round(max(frequencies[[i]][,2])), by=500), v=seq(round(min(frequencies[[i]][,1])),
             round(max(frequencies[[i]][,1]))), col="gray", lty=3)
-            print(paste0("plotted ", i+1994))
+            print(paste0("plotted ", i+1995))
         }
         dev.off()
 
@@ -306,3 +306,26 @@ plotBiases <- function(biases_alp3_eval, biases_alp3_hist, biases_eur11_eval, bi
   dev.off()  
 }
 
+click_plot<-function(raster){
+  #quilt.plot(data.frame(lon=as.vector(lon),lat=as.vector(lat),pr=as.vector(raster)), nx=ncol(differences)-1, ny=nrow(differences)-1)
+  dev.off()
+  X11()
+  plot(raster)
+  click(x=raster, n=Inf, xy=TRUE, cell=TRUE, type="o")
+}
+
+justQuiltPlot<-function(ra, lon, lat)
+{
+  extent(ra)<-extent(lon)
+  quilt.plot(data.frame(lon=as.vector(lon),lat=as.vector(lat),pr=as.vector(ra)), nx=ncol(ra), ny=nrow(ra))
+  map(add = TRUE)
+}
+
+plotDif2002 <- function(data, fn){
+  Molten<-melt(data, id.vars="timeline")
+  
+  jpeg(paste0(output_dir, fn, ".jpg"), width = 900, height=600)
+  print(paste0(output_dir, fn, ".jpg"))
+  ggplot(tada) +aes(x=as.Date(timeline), y=differences.dif_e11_hist) + geom_line() + ylab("Mean Biases [mm/day]") +xlab("Years") + guides(col=guide_legend(title="Dataset")) + ggtitle("Yearly Mean Biases")
+  dev.off()  
+}

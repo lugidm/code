@@ -295,7 +295,7 @@ varname="MPercipitation", varunit="mm", longname="Mean Percipitation", xname="X"
 ########################################################################################################################
 #############################################   COMPARISIONS EUR 11 ####################################################
 ########################################################################################################################
-
+ALP3=FALSE
 mean_pr_eval <- stack(dump_file_mprs_eval_eur11, varname = "mean_pr")
 mean_pr_obs <- stack(dump_file_mprs_apgd, varname = "mprs")
 lon=subset(mean_pr_obs, nlayers(mean_pr_obs)-1)
@@ -412,6 +412,36 @@ plotBoxplot(mean_hist_alp3[[1]], "alp3_mean_historical_boxplot", "historical", o
 
 
 
+########################################################################################################
+#############################    2002 2002 2002 2002 2002 2002 2002 2002 ###############################
+########################################################################################################
+
+eval_eur11_2002<-stack(getEUR11regridded_eval_pr()[[7]], varname="pr")
+hist_eur11_2002<-stack(getEUR11regridded_historical_pr()[[7]], varname="pr")
+eval_alp3_2002<-stack(getALP3regriddedevalPR()[[7]], varname="TOT_PREC")
+hist_alp3_2002<-stack(getALP3regriddedhistPR()[[7]], varname="TOT_PREC")
+apgd_2002<-getAPGDinYear(stackAPGD(input_files_APGD), 2002)
+extent(apgd_2002)<-extent(eval_eur11_2002)
+cropped_eval_eur11_2002<-cropMean2002(eval_eur11_2002) 
+cropped_hist_eur11_2002<-cropMean2002(hist_eur11_2002) 
+cropped_eval_alp3_2002<-cropMean2002(eval_alp3_2002) 
+cropped_hist_alp3_2002<-cropMean2002(hist_alp3_2002) 
+cropped_apgd_2002<-cropMean2002(apgd_2002)
+
+dif_2002<-subArrayMean(hist_eur11 = cropped_hist_eur11_2002, eval_eur11 = cropped_eval_eur11_2002,
+                            hist_alp3 = cropped_hist_alp3_2002, eval_alp3 = cropped_eval_alp3_2002, cropped_apgd_2002)
+Molten<-melt(dif_2002, id.vars="timeline")
+X11()
+ggplot(dif_2002) + aes(x=as.Date(timeline), y=EUR.11.Historical) +geom_line()
+x11()
+ggplot(dif_2002) + aes(x=as.Date(timeline), y=EUR.11.Evaluation) +geom_line()
+
+ggplot(Molten) +aes(x=as.Date(timeline), y=value, col=variable) + geom_line()
+
+prs_2002 <- stack(dif_hist[[7]], dif_eval[[7]], dif_hist_alp3[[7]], dif_eval_alp3[[7]])
+mean_2002_cropped <-cropMean2002(mean_2002) 
+
+
 ########################BIASES#################
 plotBiases(biases_alp3_eval, biases_alp3_hist, biases_eur11_eval, biases_eur11_hist, fn="yearly_mean_biases")
 #########################################################################################################
@@ -420,10 +450,10 @@ plotBiases(biases_alp3_eval, biases_alp3_hist, biases_eur11_eval, biases_eur11_h
 #########################################################################################################
 #########################################################################################################
 
-
+'
 differences_eval<-compareMonthly(monthly_filename=filename_eval_monthly) # Get q90 and q99 differences
 differences_hist<-compareMonthly(monthly_filename=filename_hist_monthly)
-'cells<-cellFromXY(differences_eval[[1]][[1]], cropMatrix(xmin=220, xmax=243, ymin=0,ymax=20))
+cells<-cellFromXY(differences_eval[[1]][[1]], cropMatrix(xmin=220, xmax=243, ymin=0,ymax=20))
 cropped_hist<-differences_hist
 cropped_eval<-differences_eval
 for(months in 1:12){

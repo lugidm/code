@@ -44,3 +44,10 @@ cropMatrix<-function(xmin, xmax, ymin, ymax){
     }
     return(c)
 }
+
+getAPGDinYear<-function(allDays, year){
+    dummy <- subset(allDays, grep(toString(year), names(allDays), value = T))
+    #### REALLY EXPENSIVE CALCULATION
+    dummy[dummy==fVal_apgd$value] <- NA
+    return(dummy)
+}

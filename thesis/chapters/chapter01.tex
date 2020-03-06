@@ -64,26 +64,44 @@ Um die örtliche Beschaffenheit der größten Abweichungen darzustellen wurden e
 Wie man gut in der Abbildung erkennen kann, ist im Allgemeinen über den orthographisch gediegenen Gegenden die Abweichung vom Beobachtungsdatensatz gering. Es ist gut ersichtlich, dass die Abweichungen in überwiegend gebirgigen Gegenden größer sind. Wie auch in den Abbildungen \ref{fig:mean_freq_plots} zu sehen ist, überwiegt eine Abweichung von $0.5-1$. Die Kurve ist auch leicht ins rechte verschoben - dies bedeutet dass mehr Niederschlage simuliert wurde als es tatsächlich gab. Dies könnte somit eine Schwäche des Klimamodells darstellen, da sich dieses Muster auch im den anderen Datensätzen abzeichnet, wie im folgenden Kapitel erkenntlich gemacht werden soll. \newpage
 
 \section{Beobachtungen eines Jahres: 2002}
-Das Jahr 2002 wurde gewählt, da sich mit diesem Jahr die nahezu gleichbleibende Differenzen-Verteilung am besten darstellen lässt, wie man in Abbildung \ref{fig:yearly_mean_biases} erkennen kann.
-\begin{figure}[hbt!]
+Das Jahr 2002 wurde gewählt, da sich mit diesem Jahr die nahezu gleichbleibende Differenzen-Verteilung am besten darstellen lässt, wie man in Abbildung \ref{fig:yearly_mean_biases} erkennen kann. In diesem Kapitel soll es darum gehen, die Ortographie bzw. die örtliche Verteilung der Differenzen näher zu betrachten. Dazu wurden zunächst die Abweichungen des Jahresmittels bildlich dargestellt: Abb. \ref{fig:dif_mean_2002}.  
+\begin{figure}[h]
 		\begin{subfigure}{0.49\textwidth}
 			\includegraphics[width=\textwidth]{mean_n/2002dif_mprs_hist-obs.jpg}
-			\caption{Differenzen des jährlichen Mittels über den Niederschlag im Jahr 2002 vom Datensatz historical des Klimamodells EUR-11}
-			\label{fig:eur11_hist_dif22}
+			\caption{Historical, EUR-11}
+			\label{fig:dif_mean_2002:eur11_hist}
 		\end{subfigure}
 		\begin{subfigure}{0.49\textwidth}
 			\includegraphics[width=\textwidth]{mean_n/2002dif_mprs_alp3hist-apgd.jpg}
-			\caption{Differenzen des jährlichen Mittels über den Niederschlag im Jahr 2002 vom Datensatz historical des Klimamodells ALP-3}
-			\label{fig:alp3_hist_dif22}
+			\caption{Historical, ALP-3}
+			\label{fig:dif_mean_2002:alp3_hist}
 		\end{subfigure}
+	\caption{Differenzen des jährlichen Mittels über den Niederschlag im Jahr 2002}
+	\label{fig:dif_mean_2002}
+\end{figure}
+\begin{figure}
 		\begin{subfigure}{0.49\textwidth}
 			\includegraphics[width=\textwidth]{mean_n/2002dif_mprs_eval-obs.jpg}
-			\caption{Differenzen des jährlichen Mittels über den Niederschlag im Jahr 2002 vom Datensatz evaluation des Klimamodells ALP-3}
-			\label{fig:alp3_hist_dif22}
+			\caption{Evaluation, EUR-11}
+			\label{fig:dif_mean_2002:eur11_eval}
 		\end{subfigure}
+		\begin{subfigure}{0.49\textwidth}
+			\includegraphics[width=\textwidth]{mean_n/2002dif_mprs_alp3eval-apgd.jpg}
+			\caption{Evaluation, ALP-3}
+			\label{fig:dif_mean_2002:alp3_eval}
+		\end{subfigure}
+	\caption{Differenzen des jährlichen Mittels über den Niederschlag im Jahr 2002}
+	\label{fig:dif_mean_2002}
+\end{figure}
+\begin{figure}
+	\includegraphics[width=\textwidth]{mean_n/decision_plot_hist_alp3_2002.jpg}
+	\caption{Der Bereich in dem die Abweichungen für alle Datensätze am größten ist, gekennzeichnet mit der Niederschlagsmenge 20mm/day - dunkelrot}
+	\label{fig:decision_mean_2002}
 \end{figure}
 
+Da in einem gewissen Bereich die Abweichungen über alle Datensätze am größten sind, wurde dieser gesondert Betrachtet. Dieser Bereich wurde in der Abbildung \ref{fig:decision_mean_2002} als dunkelroter Bereich gekennzeichnet (mit 20 mm/day).
 
+\newpage
 
 Man kann auch gut erkennen, dass im historical-Datensatz (siehe Abb. \ref{fig:hist_dif}) die Abweichungen größer sind als im evaluation Datensatz, was darauf zurückzuführen ist, dass für den historical-Datensatz die Auswirkungen eines simulierten globalen Klimas auf regionale Ebene berechnet wurden, und dadurch Abweichungen zur tatsächlichen Konstellation der Atmosphäre von vorneherein herrschen. Der Mittelwert der Abweichungen in diesem Datensatz beträgt für das Jahr 1999 $+0.4590$. Dies ist bedeutend höher als im evaluation-Datensatz. Man kann dies auch gut in der Abbildung \ref{fig:hist_freq_dif} erkennen, wo die maximale Häufigkeit nicht mehr über $0$ sondern über ca. $+0.3$ liegt.\\
 Im folgenden sollen alle Jahre gemittelt verglichen werden um eine Allgemeinaussage über das GCM MPI-ESM-LR und das betreffende CCLM4-8-17 treffen zu können:\\
