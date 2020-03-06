@@ -2,81 +2,89 @@ Um ein Bild von der allgemeinen Übereinstimmung der simulierten Daten mit den t
 Die Berechnungen erfolgten im wesentlichen folgendem Schema:
 \begin{enumerate}
 	\item Berechnung des jährlichen Mittelwertes pro Gitterzelle über aller Jahre
-	\item Subtraktion dies Mittelwerte (Simuliert - Beobachtet)
-	\subitem[a] Mittelwerte pro Gitterzelle über die Differenzen
-	\subitem[b] 90. und 99. Quantil der jährlichen Differenzen der Mittelwerte
+	\item Subtraktion dieser Mittelwerte (Simuliert - Beobachtet)
+	\subitem Mittelwerte pro Gitterzelle über diese Differenzen: ein Mittel über die gesamten zehn Jahre der Simulationsdaten	
 \end{enumerate}
-\section{EUR-11 Datensatz}
-In diesem Unterkapitel wird ausschließlich der EUR-11 Datensatz evaluiert, welcher ganz Europa abbildet. Der Beobachtungsdatensatz ist E-OBS\cite{eobs}.\\
-\begin{figure}[hbt!]
-	\begin{subfigure}{0.49\textwidth}
-		\includegraphics[width=\textwidth]{mean/mprs1999obs_remapped.jpg}
-		\caption{Jährliches Mittel über den Niederschlag im Jahr 1999 der tatsächlich Beobachteten Daten}
-		\label{fig:mobs99}
-	\end{subfigure}
-	\begin{subfigure}{0.49\textwidth}
-		\includegraphics[width=\textwidth]{mean/msim1999hist.jpg}
-		\caption{Jährliches Mittel über den Niederschlag im Jahr 1999 im historical Datensatz von EUR-11}
-		\label{fig:mhist99}
-	\end{subfigure}
-	\begin{subfigure}{0.49\textwidth}
-		\centering
-		\includegraphics[width=\textwidth]{mean/msim1999eval.jpg}
-		\caption{Jährliches Mittel über den Niederschlag im Jahr 1999 im evaluation Datensatz von EUR-11}
-		\label{fig:meval99}
-	\end{subfigure}
-	\begin{subfigure}{0.49\textwidth}
-		\centering
-		\includegraphics[width=\textwidth]{mean/mprs2099rcp85_eur11.jpg}
-		\caption{Jährliches Mittel über den Niederschlag im Jahr \textbf{2099} im rcp Datensatz von EUR-11}
-		\label{fig:mrcp99}
-	\end{subfigure}
-	\caption{Jährliches Mittel über den Niederschlag im EUR-11 Datensatz}
+
+\section{Mittlerer Bias}
+In diesem Unterkapitel soll das Verhalten der gemittelten Differenzen aller Datensätze aufgezeigt werden, da damit ein möglichst guter Überblick über die Qualität bzw. Aussagekraft der Datensätze gegeben wird.
+\begin{figure}[h!]
+	\includegraphics[width=\textwidth]{mean_n/yearly_mean_biases.jpg}
+	\caption{Die Biases der gemittelten Differenzen aller vier Datensätze aufgetragen gegen die Zeit}
+	\label{fig:yearly_mean_biases}
 \end{figure}
-\\
-Zu Abb. \ref{fig:mobs99}: Man erkennt gut die starken Regenfälle an der Westküste Norwegens und Englands (bis zu 12.6 mm). Der Niederschlag an Irlands Westküste und im Alpenbereich fielen 1999 im Mittel schwach aus (bis zu 7.2mm). Über Deutschland, Frankreich und weiten Teilen Europas fielen im Schnitt 3.6-5.4 mm Regen am Tag.\\
-\\
-Zu Abb. \ref{fig:mhist99}: Der Regen an der norwegischen Westküste fällt bei dieser Modellaufnahme um einiges schwächer aus als in der Aufnahme des Evaluation Datensatzes zuvor. Dies ist noch auffallender im Vergleich mit den Beobachtungsdaten. Mit dem Niederschlag an der britischen Westküste verhält es sich ähnlich, Auffallend sind besonders die Erscheinungen im Süden Frankreichs, wo aus unersichtlichen Gründen im Flachland um Toulouse größere Regenmengen \glqq voraus \grqq-gesagt wurden. Die Analyse des Alpenraums und des Kaukasusgebiets fallen fast gleich aus wie die im Evaluationsdatensatz (Abb. \ref{fig:meval99}). Bei dieser Herangehensweise wurde das CCLM mit dem GCM MPI-ESM-LR für die historische Periode 1999 angetrieben. Es sind darin wohl einige Abweichungen zum tatsächlichen Globalen Klima vorhanden, aber auch das downscaling hat diese Abweichungen hervorgebracht. Dies wird im nächsten Unterkapitel beim Vergleichen mit den Ergebnissen einer konvektionserlaubenden Simulation (ALP-3 Daten) ersichtlich. Zur Abbildung \ref{fig:mrcp99}: man erkennt dass sich die Niederschlagsmuster über den gesamten Raum kaum geändert haben, was eine gutes miteinbeziehen der Gebirgsgruppen verspricht. Auffallend ist aber der stark erhöhte Niederschlag am nordwestlichen Rande des Beobachtungsraumes, an der Küste Grünlands, was man als Ausreißer betrachten kann.\\
-\begin{figure}[hbt!]
-	\centering
+Wie man gut in der Abbildung \ref{fig:yearly_mean_biases} erkennen kann, liegt der Bias des evaluation-Datensatzes weit näher bei 0 als die des historicals. Des Weiteren ist gut zu erkennen, dass die Abweichung des Datensatzes ALP-3 betrieben mit den Re-Analysedaten (evaluation) die Beobachtungsdaten gut abbildet und somit ein gutes Klimamodell für den Alpenraum darstellt. Der Bias in diesem Fall ist sehr nahe bei 0. Beide Klimamodelle betrieben mit dem GCM MPI-ESM-LR liefern Ergebnisse, die einen starken Bias in positive Richtung aufweisen, wobei hier kaum noch Unterschiede zwischen EUR-11 und ALP-3 auszumachen sind. Diese Abbildung spricht somit für die Qualität des regionalen Klimamodells, ALP-3 und gegen die Treffsicherheit des globalen Klimamodells.\\
+Da der BIAS statistisch gesehen nicht hinreichend aussagekräftig ist, wurden in Abb.\ref{fig:mean_freq_plots} die Frequenzen (Häufigkeiten) der Abweichungen abgebildet, sowie ein Boxplot in Abb.\ref{fig:mean_boxplots} angelegt, wo zu erkennen ist, dass es einige große Ausreißer gibt. Auf diesen Fakt wird auch in Folge eingegangen, da es über das gesamte Gitter starke Schwankungen der Abweichung gab, welche sich vor allem an den Gebirgskämmen abzeichnete.\newpage
+\begin{figure}[h!]
 	\begin{subfigure}{0.49\textwidth}
-		\centering
-		\includegraphics[width=\textwidth]{mean/1999dif_mprs_eval-obs.jpg}
-		\caption{Differenz des Beobachtungsdatensatzes und des evaluation-Datensatzes}
-		\label{fig:eval_dif}
+		\includegraphics[width=\textwidth]{mean_n/frequenciesdif_mean_hist.jpg}
+		\caption{Historical, EUR-11}
 	\end{subfigure}
 	\begin{subfigure}{0.49\textwidth}
-		\centering
-		\includegraphics[width=\textwidth]{mean/1999frequenciesdif_mprs_eval-obs.jpg}
-		\caption{Häufigkeit der Abweichungen über das gesamte Gitter}
-		\label{fig:eval_freq_dif}
+		\includegraphics[width=\textwidth]{mean_n/frequenciesdif_mean_hist_apgd.jpg}
+		\caption{Historical, ALP-3}
 	\end{subfigure}
 	\begin{subfigure}{0.49\textwidth}
-		\centering
-		\includegraphics[width=\textwidth]{mean/1999dif_mprs_hist-obs.jpg}
-		\caption{Differenz des Beobachtungsdatensatzes und des historical-Datensatzes}
-		\label{fig:hist_dif}
+		\includegraphics[width=\textwidth]{mean_n/frequenciesdif_mean_eval.jpg}
+		\caption{Evaluation, EUR-11}
 	\end{subfigure}
 	\begin{subfigure}{0.49\textwidth}
-		\centering
-		\includegraphics[width=\textwidth]{mean/1999frequenciesdif_mprs_hist-obs.jpg}
-		\caption{Häufigkeit der Abweichungen über das gesamte Gitter für den historical-Datensatz}
-		\label{fig:hist_freq_dif}
+		\includegraphics[width=\textwidth]{mean_n/frequenciesdif_mean_eval_apgd.jpg}
+		\caption{Evaluation, ALP-3}
 	\end{subfigure}
-	\begin{subfigure}{0.49\textwidth}
-		\centering
-		\includegraphics[width=\textwidth]{mean/boxplot_eval_99.jpg}
-		\caption{Boxplot der mittleren Differenzen im evaluation - Datensatz}
-	\end{subfigure}
-	\begin{subfigure}{0.49\textwidth}
-		\centering
-		\includegraphics[width=\textwidth]{mean/boxplot_hist_99.jpg}
-		\caption{Boxplot der mittleren Differenzen im historical - Datensatz}
-	\end{subfigure}
-	\caption{Differenzen für den evaluation- und historical- Datensatz im Jahr 1999}
+	\caption{Frequency-Plots der Differenzen des jährlichen Mittels des Niederschlags gemittelt über alle Jahre}
+	\label{fig:mean_freq_plots}
 \end{figure}
-\\
-Wie man gut in Abb. \ref{fig:eval_dif} erkennen kann ist im allgemeinen über den orthographisch gediegenen Gegenden die Abweichung vom Beobachtungsdatensatz gering. Es ist gut ersichtlich, dass die Abweichungen in überwiegend gebirgigen Gegenden größer sind. Wie auch in Abb. \ref{fig:eval_freq_dif} zu sehen ist, überwiegt eine Abweichung von 0, auch wenn die Kurve leicht ins rechte verschoben ist - dies bedeutet dass mehr Niederschlage simuliert wurde als es tatsächlich gab. Der Mittelwert der Abweichungen in diesem Datensatz beträgt für das Jahr 1999 $+0.1009$.\\
+\begin{figure}[h!]
+	\begin{subfigure}{0.49\textwidth}
+		\includegraphics[width=\textwidth]{mean_n/eur_11_mean_historical_boxplot.jpg}
+		\caption{Historical, EUR-11}
+	\end{subfigure}
+	\begin{subfigure}{0.49\textwidth}
+		\includegraphics[width=\textwidth]{mean_n/alp3_mean_historical_boxplot.jpg}
+		\caption{Historical, ALP-3}
+	\end{subfigure}
+	\begin{subfigure}{0.49\textwidth}
+		\includegraphics[width=\textwidth]{mean_n/eur_11_mean_evaluation_boxplot.jpg}
+		\caption{Evaluation, EUR-11}
+	\end{subfigure}
+	\begin{subfigure}{0.49\textwidth}
+		\includegraphics[width=\textwidth]{mean_n/alp3_mean_evaluation_boxplot.jpg}
+		\caption{Evaluation, ALP-3}
+	\end{subfigure}
+	\caption{Box-Plots der Differenzen des jährlichen Mittels des Niederschlags gemittelt über alle Jahre}
+	\label{fig:mean_boxplots}
+\end{figure}
+\begin{figure}[h]
+	\includegraphics[width=\textwidth]{mean_n/dif_mean_hist_apgd.jpg}
+    \caption{Differenzen der jährlichen Mittel, gemittelt über alle Jahre, Datensatz: Historical, ALP-3}
+    \label{fig:alp3_dif_hist_mean}
+\end{figure}
+Um die örtliche Beschaffenheit der größten Abweichungen darzustellen wurden eine Beispielhafte Darstellung gewählt, die die größten mittleren Abweichungen zeigt: der Datensatz Historical im regionalen Klimamodell ALP-3. Diese ist in Abbildung \ref{fig:alp3_dif_hist_mean} abgebildet.
+Wie man gut in der Abbildung erkennen kann, ist im Allgemeinen über den orthographisch gediegenen Gegenden die Abweichung vom Beobachtungsdatensatz gering. Es ist gut ersichtlich, dass die Abweichungen in überwiegend gebirgigen Gegenden größer sind. Wie auch in den Abbildungen \ref{fig:mean_freq_plots} zu sehen ist, überwiegt eine Abweichung von $0.5-1$. Die Kurve ist auch leicht ins rechte verschoben - dies bedeutet dass mehr Niederschlage simuliert wurde als es tatsächlich gab. Dies könnte somit eine Schwäche des Klimamodells darstellen, da sich dieses Muster auch im den anderen Datensätzen abzeichnet, wie im folgenden Kapitel erkenntlich gemacht werden soll. \newpage
+
+\section{Beobachtungen eines Jahres: 2002}
+Das Jahr 2002 wurde gewählt, da sich mit diesem Jahr die nahezu gleichbleibende Differenzen-Verteilung am besten darstellen lässt, wie man in Abbildung \ref{fig:yearly_mean_biases} erkennen kann.
+\begin{figure}[hbt!]
+		\begin{subfigure}{0.49\textwidth}
+			\includegraphics[width=\textwidth]{mean_n/2002dif_mprs_hist-obs.jpg}
+			\caption{Differenzen des jährlichen Mittels über den Niederschlag im Jahr 2002 vom Datensatz historical des Klimamodells EUR-11}
+			\label{fig:eur11_hist_dif22}
+		\end{subfigure}
+		\begin{subfigure}{0.49\textwidth}
+			\includegraphics[width=\textwidth]{mean_n/2002dif_mprs_alp3hist-apgd.jpg}
+			\caption{Differenzen des jährlichen Mittels über den Niederschlag im Jahr 2002 vom Datensatz historical des Klimamodells ALP-3}
+			\label{fig:alp3_hist_dif22}
+		\end{subfigure}
+		\begin{subfigure}{0.49\textwidth}
+			\includegraphics[width=\textwidth]{mean_n/2002dif_mprs_eval-obs.jpg}
+			\caption{Differenzen des jährlichen Mittels über den Niederschlag im Jahr 2002 vom Datensatz evaluation des Klimamodells ALP-3}
+			\label{fig:alp3_hist_dif22}
+		\end{subfigure}
+\end{figure}
+
+
+
 Man kann auch gut erkennen, dass im historical-Datensatz (siehe Abb. \ref{fig:hist_dif}) die Abweichungen größer sind als im evaluation Datensatz, was darauf zurückzuführen ist, dass für den historical-Datensatz die Auswirkungen eines simulierten globalen Klimas auf regionale Ebene berechnet wurden, und dadurch Abweichungen zur tatsächlichen Konstellation der Atmosphäre von vorneherein herrschen. Der Mittelwert der Abweichungen in diesem Datensatz beträgt für das Jahr 1999 $+0.4590$. Dies ist bedeutend höher als im evaluation-Datensatz. Man kann dies auch gut in der Abbildung \ref{fig:hist_freq_dif} erkennen, wo die maximale Häufigkeit nicht mehr über $0$ sondern über ca. $+0.3$ liegt.\\
 Im folgenden sollen alle Jahre gemittelt verglichen werden um eine Allgemeinaussage über das GCM MPI-ESM-LR und das betreffende CCLM4-8-17 treffen zu können:\\
 \begin{figure}[hbt!]

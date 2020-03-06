@@ -111,6 +111,6 @@ compareAllYears<-function(differences, frequencies, lon, lat, EVAL)
         plotmain= "maximal differences", EVAL=EVAL)
     }'
 
-    return(list(differences_mean, frequencies_mean, differences_quantile,frequencies_quantile))
+    return(list(differences_mean, frequencies_mean))
 
 }

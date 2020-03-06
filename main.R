@@ -10,6 +10,7 @@ library(rasterVis)
 library(pbdDMAT)
 library(lfstat)
 library(diffeR)
+library(SimDesign)
 source("~/Bacc/code/precip.R")
 source("~/Bacc/code/plot.R")
 source("~/Bacc/code/files.R")
@@ -301,7 +302,6 @@ lon=subset(mean_pr_obs, nlayers(mean_pr_obs)-1)
 lat=subset(mean_pr_obs, nlayers(mean_pr_obs))
 return_val <-compareSUB(mean_pr_eval, mean_pr_obs, lon= lon, lat= lat, EVAL=TRUE)
 dif_eval <- return_val[[1]]
-names(dif_hist)<-time_list_hist
 freq_eval <- return_val[[2]]
 biases_eur11_eval<- plotBoxplot(dif_eval, "eur_11_evaluation_boxplot_", main_pattern="evaluation", overall_mean=FALSE)
 
@@ -311,7 +311,6 @@ mean_pr_hist <- stack(dump_file_mprs_hist_eur11, varname = "mean_pr")
 mean_pr_obs <- stack(dump_file_mprs_apgd, varname = "mprs")
 return_val<-compareSUB(mean_pr_hist, mean_pr_obs, lon=lon, lat=lat, EVAL=FALSE)
 dif_hist <- return_val[[1]]
-names(dif_hist)<-time_list_hist
 freq_hist <- return_val[[2]]
 biases_eur11_hist <- plotBoxplot(dif_hist, "eur_11_historical_boxplot_", main_pattern="historical", overall_mean=FALSE)
 mean_eval<-compareAllYears(differences=dif_eval, frequencies=freq_eval, lon=lon, lat=lat, EVAL=TRUE)
@@ -388,7 +387,7 @@ for(i in 1:11)
     paste0("Annual mean percipitation[mm/day] ", time_list_obs[i]," in remapped observation data for ALP-3"), addMap=TRUE)
 }
 '
-
+ALP3=TRUE
 mean_pr_eval_alp3 <- stack(dump_file_mprs_eval_alp3, varname = "mprs")
 mean_pr_obs <- stack(dump_file_mprs_apgd, varname = "mprs")
 lon=subset(mean_pr_obs, nlayers(mean_pr_obs)-1)
