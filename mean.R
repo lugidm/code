@@ -24,11 +24,8 @@ drawRect<-function(raster, extent){
 subArrayMean <- function(hist_eur11, eval_eur11, hist_alp3, eval_alp3, observated)
 {
   e11_hist<-cellStats(hist_eur11, "mean")
-  x11()
-  plot(e11_hist)
+  
   e11_eval<-cellStats(eval_eur11, "mean")
-  x11()
-  plot(e11_eval)
   alp3_hist<-cellStats(hist_alp3, "mean")
   alp3_eval<-cellStats(eval_alp3, "mean")
   obs<-cellStats(observated, "mean")
@@ -43,8 +40,14 @@ subArrayMean <- function(hist_eur11, eval_eur11, hist_alp3, eval_alp3, observate
     dif_alp3_hist[i][[1]]<-(alp3_hist[i][[1]]-obs[i][[1]])
     dif_alp3_eval[i][[1]]<-(alp3_eval[i][[1]]-obs[i][[1]])
   }
-  
   ret_dat<-data.frame(timeline=seq(from=as.Date("2002-01-01"), to=as.Date("2002-12-31"), by="day"), "EUR-11-Historical"=dif_e11_hist, 
                                 "EUR-11-Evaluation"=dif_e11_eval, "ALP-3-Historical"=dif_alp3_hist, "ALP-3-Evaluation"=dif_alp3_eval)
+  return(ret_dat)
+}
+putInData<-function(simulated_1, simulated_2, observated, start_date, end_date){
+  sim1<-cellStats(simulated_1, "mean")
+  sim2<-cellStats(simulated_2, "mean")
+  obs<-cellStats(observated, "mean")
+  ret_dat<-data.frame(timeline=seq(from=as.Date(start_date), to=as.Date(end_date), by="day"), "ALP-3-Historical"=sim1, "EUR-11-Historical"=sim2, "Observated(APGD)"=obs)
   return(ret_dat)
 }

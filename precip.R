@@ -86,3 +86,12 @@ getAnnualMean <- function(inputfiles, time_list, data_type){
     varname="mprs", varunit="mm/day", longname="Annual mean precipitation", xname="X", yname="Y")
     return(addLayer(addLayer(output_raster, lon), lat))
 }
+
+getPR<-function(inputfiles, varname, mV_name){
+  dummy<-nc_open(inputfiles[[1]])
+  mV<-ncatt_get(dummy, varname, mV_name)$value
+  nc_close(dummy)
+  return_vals<- stack(inputfiles, varname=varname)
+  return_vals[return_vals==mV]<-NA
+  return(return_vals)
+}

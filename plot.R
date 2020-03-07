@@ -91,16 +91,16 @@ plotDifferences <- function(frequencies, raster, lon, lat, filename, plotmain, a
         jpeg(paste0(output_dir,toString(i+1995),filename), height = 500, width = 750)
         if(ALP3==TRUE)
         {
-            quilt.plot(data.frame(lon=as.vector(lon),lat=as.vector(lat),pr=as.vector(raster)), nx=ncol(raster)-1, ny=nrow(raster)-1,
+            quilt.plot(data.frame(lon=as.vector(lon),lat=as.vector(lat),pr=as.vector(raster)), nx=ncol(raster), ny=nrow(raster),
             #col=rev(heat.colors(9)),
             main=paste0(plotmain, " in ", toString(i+1995))) #na.rm=TRUE)
         }else{
             if(EVAL){
-            quilt.plot(data.frame(lon=as.vector(lon),lat=as.vector(lat),pr=as.vector(raster[[i]])), nx=ncol(raster)-1, ny=nrow(raster)-1,
+            quilt.plot(data.frame(lon=as.vector(lon),lat=as.vector(lat),pr=as.vector(raster[[i]])), nx=ncol(raster), ny=nrow(raster),
             #col=rev(heat.colors(9)),
             main=paste0(plotmain, " in ", toString(i+1995)))#breaks = c(0.0:9.0)*2, main=plotmain, na.rm=TRUE, lab.breaks=c(0.0:9.0)*1.8)
             }else{
-                quilt.plot(data.frame(lon=as.vector(lon),lat=as.vector(lat),pr=as.vector(raster[[i]])), nx=ncol(raster)-1, ny=nrow(raster)-1,
+                quilt.plot(data.frame(lon=as.vector(lon),lat=as.vector(lat),pr=as.vector(raster[[i]])), nx=ncol(raster), ny=nrow(raster),
                 main=paste0(plotmain, " in ", toString(i+1995)))
             }
         }
@@ -110,23 +110,15 @@ plotDifferences <- function(frequencies, raster, lon, lat, filename, plotmain, a
             map(add=TRUE, col='black')
         }
         dev.off()
-        if(EVAL | ALP3){
-            jpeg(paste0(output_dir,toString(i+1995),"frequencies", filename), height = 400, width = 650)
-            plot(frequencies[[i]], type="l", col="black", xlab="divergence", ylab="over all appearance",
-            main=paste0("Frequency plot in ", toString(i+1995)))
-            axis(1, seq(round(min(frequencies[[i]][,1])), round(max(frequencies[[i]][,1])), by = 1.0))
-            abline(h=seq(round(min(frequencies[[i]][,2])), round(max(frequencies[[i]][,2])), by=500), v=seq(round(min(frequencies[[i]][,1])),
-            round(max(frequencies[[i]][,1]))), col="gray", lty=3)
-            print(paste0("plotted ", i+1995))
-        }else{
-            jpeg(paste0(output_dir,toString(i+1995),"frequencies", filename), height = 400, width = 650)
-            plot(frequencies[[i]] , type="l", col="black", xlab="divergence", ylab="over all appearance",
-            main=paste0("Frequency plot in ", toString(i+1995)))
-            axis(1, seq(round(min(frequencies[[i]][,1])), round(max(frequencies[[i]][,1])), by = 1.0))
-            abline(h=seq(round(min(frequencies[[i]][,2])), round(max(frequencies[[i]][,2])), by=500), v=seq(round(min(frequencies[[i]][,1])),
-            round(max(frequencies[[i]][,1]))), col="gray", lty=3)
-            print(paste0("plotted ", i+1995))
-        }
+        jpeg(paste0(output_dir,toString(i+1995),"frequencies", filename), height = 400, width = 650)
+          plot(frequencies[[i]], type="l", col="black", xlab="difference", ylab="over all appearance",
+          main=paste0("Frequency plot in ", toString(i+1995)))
+          ', axis=FALSE)
+          axis(1, seq(round(min(frequencies[[i]][,1])), round(max(frequencies[[i]][,1])), by = 10))
+          axis(2, seq(round(min(frequencies[[i]][,2])), round(max(frequencies[[i]][,2])), by = 10))
+          abline(h=seq(round(min(frequencies[[i]][,2])), round(max(frequencies[[i]][,2])), by=10), v=seq(round(min(frequencies[[i]][,1])),
+          round(max(frequencies[[i]][,1])), by=10), col="gray", lty=3)'
+          print(paste0("plotted ", i+1995))
         dev.off()
 
     }
@@ -284,7 +276,7 @@ plotBoxplot<-function(raster_brick, filename_pattern, main_pattern, overall_mean
     no_na[[i]]<-no_na[[i]][!is.na(no_na[[i]])]
     biases<-unlist(list(unlist(biases), bias(no_na[[i]])))
     if(overall_mean==TRUE){
-      jpeg(paste0(output_dir, filename_pattern,".jpg"), height = 400, width = 500)
+      jpeg(paste0(output_dir, filename_pattern,".jpg"), height = 500, width = 700)
       boxplot(no_na[[i]], ylab="Mean difference from observated data [mm/day]",  main=paste0("Mean boxplot of ",main_pattern," data, mean over all years. Bias = ", round(bias(no_na[[i]]),5)))
     }else{
       jpeg(paste0(output_dir, filename_pattern, i+1995, ".jpg"), height = 400, width = 500)
@@ -322,10 +314,14 @@ justQuiltPlot<-function(ra, lon, lat)
 }
 
 plotDif2002 <- function(data, fn){
-  Molten<-melt(data, id.vars="timeline")
-  
-  jpeg(paste0(output_dir, fn, ".jpg"), width = 900, height=600)
-  print(paste0(output_dir, fn, ".jpg"))
-  ggplot(tada) +aes(x=as.Date(timeline), y=differences.dif_e11_hist) + geom_line() + ylab("Mean Biases [mm/day]") +xlab("Years") + guides(col=guide_legend(title="Dataset")) + ggtitle("Yearly Mean Biases")
+  molten<-melt(data, id.vars="timeline")
+  jpeg(paste0(output_dir, fn, ".jpg"), height = 900, width = 1200)
+    ggplot(molten) +aes(x=as.Date(timeline), y=value, col=variable) + geom_line() + ylab("Precipitation [mm/day]") +xlab("") + guides(col=guide_legend(title="Dataset")) + ggtitle("Precipitation 2002  in the area of Sout-Switzerland")
   dev.off()  
 }
+
+saveRaster<-function(raster, filename, varname, longname){
+  writeRaster(raster, paste0(output_dir, filename, ".nc"), overwrite=TRUE, format="CDF",
+              varname=varname, varunit="mm/day", longname=longname, xname="X", yname="Y")
+}
+

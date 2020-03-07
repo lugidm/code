@@ -115,4 +115,31 @@ compareAllYears<-function(differences, frequencies, lon, lat, EVAL)
 
 }
 
+q99_SUB <- function(simulated, observated, lon, lat, EVAL)
+{
+  extent(observated)<-extent(simulated)
+  dif<- overlay(simulated, observated,fun=function(x,y){return((x - y))})
+  f<-freq(dif, digits = 1, cum = TRUE, valid=TRUE, total=TRUE, useNA="no")
+  if(ALP3)
+  {
+    if(EVAL){
+      plotDifferences(frequencies=f, raster=dif, lon=lon, lat=lat,
+                      "dif_q99_eval_alp3.jpg", "Difference in the 99. Percentile [mm/day]", addMap=TRUE, EVAL=EVAL)
+    }else{
+      plotDifferences(frequencies=f, raster=dif, lon=lon, lat=lat,
+                      "dif_q99_hist_alp3.jpg", "Difference in the 99. Percentile [mm/day]", addMap=TRUE, EVAL=EVAL)
+    }
+  }else{
+    if(EVAL){
+      plotDifferences(frequencies=f, raster=dif, lon=lon, lat=lat,
+                      "dif_q99_eval_eur11.jpg", "Difference in the 99. Percentile [mm/day]", addMap=TRUE, EVAL=EVAL)
+    }else{
+      plotDifferences(frequencies=f, raster=dif, lon=lon, lat=lat,
+                      "dif_q99_hist_eur11.jpg", "Difference in the 99. Percentile [mm/day]", addMap=TRUE, EVAL=EVAL)
+    }
+  }
+  return(list(dif, f))
+}
+
+
 

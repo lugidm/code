@@ -19,6 +19,7 @@ source("~/Bacc/code/OBS_functions.R")
 source("~/Bacc/code/APGD_functions.R")
 source("~/Bacc/code/split.R")
 source("~/Bacc/code/monthly.R")
+source("~/Bacc/code/mean.R")
 
 #library(ggplot2)
 #library(rasterVis)
@@ -83,7 +84,7 @@ nc_close(nc_data)
 
 ################################
 ### HELPER FUNCTIONS ###########
-Q99 <- function(x){quantile(x, probs = c(.90,.99), na.rm=TRUE)}
+Q99 <- function(x){quantile(x, probs =c(0.99), na.rm=TRUE)}
 GREATESTDIFF <- function(x){
     if(length(which.max( abs(unlist(na.omit(x)))) == 0)){return(NA)}
     return_val=x[which.max( abs(unlist(na.omit(x))))]}
@@ -226,25 +227,7 @@ for(i in 1:length(time_list_hist))
 ########################################################################################################################
 ################################ EUR-11 REMAPPED OBSERVATION CALCULATIONS ##############################################
 ########################################################################################################################
-################## Q90Q99 ##########################
-####################################################
-'
-observation <- getRemappedObs(input_file_obs_remapped)
-quantile_observations<-getRemappedAnnualQuantileObs(observation)
-lon <- raster(input_file_obs_remapped, varname="lon")
-lat <- raster(input_file_obs_remapped, varname="lat")
-writeRaster(addLayer(addLayer(quantile_observations, lon), lat), "../Results/q90q99_obs_remapped.nc", overwrite=TRUE, format="CDF",
-varname="90and99Quantile", varunit="mm", longname="90and99Quantile", xname="X", yname="Y",zname="nbands", zunit="numeric")
-for(i in 1:11)
-{
-    print("Q99")
-    print(paste("lon lat and q99 for", time_list_obs[i], "done"))
-    plotJPGq90(raster=quantile_observations[[(i*2)-1]], lon=lon, lat=lat, paste0("q90", time_list_obs[i],"obs_remapped.jpg"), paste0("90. Quantile of percipitation[mm/day] in year ",
-    time_list_obs[i]," in remapped observation data"), addMap=TRUE)
-    plotJPGq99(raster=quantile_observations[[(i*2)]], lon=lon, lat=lat, paste0("q99", time_list_obs[i],"obs_remapped.jpg"), paste0("99. Quantile of percipitation[mm/day] in year ",
-    time_list_obs[i]," in remapped observation data"), addMap=TRUE)
-}
-'
+
 ####################################################
 ##############  MEAN   #############################
 ####################################################
@@ -295,7 +278,8 @@ varname="MPercipitation", varunit="mm", longname="Mean Percipitation", xname="X"
 ########################################################################################################################
 #############################################   COMPARISIONS EUR 11 ####################################################
 ########################################################################################################################
-ALP3=FALSE
+
+'ALP3=FALSE
 mean_pr_eval <- stack(dump_file_mprs_eval_eur11, varname = "mean_pr")
 mean_pr_obs <- stack(dump_file_mprs_apgd, varname = "mprs")
 lon=subset(mean_pr_obs, nlayers(mean_pr_obs)-1)
@@ -317,6 +301,7 @@ mean_eval<-compareAllYears(differences=dif_eval, frequencies=freq_eval, lon=lon,
 mean_hist<-compareAllYears(differences=dif_hist, frequencies=freq_hist, lon=lon, lat=lat, EVAL=FALSE)
 plotBoxplot(mean_eval[[1]], "eur_11_mean_evaluation_boxplot", "evaluation", overall_mean=TRUE)
 plotBoxplot(mean_hist[[1]], "eur_11_mean_historical_boxplot", "historical", overall_mean=TRUE)
+'
 ########################################################################################################################
 ##################### ALP-3 ****************************************** CALCULATIONS ####################################
 ########################################################################################################################
@@ -387,6 +372,7 @@ for(i in 1:11)
     paste0("Annual mean percipitation[mm/day] ", time_list_obs[i]," in remapped observation data for ALP-3"), addMap=TRUE)
 }
 '
+'
 ALP3=TRUE
 mean_pr_eval_alp3 <- stack(dump_file_mprs_eval_alp3, varname = "mprs")
 mean_pr_obs <- stack(dump_file_mprs_apgd, varname = "mprs")
@@ -410,40 +396,108 @@ mean_hist_alp3<-compareAllYears(differences=dif_hist_alp3, frequencies=freq_hist
 plotBoxplot(mean_eval_alp3[[1]], "alp3_mean_evaluation_boxplot", "evaluation", overall_mean=TRUE)
 plotBoxplot(mean_hist_alp3[[1]], "alp3_mean_historical_boxplot", "historical", overall_mean=TRUE)
 
-
+'
 
 ########################################################################################################
 #############################    2002 2002 2002 2002 2002 2002 2002 2002 ###############################
 ########################################################################################################
-
+'
 eval_eur11_2002<-stack(getEUR11regridded_eval_pr()[[7]], varname="pr")
 hist_eur11_2002<-stack(getEUR11regridded_historical_pr()[[7]], varname="pr")
 eval_alp3_2002<-stack(getALP3regriddedevalPR()[[7]], varname="TOT_PREC")
 hist_alp3_2002<-stack(getALP3regriddedhistPR()[[7]], varname="TOT_PREC")
 apgd_2002<-getAPGDinYear(stackAPGD(input_files_APGD), 2002)
 extent(apgd_2002)<-extent(eval_eur11_2002)
-cropped_eval_eur11_2002<-cropMean2002(eval_eur11_2002) 
-cropped_hist_eur11_2002<-cropMean2002(hist_eur11_2002) 
+cropped_eval_eur11_2002<-cropMean2002(eval_eur11_2002)
+cropped_eval_eur11_2002<-cropped_eval_eur11_2002*3600*24
+cropped_hist_eur11_2002<-cropMean2002(hist_eur11_2002)
+cropped_hist_eur11_2002<-cropped_hist_eur11_2002*3600*24
 cropped_eval_alp3_2002<-cropMean2002(eval_alp3_2002) 
 cropped_hist_alp3_2002<-cropMean2002(hist_alp3_2002) 
 cropped_apgd_2002<-cropMean2002(apgd_2002)
 
 dif_2002<-subArrayMean(hist_eur11 = cropped_hist_eur11_2002, eval_eur11 = cropped_eval_eur11_2002,
                             hist_alp3 = cropped_hist_alp3_2002, eval_alp3 = cropped_eval_alp3_2002, cropped_apgd_2002)
-Molten<-melt(dif_2002, id.vars="timeline")
-X11()
-ggplot(dif_2002) + aes(x=as.Date(timeline), y=EUR.11.Historical) +geom_line()
-x11()
-ggplot(dif_2002) + aes(x=as.Date(timeline), y=EUR.11.Evaluation) +geom_line()
 
-ggplot(Molten) +aes(x=as.Date(timeline), y=value, col=variable) + geom_line()
+plotDif2002(dif_2002, fn="differences_2002") 
 
-prs_2002 <- stack(dif_hist[[7]], dif_eval[[7]], dif_hist_alp3[[7]], dif_eval_alp3[[7]])
-mean_2002_cropped <-cropMean2002(mean_2002) 
+hist<-putInData(simulated_1 = cropped_his_alp3_2002, simulated_2 = cropped_hist_eur11_2002, observated = cropped_apgd_2002, "2002-01-01", "2002-12-31")
 
-
+plotDif2002(data = hist, fn="historical_2002")
 ########################BIASES#################
 plotBiases(biases_alp3_eval, biases_alp3_hist, biases_eur11_eval, biases_eur11_hist, fn="yearly_mean_biases")
+'
+
+
+######################################################################################################
+########################################### Q90Q99 ###################################################
+######################################################################################################
+ALP3=FALSE
+observation <- stackAPGD(getAPGD())
+print("quantile")
+quantile_observations<-getQuantileObs(observation)
+print("done")
+lon <- raster(getAPGD()[[2]], varname="lon")
+lat <- raster(getAPGD()[[2]], varname="lat")
+
+eval_eur11<-getPR(getEUR11regridded_eval_pr(), varname="pr", "_FillValue")*3600*24
+hist_eur11<-getPR(getEUR11regridded_historical_pr(), varname="pr", "_FillValue")*3600*24
+eval_alp3<-getPR(getALP3regriddedevalPR(), varname="TOT_PREC", "missing_value")
+hist_alp3<-stack(getALP3regriddedhistPR(), varname="TOT_PREC") #NO MISSING VALUE!!!!!!
+
+quantile_eval_eur11<-getQuantile(eval_eur11)
+quantile_hist_eur11<-getQuantile(hist_eur11)
+quantile_eval_alp3<-getQuantile(eval_alp3)
+quantile_hist_alp3<-getQuantile(hist_alp3)
+
+saveRaster(quantile_eval_eur11, "q99_eval_eur11", "q99", longname = "99.Quantile")
+saveRaster(quantile_hist_eur11, "q99_hist_eur11", "q99", longname = "99.Quantile")
+saveRaster(quantile_eval_alp3, "q99_eval_alp3", "q99", longname = "99.Quantile")
+saveRaster(quantile_hist_alp3, "q99_hist_alp3", "q99", longname = "99.Quantile")
+saveRaster(quantile_observations, "q99_apgd", "q99", "99.Quantile")
+
+ALP3=FALSE
+return_val<-q99_SUB(quantile_eval_eur11, quantile_observations, lon=lon, lat=lat, EVAL=TRUE)
+dif_eval<-return_val[[1]]
+freq_eval<-return_val[[2]]
+return_val<-q99_SUB(quantile_hist_eur11, quantile_observations, lon=lon, lat=lat, EVAL=FALSE)
+dif_hist<-return_val[[1]]
+freq_hist<-return_val[[2]]
+ALP3=TRUE
+return_val<-q99_SUB(quantile_eval_alp3, quantile_observations, lon=lon, lat=lat, EVAL=TRUE)
+dif_eval_alp3<-return_val[[1]]
+freq_eval_alp3<-return_val[[2]]
+return_val<-q99_SUB(quantile_hist_alp3, quantile_observations, lon=lon, lat=lat, EVAL=FALSE)
+dif_hist_alp3<-return_val[[1]]
+freq_hist_alp3<-return_val[[2]]
+
+quantil_mean<-meanOfQuantiles(dif_eval, dif_hist, dif_eval_alp3, dif_hist_alp3)
+plotBoxplot(quantil_mean[[1]][[1]], "mean_q99_boxplot_hist_eur11", "EUR-11 historical", TRUE)
+plotBoxplot(quantil_mean[[1]][[4]], "mean_q99_boxplot_eval_alp3", "ALP-3 evaluation", TRUE)
+plotBoxplot(quantil_mean[[1]][[3]], "mean_q99_boxplot_hist_alp3", "ALP-3 historical", TRUE)
+
+plotBoxplot(quantil_mean[[1]][[2]], "mean_q99_boxplot_eval_eur11", "EUR-11 evaluation", TRUE)
+
+dif_eval_mean<-stackApply(dif_eval, indices=c(1), fun=mean)
+freq_eval_mean<-freq(dif_eval_mean, digits = 1, cum = TRUE, valid=TRUE, total=TRUE, useNA="no")
+dif_eval_hist<-stackApply(dif_hist[[1]], indices=c(1), fun=mean)
+dif_eval_alp3_mean<-stackApply(dif_eval_alp3[[1]], indices=c(1), fun=mean)
+dif_hist_alp3_mean<-stackApply(dif_hist_alp3[[1]], indices=c(1), fun=mean)
+
+
+
+
+'for(i in 1:11)
+{
+    print("Q99")
+    print(paste("lon lat and q99 for", time_list_obs[i], "done"))
+    plotJPGq90(raster=quantile_observations[[(i*2)-1]], lon=lon, lat=lat, paste0("q90", time_list_obs[i],"obs_remapped.jpg"), paste0("90. Quantile of percipitation[mm/day] in year ",
+    time_list_obs[i]," in remapped observation data"), addMap=TRUE)
+    plotJPGq99(raster=quantile_observations[[(i*2)]], lon=lon, lat=lat, paste0("q99", time_list_obs[i],"obs_remapped.jpg"), paste0("99. Quantile of percipitation[mm/day] in year ",
+    time_list_obs[i]," in remapped observation data"), addMap=TRUE)
+}'
+
+
 #########################################################################################################
 #########################################################################################################
 ############### --------------------- compare differences monthly ---------------- ######################

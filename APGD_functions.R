@@ -51,3 +51,17 @@ getAPGDinYear<-function(allDays, year){
     dummy[dummy==fVal_apgd$value] <- NA
     return(dummy)
 }
+
+getQuantileObs <- function(allDays){
+  qt_by_year<-raster()
+  for(i in 1996:2005){
+    date_string_start <- paste0(toString(i), "-01-01")
+    date_string_end <- paste0(toString(i+1), "-01-01")
+    extract_ids <- which((getZ(allDays) < as.Date(date_string_end))& (getZ(allDays) >= as.Date(date_string_start)))
+    dummy<-subset(allDays, extract_ids)
+    #### REALLY EXPENSIVE CALCULATION
+    qt_by_year <- addLayer(qt_by_year, calc(dummy,Q99))
+    names(qt_by_year[[i-1995]])<-paste0(date_string_start,"..", date_string_end)
+  }
+  return(qt_by_year)
+}

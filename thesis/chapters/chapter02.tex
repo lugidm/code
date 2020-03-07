@@ -1,60 +1,90 @@
-Für eine eventuelle BIAS-Korrektur kommt eine bisherige Herangehensweise nicht in Frage, da dadurch die lokale und vor allem zeitliche Varianz zu stark beeinträchtigt wird wie in Abb. \ref{fig:boxplot_corrected_rcp} zu erkennen ist. Laut D.Maraun \cite{biasMaraun} ist dafür ein Herangehensweise über stochastische Quantile-Mapping nötig. Dabei ist vor allem auf Überkorrektur acht zu geben, welche sich durch die Überschätzung der Flächenmittelwerte für Extremniederschläge und falsche Trends äußert. Die von Maraun in \cite{biasMaraun} postulierte Herangehensweise wird in diesem Kapitel verfolgt.
+Die bisherige Herangehensweise, den Niederschlag über das Jahresmittel zu Evaluieren ist nicht hinreichend genau. Dadurch wird die lokale und vor allem zeitliche Varianz zu stark beeinträchtigt. Laut D.Maraun \cite{biasMaraun} ist dafür ein Herangehensweise über stochastische Quantile-Mapping nötig.
 \section{Herangehensweise}
 \begin{itemize}
-	\item Zunächst wurden die am stärksten von Abweichungen betroffenen Regionen ausgemacht. Dies erfolgte über die Jahreszeiten bzw. Monate.
-	\item Als nächster Schritt werden die Jahreszeiten einzeln betrachtet, da in ihnen typische Korrelationen herrschen. In den obengenannten Regionen wird dann die Korrelation zwischen Temperatur und Niederschlag betrachtet um die Ursache der starken Abweichungen herauszufinden.
+	\item Berechnung des 99. jährlichen Quantils aller Datensätze
+	\item Vergleichen dieses Quantils mit dem Quantil der Beobachtungsdaten.
+	\item Zur Besseren Darstellung Mitteln über die Differenzen aller Jahre
 \end{itemize}
 
-\section{Am stärksten abweichende Regionen}
-Die betreffenden Datensätze (historical, evaluation und APGD) wurden zunächst in monatliche Abschnitte unterteilt. Diese wurden dann einer Quantil-Berechnung über alle Jahre unterzogen. In Folge wurden die 20 größten und 20 kleinsten Abweichungen von den entsprechenden Quantilen des Beobachtungsdatensatzes den Monaten entsprechend auf einer Karte abgebildet um die am stärksten betroffenen Regionen zu erkennen.\\
-Wie man in Abb.\ref{fig:decision_plot_q99-eval} erkennen kann befindet sich in der südöstlichen Region (um die Stadt Split) eine Zone, die extreme Abweichungen im 99.Quantil über alle Monate zeigt, dies deutet sich bereits in der Abbildung des 90. Quantils ab (Abb. \ref{fig:decision_plot_q90-eval}). Um die Darstellung zu verbessern und die Ausreißer zu minimieren wird diese Region zunächst aus den folgenden Berechnungen ausgeschnitten und außen vor gelassen. Die plots mit den ausgeschnittenen Ausreißer-Bereichen sind in Abb. \ref{fig:cropped_decision_plot_q90-hist}-\ref{fig:cropped_decision_plot_q99-eval} abgebildet. Die in Rechtecken gekennzeichneten Regionen werden in Folge näher betrachtet, da in ihnen die größten Abweichungen herrschen und sie konstant über die Monate einer Jahreszeit verteilt sind. Man erkennt im Vergleich der plots für das 90. Quantil des evaluation-Datensatzes und des historical-Datensatzes, dass die gekennzeichneten Regionen großteils an der selben Stelle sind. Diese werden für die folgenden Berechnungen zusammengelegt und ihre verschiedenen Positionen überlappt.\\
-Für das 99. Quantil der beiden Datensätze herrscht leider keine solche allgemeine Übereinstimmung der Positionen für die maximalen Abweichungen (siehe Abb. \ref{fig:cropped_decision_plot_q99-hist} und Abb. \ref{fig:cropped_decision_plot_q99-eval}). Nur ein Teil der maximalen Abweichungen im Winter und im Frühling sind an derselben Stelle. Deshalb werden für das 99. Quantil nur diese beiden Jahreszeiten weiter betrachtet, da sonst eine zu große Region betrachtet werden müsste, was die Aussagekraft der folgenden Berechnungen stark einschränken würde, beziehungsweise diese zu Unübersichtlich machen würde.\\
-Die in Abb. \ref{fig:cropped_decision_plot_q90-hist} - \ref{fig:cropped_decision_plot_q90-hist} gekennzeichneten Regionen werden in Abb. \ref{fig:final_seasons} zusammengeführt und die Übereinstimmungen in finalen Ausschnitten zusammengeführt. Auf diese wird dann im nächsten Unterkapitel näher eingegangen.
-
-\begin{figure}[h!]
-	\centering{
+\section{Differenzen des 99. Quantils}
+Von den Datensätzen (historical, evaluation und APGD) wurden zunächst das jährliche 99. Quantil berechnet. Von den Modelldaten wurden wie oben die Beobachtungsdaten abgezogen. Um eine einfachere Darstellung der Ergebnisse zu gewährleisten wurde über Differenzen aller Jahre gemittelt. Es ergab sich die Grafik in Abb. \ref{fig:quantile_all}. Wie darin zu erkennen ist, ist im Mittel kaum noch ein Unterschied zwischen den 99.Quantilen zu erkennen. Die Kurve zieht sich für alle Datensätze  gleich, auch die Anzahl der Abweichungen sind ähnlich. Um dieses Ergebnis zu unterstreichen wurden noch die dazugehörigen Boxplots in Abb.\ref{fig:quantile_all_boxplots} abgebildet: Man erkennt, dass die Biases kaum noch variieren. Dies spricht dafür, dass die Extremniederschläge stark unterschätzt werden. Dies gilt für beide Klimamodelle, CORDEX FPS-CPS (ALP-3) und CLMcom-CCLM4-8-17 (EUR-11). Dieses Verhalten zeigt sich über alle Jahren(vgl. dazu Abb. \ref{fig:quantile_alp3}): das Mitteln hat nicht viel der Variabilität gekostet und somit reicht die Darstellung der gemittelten Daten aus, um diese Auswirkung des Modells abzubilden. Beachtenswert in den Grafiken von Abb.\ref{fig:quantile_alp3} ist, dass sich die maximalen Abweichungen nun auf zwei Hauptspots reduzieren, die im Süden des Alpenhauptkamms und bei Genua liegen. 
+\begin{figure}
+	\includegraphics[width=0.8\textwidth]{quantile_all/freq_mean_q99.jpg}
+	\caption{Die Abweichungen vom 99. Quantil des Niederschlags, gemittelt über alle Jahre}
+	\label{fig:quantile_all}
+\end{figure}
+\begin{figure}
 	\begin{subfigure}{0.49\textwidth}
-		\includegraphics[width=\textwidth]{/quantile/decision_plot_q90-eval.png}
-		\caption{Die 40 größten Abweichungen im 90.Quantil des evaluation-Datensatzes.}
-		\label{fig:decision_plot_q90-eval}
+		\includegraphics[width=\textwidth]{quantile_all/mean_q99_boxplot_hist_eur11.jpg}
+		\caption{EUR-11, Historical}
 	\end{subfigure}
 	\begin{subfigure}{0.49\textwidth}
-		\includegraphics[width=\textwidth]{/quantile/decision_plot_q99-eval.png}
-		\caption{Die 40 größten Abweichungen im 99.Quantil des evaluation-Datensatzes.}
-		\label{fig:decision_plot_q99-eval}
+		\includegraphics[width=\textwidth]{quantile_all/mean_q99_boxplot_hist_alp3.jpg}
+		\caption{ALP-3, Historical}
 	\end{subfigure}
-	\caption{Abbildungen zur Illustration des Ausreißer-Bereichs, zu sehen im süd-östlichen Eck.}
-}
+	\begin{subfigure}{0.49\textwidth}
+		\includegraphics[width=\textwidth]{quantile_all/mean_q99_boxplot_eval_eur11.jpg}
+		\caption{EUR-11, Evaluation}
+	\end{subfigure}
+	\begin{subfigure}{0.49\textwidth}
+		\includegraphics[width=\textwidth]{quantile_all/mean_q99_boxplot_eval_alp3.jpg}
+		\caption{ALP-3, Evaluation}
+	\end{subfigure}
+	\caption{Boxplots der Abweichungen im 99.Quantil, gemittelt über alle Jahre für die 4 Datensätze.}
+	\label{fig:quantile_all_boxplots}
 \end{figure}
-\begin{figure}[h!]
-	\centering{
-		\begin{subfigure}{0.47\textwidth}
-			\includegraphics[angle=270, width=\textwidth]{/quantile/cropped_decision_q90-hist.png}
-			\caption{Die 40 größten Abweichungen im 90.Quantil des historical-Datensatzes mit ausgeschnittenem Ausreißern.}
-			\label{fig:cropped_decision_plot_q90-hist}
-		\end{subfigure}
-		\begin{subfigure}{0.47\textwidth}
-			\includegraphics[angle=270, width=\textwidth]{/quantile/cropped_decision_q90-eval.png}
-			\caption{Die 40 größten Abweichungen im 90.Quantil des evaluation-Datensatzes mit ausgeschnittenem Ausreißern.}
-			\label{fig:cropped_decision_plot_q90-eval}
-		\end{subfigure}
-		\begin{subfigure}{0.47\textwidth}
-			\includegraphics[angle=270, width=\textwidth]{/quantile/cropped_decision_q99-hist.png}
-			\caption{Die 40 größten Abweichungen im 99.Quantil des historical-Datensatzes mit ausgeschnittenem Ausreißern.}
-			\label{fig:cropped_decision_plot_q99-hist}
-		\end{subfigure}
-		\begin{subfigure}{0.47\textwidth}
-			\includegraphics[angle=270, width=\textwidth]{/quantile/cropped_decision_q99-eval.png}
-			\caption{Die 40 größten Abweichungen im 99.Quantil des evaluation-Datensatzes mit ausgeschnittenem Ausreißern.}
-			\label{fig:cropped_decision_plot_q99-eval}
-		\end{subfigure}
-	}
-\end{figure}
-\begin{figure}[h]
-	\includegraphics[width=\textwidth]{/quantile/final_seasons.png}
-	\caption{Die finalen Regionen der Jahreszeiten: grün = Frühling, rot = Sommer, violett = Herbst, blau = Winter}
-	\label{fig:final_seasons}
+\begin{figure}
+	\begin{subfigure}{0.32\textwidth}
+		\includegraphics[width=\textwidth]{quantile_all/1996dif_q99_hist_eur11.jpg}
+		\caption{Historical, EUR-11, 1996}
+	\end{subfigure}
+	\begin{subfigure}{0.32\textwidth}
+		\includegraphics[width=\textwidth]{quantile_all/2000dif_q99_hist_eur11.jpg}
+		\caption{Historical, EUR-11, 2000}
+	\end{subfigure}
+	\begin{subfigure}{0.32\textwidth}
+		\includegraphics[width=\textwidth]{quantile_all/2005dif_q99_hist_eur11.jpg}
+		\caption{Historical, EUR-11, 2005}
+	\end{subfigure}
+	\begin{subfigure}{0.32\textwidth}
+		\includegraphics[width=\textwidth]{quantile_all/1996dif_q99_hist_alp3.jpg}
+		\caption{Historical, ALP-3, 1996}
+	\end{subfigure}
+	\begin{subfigure}{0.32\textwidth}
+		\includegraphics[width=\textwidth]{quantile_all/2000dif_q99_hist_alp3.jpg}
+		\caption{Historical, ALP-3, 2000}
+	\end{subfigure}
+	\begin{subfigure}{0.32\textwidth}
+		\includegraphics[width=\textwidth]{quantile_all/2005dif_q99_hist_alp3.jpg}
+		\caption{Historical, ALP-3, 2005}
+	\end{subfigure}
+	\begin{subfigure}{0.32\textwidth}
+		\includegraphics[width=\textwidth]{quantile_all/1996dif_q99_eval_eur11.jpg}
+		\caption{Evaluation, EUR-11, 1996}
+	\end{subfigure}
+	\begin{subfigure}{0.32\textwidth}
+		\includegraphics[width=\textwidth]{quantile_all/2000dif_q99_eval_eur11.jpg}
+		\caption{Evaluation, EUR-11, 2000}
+	\end{subfigure}
+	\begin{subfigure}{0.32\textwidth}
+		\includegraphics[width=\textwidth]{quantile_all/2005dif_q99_eval_eur11.jpg}
+		\caption{Evaluation, EUR-11, 2005}
+	\end{subfigure}
+	\begin{subfigure}{0.32\textwidth}
+		\includegraphics[width=\textwidth]{quantile_all/1996dif_q99_eval_alp3.jpg}
+		\caption{Evaluation, ALP-3, 1996}
+	\end{subfigure}
+	\begin{subfigure}{0.32\textwidth}
+		\includegraphics[width=\textwidth]{quantile_all/2000dif_q99_eval_alp3.jpg}
+		\caption{Evaluation, ALP-3, 2000}
+	\end{subfigure}
+	\begin{subfigure}{0.32\textwidth}
+		\includegraphics[width=\textwidth]{quantile_all/2005dif_q99_eval_alp3.jpg}
+		\caption{Evaluation, ALP-3, 2005}
+	\end{subfigure}
+	\caption{Differenzen im 99.Quantil für die Jahre 1996, 2000 und 2005 (gemittelt über das Jahr)}
+	\label{fig:quantile_alp3}
 \end{figure}
 
-\section{Frühling}
-
+\section{Zusammenfassung}
+Da durch die in diesem Kapitel verfolgte Herangehensweise ein relativ schlechtes Ergebnis für die Vorhersage der Extremniederschläge in allen betrachteten Klimamodellen erzeugt wurde, soll im folgenden Kapitel die Extremniederschläge in den unterschiedlichen Jahreszeiten betrachtet werden. Wie in den Abbildungen \ref{fig:quantile_alp3} zu erkennen ist, scheinen manche Regionen besonders stark unterschätzte Starkregen-Ereignisse aufzuweisen. Diese Regionen wurden in ''Major flood disasters in Europe: 1950–2005'' \cite{barredo_major_2007} unter anderem als Regionen größerer Flutkatastrophen genannt. Dies weißt darauf hin, dass die Klimasimulation für solche Orte gesondert betrachtet werden muss und vielleicht von einem Klimamodell, welches den ganzen Alpenraum abdeckt nicht vollends richtig berechnet werden kann. 
