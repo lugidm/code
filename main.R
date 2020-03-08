@@ -89,25 +89,6 @@ GREATESTDIFF <- function(x){
     if(length(which.max( abs(unlist(na.omit(x)))) == 0)){return(NA)}
     return_val=x[which.max( abs(unlist(na.omit(x))))]}
 
-######################################## SPLIT MONTHLY ##########################
-'
-ids_by_month<-splitMonthlyOBS(all_days=stack(input_file_obs_remapped, varname="rr"), lon=stack(input_files_eval_pr[[1]], varname="lon"),
-                lat=raster(input_files_eval_pr[[1]], varname="lat"), new_filename=filename_obs_monthly)
-
-ids_by_month<-splitMonthlySim(allInputfiles=input_files_eval_pr, lon=stack(input_files_eval_pr[[1]], varname="lon"),
-  lat=raster(input_files_eval_pr[[1]], varname="lat"), new_filename=filename_eval_monthly)
-ids_by_month<-splitMonthlySim(allInputfiles=input_files_hist_pr, lon=raster(input_files_hist_pr[[1]], varname="lon"),
-                              lat=raster(input_files_hist_pr[[1]], varname="lat"), new_filename=filename_hist_monthly)
-splitSeasons(allInputfiles = getPrecipAll(input_files_eval_pr), lon=stack(input_files_eval_pr[[1]], varname="lon"),
-             lat=raster(input_files_eval_pr[[1]], varname="lat"), new_filename=filename_eval_monthly)
-splitSeasons(allInputfiles = getPrecipAll(input_files_hist_pr), lon=stack(input_files_hist_pr[[1]], varname="lon"),
-             lat=raster(input_files_hist_pr[[1]], varname="lat"), new_filename=filename_hist_monthly)
-splitSeasons(allInputfiles = stackAPGD(input_files_APGD), lon =stack(input_files_APGD[[1]], varname="lon"),
-             lat=stack(input_files_APGD[[1]], varname="lat"), new_filename = "EUR11/monthly_obs_remapped_eur-11,")
-ids_by_month<-splitMonthlyOBS(all_days = stackAPGD(inputfiles = input_files_APGD), lon = raster(input_files_APGD[[1]], varname="lon"),
-    lat=raster(input_files_APGD[[1]], varname="lat"), new_filename = filename_obs_monthly)
-'
-################################
 
 
 ########################################################################################################################
@@ -440,10 +421,10 @@ print("done")
 lon <- raster(getAPGD()[[2]], varname="lon")
 lat <- raster(getAPGD()[[2]], varname="lat")
 
-eval_eur11<-getPR(getEUR11regridded_eval_pr(), varname="pr", "_FillValue")*3600*24
-hist_eur11<-getPR(getEUR11regridded_historical_pr(), varname="pr", "_FillValue")*3600*24
+eval_eur11<-getPR(getEUR11regridded_eval_pr(), varname="pr", "_FillValue", faktor=3600*24)
+hist_eur11<-getPR(getEUR11regridded_historical_pr(), varname="pr", "_FillValue", faktor=3600*24)
 eval_alp3<-getPR(getALP3regriddedevalPR(), varname="TOT_PREC", "missing_value")
-hist_alp3<-stack(getALP3regriddedhistPR(), varname="TOT_PREC") #NO MISSING VALUE!!!!!!
+hist_alp3<-getPR(getALP3regriddedhistPR(), varname="TOT_PREC", NULL) #NO MISSING VALUE!!!!!!
 
 quantile_eval_eur11<-getQuantile(eval_eur11)
 quantile_hist_eur11<-getQuantile(hist_eur11)
@@ -472,21 +453,100 @@ dif_hist_alp3<-return_val[[1]]
 freq_hist_alp3<-return_val[[2]]
 
 quantil_mean<-meanOfQuantiles(dif_eval, dif_hist, dif_eval_alp3, dif_hist_alp3)
+plotBoxplot(dif_eval_alp3, "boxplot_eval_alp3_","Evaluation, ALP-3", overall_mean = FALSE)
+plotBoxplot(dif_hist_alp3, "boxplot_hist_alp3_","Historical, ALP-3", overall_mean = FALSE)
+plotBoxplot(dif_eval, "boxplot_eval_eur11_","Evaluation, EUR-11", overall_mean = FALSE)
+plotBoxplot(dif_hist, "boxplot_hist_eur11_","Historical, EUR-11", overall_mean = FALSE)
+
+
+
 plotBoxplot(quantil_mean[[1]][[1]], "mean_q99_boxplot_hist_eur11", "EUR-11 historical", TRUE)
 plotBoxplot(quantil_mean[[1]][[4]], "mean_q99_boxplot_eval_alp3", "ALP-3 evaluation", TRUE)
 plotBoxplot(quantil_mean[[1]][[3]], "mean_q99_boxplot_hist_alp3", "ALP-3 historical", TRUE)
-
 plotBoxplot(quantil_mean[[1]][[2]], "mean_q99_boxplot_eval_eur11", "EUR-11 evaluation", TRUE)
 
 dif_eval_mean<-stackApply(dif_eval, indices=c(1), fun=mean)
 freq_eval_mean<-freq(dif_eval_mean, digits = 1, cum = TRUE, valid=TRUE, total=TRUE, useNA="no")
-dif_eval_hist<-stackApply(dif_hist[[1]], indices=c(1), fun=mean)
+dif_hist_mean<-stackApply(dif_hist[[1]], indices=c(1), fun=mean)
 dif_eval_alp3_mean<-stackApply(dif_eval_alp3[[1]], indices=c(1), fun=mean)
 dif_hist_alp3_mean<-stackApply(dif_hist_alp3[[1]], indices=c(1), fun=mean)
 
 
+########################## ########################## ########################## ##########################
+######################################## SPLIT SEASONS ####################################################
+########################## ########################## ########################## ##########################
+lon <- raster(getAPGD()[[2]], varname="lon")
+lat <- raster(getAPGD()[[2]], varname="lat")
+for(i in 1996:2005){
+  names(eval_eur11[[i-1995]])<-seq(from=as.Date(paste0(i,"-01-01")), to=as.Date(paste0(i,"-12-31")), by="day")
+  eval_eur11[[i-1995]]<-setZ(eval_eur11[[i-1995]],seq(from=as.Date(paste0(i,"-01-01")), to=as.Date(paste0(i,"-12-31")), by="day"))
+  
+  names(hist_eur11[[i-1995]])<-seq(from=as.Date(paste0(i,"-01-01")), to=as.Date(paste0(i,"-12-31")), by="day")
+  hist_eur11[[i-1995]]<-setZ(hist_eur11[[i-1995]],seq(from=as.Date(paste0(i,"-01-01")), to=as.Date(paste0(i,"-12-31")), by="day"))
+  
+  names(eval_alp3[[i-1995]])<-seq(from=as.Date(paste0(i,"-01-01")), to=as.Date(paste0(i,"-12-31")), by="day")
+  eval_alp3[[i-1995]]<-setZ(eval_alp3[[i-1995]], seq(from=as.Date(paste0(i,"-01-01")), to=as.Date(paste0(i,"-12-31")), by="day"))
+  
+  names(hist_alp3[[i-1995]])<-seq(from=as.Date(paste0(i,"-01-01")), to=as.Date(paste0(i,"-12-31")), by="day")
+  hist_alp3[[i-1995]]<-setZ(hist_alp3[[i-1995]], seq(from=as.Date(paste0(i,"-01-01")), to=as.Date(paste0(i,"-12-31")), by="day"))
+}
+eval_eur11_seasons<-splitSeasons(allInputfiles = eval_eur11, lon=lon, lat=lat, new_filename="eval_eur11_")
+hist_eur11_seasons<-splitSeasons(allInputfiles = hist_eur11, lon=lon,lat=lat, new_filename="hist_eur11_")
+hist_alp3_seasons<-splitSeasons(allInputfiles = hist_alp3, lon=lon,lat=lat, new_filename="hist_alp3_")
+eval_alp3_seasons<-splitSeasons(allInputfiles = eval_alp3, lon=lon,lat=lat, new_filename="eval_alp3_")
+
+splitSeasons(allInputfiles = stackAPGD(input_files_APGD), lon =stack(input_files_APGD[[1]], varname="lon"),
+             lat=stack(input_files_APGD[[1]], varname="lat"), new_filename = "apgd_")
+
+########################## ########################## ########################## ##########################
+######################################## QUANTILES OF SEASONS #############################################
+########################## ########################## ########################## ##########################
+
+apgd_seasons<-list(spring=stack(paste0(output_dir, "apgd_spring.nc")), summer= stack(paste0(output_dir, "apgd_summer.nc")),
+                   autumn=stack(paste0(output_dir, "apgd_autumn.nc")), winter=stack(paste0(output_dir, "apgd_winter.nc")))
+apgd_seasons_q99<-getQuantileOfSeasons(apgd_seasons)
+eval_eur11_seasons_q99<-getQuantileOfSeasons(eval_eur11_seasons)
+hist_eur11_seasons_q99<-getQuantileOfSeasons(hist_eur11_seasons)
+eval_alp3_seasons_q99<-getQuantileOfSeasons(eval_alp3_seasons)
+hist_alp3_seasons_q99<-getQuantileOfSeasons(hist_alp3_seasons)
+
+return_val<-q99_SeasonsSUB(eval_eur11_seasons_q99, apgd_seasons_q99, lon=lon, lat=lat,filename = "eval_eur11_", plotmain = "Evaluation, EUR-11")
+dif_eval<-return_val[[1]]
+freq_eval<-return_val[[2]]
+return_val<-q99_SeasonsSUB(hist_eur11_seasons_q99, apgd_seasons_q99, lon=lon, lat=lat,filename = "hist_eur11_", plotmain = "Historical, EUR-11")
+dif_hist<-return_val[[1]]
+freq_hist<-return_val[[2]]
+
+return_val<-q99_SeasonsSUB(eval_alp3_seasons_q99, apgd_seasons_q99, lon=lon, lat=lat,filename = "eval_alp3_", plotmain = "Evaluation, ALP-3")
+dif_eval_alp3<-return_val[[1]]
+freq_eval_alp3<-return_val[[2]]
+return_val<-q99_SeasonsSUB(hist_alp3_seasons_q99, apgd_seasons_q99, lon=lon, lat=lat,filename = "hist_alp3_", plotmain = "Historical, ALP-3")
+dif_hist_alp3<-return_val[[1]]
+freq_hist_alp3<-return_val[[2]]
 
 
+plotSeasonalBoxplot(raster_list = dif_eval, filename_pattern = "boxplot_eval_eur11_", main_pattern = "Evaluation, EUR-11")
+plotSeasonalBoxplot(raster_list = dif_hist, filename_pattern = "boxplot_hist_eur11_", main_pattern = "Historical, EUR-11")
+plotSeasonalBoxplot(raster_list = dif_eval_alp3, filename_pattern = "boxplot_eval_alp3_", main_pattern = "Evaluation, ALP-3")
+plotSeasonalBoxplot(raster_list = dif_hist_alp3, filename_pattern = "boxplot_hist_alp3_", main_pattern = "Historical, ALP-3")
+
+plotAllSeasonsFreq(freq_eval, "all_frequencies_eval_eur11", "Frequency Plot for Evaluation Data in EUR-11", ylim=c(0,300), xlim=c(0,125))
+plotAllSeasonsFreq(freq_hist, "all_frequencies_hist_eur11", "Frequency Plot for Historical Data in EUR-11", ylim=c(0,200), xlim=c(0,125))
+plotAllSeasonsFreq(freq_eval_alp3, "all_frequencies_eval_alp3", "Frequency Plot for Evaluation Data in ALP-3", ylim=c(0,200), xlim=c(0,140))
+plotAllSeasonsFreq(freq_hist_alp3, "all_frequencies_hist_alp3", "Frequency Plot for Historical Data in ALP-3", ylim=c(0,200), xlim=c(0,140))
+
+
+########################## ########################## ########################## ##########################
+######################################## SPLIT MONTHLY ####################################################
+########################## ########################## ########################## ##########################
+
+ids_by_month<-splitMonthlyOBS(all_days=stack(input_file_obs_remapped, varname="rr"), lon=stack(input_files_eval_pr[[1]], varname="lon"),
+                              lat=raster(input_files_eval_pr[[1]], varname="lat"), new_filename=filename_obs_monthly)
+
+ids_by_month<-splitMonthlySim(allInputfiles=input_files_eval_pr, lon=stack(input_files_eval_pr[[1]], varname="lon"),
+                              lat=raster(input_files_eval_pr[[1]], varname="lat"), new_filename=filename_eval_monthly)
+ids_by_month<-splitMonthlySim(allInputfiles=input_files_hist_pr, lon=raster(input_files_hist_pr[[1]], varname="lon"),
+                              lat=raster(input_files_hist_pr[[1]], varname="lat"), new_filename=filename_hist_monthly)
 'for(i in 1:11)
 {
     print("Q99")

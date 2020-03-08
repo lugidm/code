@@ -91,9 +91,9 @@ plotDifferences <- function(frequencies, raster, lon, lat, filename, plotmain, a
         jpeg(paste0(output_dir,toString(i+1995),filename), height = 500, width = 750)
         if(ALP3==TRUE)
         {
-            quilt.plot(data.frame(lon=as.vector(lon),lat=as.vector(lat),pr=as.vector(raster)), nx=ncol(raster), ny=nrow(raster),
-            #col=rev(heat.colors(9)),
-            main=paste0(plotmain, " in ", toString(i+1995))) #na.rm=TRUE)
+          quilt.plot(data.frame(lon=as.vector(lon),lat=as.vector(lat),pr=as.vector(raster[[i]])), nx=ncol(raster), ny=nrow(raster),
+                     #col=rev(heat.colors(9)),
+                     main=paste0(plotmain, " in ", toString(i+1995)))#breaks = c(0.0:9.0)*2, main=plotmain, na.rm=TRUE, lab.breaks=c(0.0:9.0)*1.8)
         }else{
             if(EVAL){
             quilt.plot(data.frame(lon=as.vector(lon),lat=as.vector(lat),pr=as.vector(raster[[i]])), nx=ncol(raster), ny=nrow(raster),
@@ -287,6 +287,21 @@ plotBoxplot<-function(raster_brick, filename_pattern, main_pattern, overall_mean
   return(biases)
 }
 
+plotSeasonalBoxplot<-function(raster_list, filename_pattern, main_pattern){
+  no_na<-list(layer1=NULL, layer2=NULL, layer3=NULL, layer4=NULL)
+  biases<-list()
+  for(i in 1:4){
+    no_na[[i]]<-values(raster_list[[i]])
+    no_na[[i]]<-no_na[[i]][!is.na(no_na[[i]])]
+    biases<-unlist(list(unlist(biases), bias(no_na[[i]])))
+    jpeg(paste0(output_dir, filename_pattern, names(raster_list)[[i]], ".jpg"), height = 400, width = 500)
+      boxplot(no_na[[i]], ylab="Difference from observated data [mm/day]",  main=paste0("Boxplot of ",main_pattern," data in ", names(raster_list)[[i]], ", Bias = ", round(bias(no_na[[i]]),5)))
+    
+    dev.off()
+  }
+  return(biases)
+}
+
 plotBiases <- function(biases_alp3_eval, biases_alp3_hist, biases_eur11_eval, biases_eur11_hist, fn){
   #tada<-cbind(timeline=as.integer(time_list_eval), biases_alp3_eval, biases_alp3_hist, biases_eur11_eval, biases_eur11_hist)
   tada<-data.frame(timeline=as.integer(time_list_eval), biases=c(biases_alp3_eval, biases_alp3_hist, biases_eur11_eval, biases_eur11_hist), 
@@ -324,4 +339,19 @@ saveRaster<-function(raster, filename, varname, longname){
   writeRaster(raster, paste0(output_dir, filename, ".nc"), overwrite=TRUE, format="CDF",
               varname=varname, varunit="mm/day", longname=longname, xname="X", yname="Y")
 }
+
+plotAllSeasonsFreq<-function(list_freq, filename, plotmain, ylim, xlim)
+{
+    jpeg(paste0(output_dir, filename, ".jpg"), height = 600, width = 900)
+    plot(list_freq[[4]], col="blue", type="l", xlab="Difference in the 99. Quantile[mm/day]", ylab="over all appearance",
+         main= plotmain, xlim=xlim, ylim=ylim)
+    lines(list_freq[[2]], col="red", type="l")
+    lines(list_freq[[3]], col="brown", type="l")
+    lines(list_freq[[1]], type="l", col="green")
+    abline(h=seq(ylim[[1]], ylim[[2]], by=50), v=seq(xlim[[1]], xlim[[2]], by=5), col="gray", lty=3)
+    legend(x=70, y=150, legend=c("spring", "summer", "autumn", "winter"),
+           col=c("green", "red", "brown", "blue"), lty=c(1))
+    dev.off()
+}
+
 

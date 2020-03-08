@@ -63,11 +63,13 @@ splitMonthlySim<-function(allInputfiles, lon, lat, new_filename){
 }
 
 splitSeasons<-function(allInputfiles, lon, lat, new_filename){
-  ids<-list(spring=NULL,summer=NULL,autumn=NULL,winter=NULL)
-  print(lon)
-  print(lat)
-  print(allInputfiles)
+  seasons<-list(spring=NULL, summer=NULL, autumn=NULL, winter=NULL)
+  ids<-list(spring=list(NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+            summer=list(NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+            autumn=list(NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL)
+            ,winter=list(NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL))
   #all_days<-getPrecipAll(allInputfiles)
+  all_days<-allInputfiles
   spring_start <- "-03-20"
   spring_end<- "-06-20"
   summer_start <- "-06-20"
@@ -77,22 +79,27 @@ splitSeasons<-function(allInputfiles, lon, lat, new_filename){
   winter_start <- "-12-22"
   winter_end <- "-03-20"
   for(i in 1996:2005){
-    ids$spring<-list(unlist(ids$spring), which((getZ(all_days) < as.Date(paste0(i,spring_end)))& (getZ(all_days) >= as.Date(paste0(i,spring_start)))))
-    ids$spring<-unlist(ids$spring)
-    ids$summer<-list(unlist(ids$summer), which((getZ(all_days) < as.Date(paste0(i,summer_end)))& (getZ(all_days) >= as.Date(paste0(i,summer_start)))))
-    ids$summer<-unlist(ids$summer)
-    ids$autumn<-list(unlist(ids$autumn), which((getZ(all_days) < as.Date(paste0(i,autumn_end)))& (getZ(all_days) >= as.Date(paste0(i,autumn_start)))))
-    ids$autumn<-unlist(ids$autumn)
-    ids$winter<-list(unlist(ids$winter), which((getZ(all_days) < as.Date(paste0(i+1,winter_end)))& (getZ(all_days) >= as.Date(paste0(i,winter_start)))))
-    ids$winter<-unlist(ids$winter)
+    ids$spring[[i-1995]]<-which((getZ(all_days[[i-1995]]) < as.Date(paste0(i,spring_end)))& (getZ(all_days[[i-1995]]) >= as.Date(paste0(i,spring_start))))
+    ids$summer[[i-1995]]<-which((getZ(all_days[[i-1995]]) < as.Date(paste0(i,summer_end)))& (getZ(all_days[[i-1995]]) >= as.Date(paste0(i,summer_start))))
+    ids$autumn[[i-1995]]<-which((getZ(all_days[[i-1995]]) < as.Date(paste0(i,autumn_end)))& (getZ(all_days[[i-1995]]) >= as.Date(paste0(i,autumn_start))))
+    ids$winter[[i-1995]]<-which((getZ(all_days[[i-1995]]) < as.Date(paste0(i,winter_end)))| (getZ(all_days[[i-1995]]) >= as.Date(paste0(i,winter_start))))
   }
-  everything<- raster()
+ 
   for(season in 1:4)
   {
-    raster_by_month<-subset(all_days, unlist(ids[[season]]))
-    #names(raster_by_month)<-rep(names(ids[season]), length(ids[[season]]))
-    extent(raster_by_month)<-extent(lon)
-    writeRaster(addLayer(addLayer(raster_by_month, lon), lat), paste0(output_dir,new_filename, toString(names(ids[season])), ".nc"), overwrite=TRUE, format="CDF",
+    raster_by_season<-NULL
+    raster_by_season<-raster()
+    for(i in 1:10){
+      print(length(ids[[season]][[i]]))
+      print(nlayers(all_days[[i]]))
+      raster_by_season<-addLayer(raster_by_season, subset(all_days[[i]], ids[[season]][[i]]))
+      
+    }
+    extent(raster_by_season)<-extent(lon)
+    extent(lat)<-extent(lon)
+    writeRaster(addLayer(addLayer(raster_by_season, lon), lat), paste0(output_dir,new_filename, toString(names(ids[season])), ".nc"), overwrite=TRUE, format="CDF",
                 varname="pr", varunit="mm/day", longname="Precipitation", xname="X", yname="Y", zname="Time")
+    seasons[[season]]<-raster_by_season
   }
+  return(seasons)
 }

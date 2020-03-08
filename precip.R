@@ -87,11 +87,24 @@ getAnnualMean <- function(inputfiles, time_list, data_type){
     return(addLayer(addLayer(output_raster, lon), lat))
 }
 
-getPR<-function(inputfiles, varname, mV_name){
-  dummy<-nc_open(inputfiles[[1]])
-  mV<-ncatt_get(dummy, varname, mV_name)$value
-  nc_close(dummy)
-  return_vals<- stack(inputfiles, varname=varname)
-  return_vals[return_vals==mV]<-NA
+getPR<-function(inputfiles, varname, mV_name, faktor=1){
+  if(!is.null(mV_name)){
+    dummy<-nc_open(inputfiles[[1]])
+    print(faktor)
+    mV<-ncatt_get(dummy, varname, mV_name)$value
+    nc_close(dummy)
+  }
+  return_vals <- list('1996'=raster(), '1997'=raster(), '1998'=raster(), '1999'=raster(), '2000'=raster(), 
+                      '2001'=raster(), '2002'=raster(), '2003'=raster(),'2004'=raster(), '2005'=raster())
+  for(i in 1:length(inputfiles)){
+    vals<- stack(inputfiles[[i]], varname=varname)*faktor
+    print(vals)
+    if(!is.null(mV_name))
+    {
+      vals[vals==mV]<-NA
+    }
+    return_vals[[i]]<-vals
+  }
+  
   return(return_vals)
 }

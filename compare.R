@@ -141,5 +141,37 @@ q99_SUB <- function(simulated, observated, lon, lat, EVAL)
   return(list(dif, f))
 }
 
+q99_SeasonsSUB <- function(simulated, observated, lon, lat, filename, plotmain)
+{
+  differences<-list(spring=NULL, summer=NULL, autumn=NULL, winter=NULL)
+  frequencies<-list(spring=NULL, summer=NULL, autumn=NULL, winter=NULL)
+  for(i in 1:4)
+  {
+    extent(observated[[i]])<-extent(simulated[[i]])
+    dif<- overlay(simulated[[i]], observated[[i]],fun=function(x,y){return((x - y))})
+    f<-freq(dif, digits = 1, cum = TRUE, valid=TRUE, total=TRUE, useNA="no")
+    jpeg(paste0(output_dir,filename, names(simulated)[[i]],".jpg"), height = 500, width = 750)
+      quilt.plot(data.frame(lon=as.vector(lon),lat=as.vector(lat),pr=as.vector(dif)), nx=ncol(dif), ny=nrow(dif),
+                 main=paste0("99. Quantile-Differences ", plotmain, " in ", names(simulated)[[i]], " [mm/day]"))
+      map(add=TRUE, col="black")
+      dev.off()
+      jpeg(paste0(output_dir,"frequencies", filename, names(simulated)[[i]], ".jpg"), height = 400, width = 650)
+      plot(f, type="l", col="black", xlab="difference [mm/day]", ylab="over all appearance",
+           main=paste0("Frequency plot from ",plotmain," in ", names(simulated)[[i]]))
+      ', axis=FALSE)
+          axis(1, seq(round(min(frequencies[[i]][,1])), round(max(frequencies[[i]][,1])), by = 10))
+          axis(2, seq(round(min(frequencies[[i]][,2])), round(max(frequencies[[i]][,2])), by = 10))
+          abline(h=seq(round(min(frequencies[[i]][,2])), round(max(frequencies[[i]][,2])), by=10), v=seq(round(min(frequencies[[i]][,1])),
+          round(max(frequencies[[i]][,1])), by=10), col="gray", lty=3)'
+      print(paste0("plotted ",names(simulated)[[i]]))
+      dev.off()
+      differences[[i]]<-dif
+      frequencies[[i]]<-f
+  }
+  
+  
+  return(list(differences, frequencies))
+}
+
 
 
