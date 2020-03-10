@@ -35,12 +35,56 @@ meanOfQuantiles<-function(eval, hist, eval_alp3, hist_alp3){
   dev.off()
   return(list(stack(hist_mean, eval_mean, hist_alp3_mean, eval_alp3_mean),freq_hist_mean, freq_eval_mean, freq_hist_alp3_mean, freq_eval_alp3_mean))  
 }
-
-
 getQuantileOfSeasons <- function(list_all_days){
   qt_by_year<-list(spring=NULL, summer=NULL, autumn=NULL, winter=NULL)
   for(i in 1:4){
     qt_by_year[[i]]<- calc(list_all_days[[i]],Q99)
+    justQuiltPlot(qt_by_year[[i]], lon, lat)
   }
   return(qt_by_year)
+}
+
+findCellWithValue<-function(raster_list, value_min, value_max, season){
+  ids<-list('1996'=list(), '1997'=list(), '1998'=list(), '1999'=list(), '2000'=list(), '2001'=list(), '2002'=list(), '2003'=list(), '2004'=list(), '2005'=list())
+  spring_start <- "-03-20"
+  spring_end<- "-06-20"
+  summer_start <- "-06-20"
+  summer_end <- "-09-22"
+  autumn_start <- "-09-22"
+  autumn_end <- "-12-22"
+  winter_start <- "-12-22"
+  winter_end <- "-03-20"
+  for(i in 1:length(raster_list)){
+    if(season=="spring")
+    {
+      split<-subset(raster_list[[i]],which((getZ(raster_list[[i]]) < as.Date(paste0(i+1995,spring_end)))& 
+                                            (getZ(raster_list[[i]]) >= as.Date(paste0(i+1995,spring_start)))))
+      for(j in 1:nlayers(split))
+      {
+        freeze<-which(na.omit(values(split[[j]])) <= value_max & na.omit(values(split[[j]])) >= value_min)
+        if(!is.null(freeze) & length(freeze)>0){
+  
+          ids[[i]]<-append(ids[[i]], list(day=j, cells=freeze))
+        }
+        
+      }
+    }else if(season=="summer")
+    {
+      split<-subset(raster_list[[i]],which((getZ(raster_list[[i]]) < as.Date(paste0(i+1995,summer_end)))& 
+                                             (getZ(raster_list[[i]]) >= as.Date(paste0(i+1995,summer_start)))))
+      ids[[i]]<-which(values(split) < value_max & (values(split) >= value_min))
+    }else if(season=="autumn")
+    {
+      split<-subset(raster_list[[i]],which((getZ(raster_list[[i]]) < as.Date(paste0(i+1995,autumn_end)))& 
+                                             (getZ(raster_list[[i]]) >= as.Date(paste0(i+1995,autumn_start)))))
+      ids[[i]]<-which(values(split) < value_max & (values(split) >= value_min))
+    }
+    else if(season=="winter")
+    {
+      split<-subset(raster_list[[i]],which((getZ(raster_list[[i]]) < as.Date(paste0(i+1995,winter_end)))|
+                                             (getZ(raster_list[[i]]) >= as.Date(paste0(i+1995,winter_start)))))
+      ids[[i]]<-which(values(split) < value_max & (values(split) >= value_min))
+    }
+  }
+  return(ids)
 }

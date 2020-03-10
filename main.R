@@ -11,6 +11,7 @@ library(pbdDMAT)
 library(lfstat)
 library(diffeR)
 library(SimDesign)
+library(data.table)
 source("~/Bacc/code/precip.R")
 source("~/Bacc/code/plot.R")
 source("~/Bacc/code/files.R")
@@ -416,7 +417,7 @@ plotBiases(biases_alp3_eval, biases_alp3_hist, biases_eur11_eval, biases_eur11_h
 ALP3=FALSE
 observation <- stackAPGD(getAPGD())
 print("quantile")
-quantile_observations<-getQuantileObs(observation)
+quantile_observations<-getQuantileObs(apgd)
 print("done")
 lon <- raster(getAPGD()[[2]], varname="lon")
 lat <- raster(getAPGD()[[2]], varname="lat")
@@ -425,6 +426,9 @@ eval_eur11<-getPR(getEUR11regridded_eval_pr(), varname="pr", "_FillValue", fakto
 hist_eur11<-getPR(getEUR11regridded_historical_pr(), varname="pr", "_FillValue", faktor=3600*24)
 eval_alp3<-getPR(getALP3regriddedevalPR(), varname="TOT_PREC", "missing_value")
 hist_alp3<-getPR(getALP3regriddedhistPR(), varname="TOT_PREC", NULL) #NO MISSING VALUE!!!!!!
+
+eval_eur11_temp<-getPR(getEUR11regridded_eval_temp(), varname="tas", "_FillValue")
+hist_alp3_temp<-getPR(getALP3regriddedhistTEMP(), varname="T_2M", NULL) #NO MISSING VALUE
 
 quantile_eval_eur11<-getQuantile(eval_eur11)
 quantile_hist_eur11<-getQuantile(hist_eur11)
@@ -477,16 +481,31 @@ dif_hist_alp3_mean<-stackApply(dif_hist_alp3[[1]], indices=c(1), fun=mean)
 ########################## ########################## ########################## ##########################
 lon <- raster(getAPGD()[[2]], varname="lon")
 lat <- raster(getAPGD()[[2]], varname="lat")
+apgd<-stackAPGD(inputfiles = getAPGD())
 for(i in 1996:2005){
+  #eval_eur11_temp[[i-1995]]<-eval_eur11_temp[[i-1995]]-273.15
+  extent(eval_eur11_temp[[i-1995]])<-extent(apgd[[i-1995]])
+  names(eval_eur11_temp[[i-1995]])<-seq(from=as.Date(paste0(i,"-01-01")), to=as.Date(paste0(i,"-12-31")), by="day")
+  eval_eur11_temp[[i-1995]]<-setZ(eval_eur11_temp[[i-1995]],seq(from=as.Date(paste0(i,"-01-01")), to=as.Date(paste0(i,"-12-31")), by="day"))
+  
+  hist_alp3_temp[[i-1995]]<-hist_alp3_temp[[i-1995]]-273.15
+  extent(hist_alp3_temp[[i-1995]])<-extent(apgd[[i-1995]])
+  names(hist_alp3_temp[[i-1995]])<-seq(from=as.Date(paste0(i,"-01-01")), to=as.Date(paste0(i,"-12-31")), by="day")
+  hist_alp3_temp[[i-1995]]<-setZ(hist_alp3_temp[[i-1995]],seq(from=as.Date(paste0(i,"-01-01")), to=as.Date(paste0(i,"-12-31")), by="day"))
+  
+  extent(eval_eur11[[i-1995]])<-extent(apgd[[i-1995]])
   names(eval_eur11[[i-1995]])<-seq(from=as.Date(paste0(i,"-01-01")), to=as.Date(paste0(i,"-12-31")), by="day")
   eval_eur11[[i-1995]]<-setZ(eval_eur11[[i-1995]],seq(from=as.Date(paste0(i,"-01-01")), to=as.Date(paste0(i,"-12-31")), by="day"))
   
+  extent(hist_eur11[[i-1995]])<-extent(apgd[[i-1995]])
   names(hist_eur11[[i-1995]])<-seq(from=as.Date(paste0(i,"-01-01")), to=as.Date(paste0(i,"-12-31")), by="day")
   hist_eur11[[i-1995]]<-setZ(hist_eur11[[i-1995]],seq(from=as.Date(paste0(i,"-01-01")), to=as.Date(paste0(i,"-12-31")), by="day"))
   
+  extent(eval_alp3[[i-1995]])<-extent(apgd[[i-1995]])
   names(eval_alp3[[i-1995]])<-seq(from=as.Date(paste0(i,"-01-01")), to=as.Date(paste0(i,"-12-31")), by="day")
   eval_alp3[[i-1995]]<-setZ(eval_alp3[[i-1995]], seq(from=as.Date(paste0(i,"-01-01")), to=as.Date(paste0(i,"-12-31")), by="day"))
   
+  extent(hist_alp3[[i-1995]])<-extent(apgd[[i-1995]])
   names(hist_alp3[[i-1995]])<-seq(from=as.Date(paste0(i,"-01-01")), to=as.Date(paste0(i,"-12-31")), by="day")
   hist_alp3[[i-1995]]<-setZ(hist_alp3[[i-1995]], seq(from=as.Date(paste0(i,"-01-01")), to=as.Date(paste0(i,"-12-31")), by="day"))
 }
@@ -495,16 +514,28 @@ hist_eur11_seasons<-splitSeasons(allInputfiles = hist_eur11, lon=lon,lat=lat, ne
 hist_alp3_seasons<-splitSeasons(allInputfiles = hist_alp3, lon=lon,lat=lat, new_filename="hist_alp3_")
 eval_alp3_seasons<-splitSeasons(allInputfiles = eval_alp3, lon=lon,lat=lat, new_filename="eval_alp3_")
 
-splitSeasons(allInputfiles = stackAPGD(input_files_APGD), lon =stack(input_files_APGD[[1]], varname="lon"),
-             lat=stack(input_files_APGD[[1]], varname="lat"), new_filename = "apgd_")
+apgd_seasons<-splitSeasons(allInputfiles = apgd, lon =stack(getAPGD()[[1]], varname="lon"),
+             lat=stack(getAPGD()[[1]], varname="lat"), new_filename = "apgd_")
 
 ########################## ########################## ########################## ##########################
 ######################################## QUANTILES OF SEASONS #############################################
 ########################## ########################## ########################## ##########################
-
 apgd_seasons<-list(spring=stack(paste0(output_dir, "apgd_spring.nc")), summer= stack(paste0(output_dir, "apgd_summer.nc")),
                    autumn=stack(paste0(output_dir, "apgd_autumn.nc")), winter=stack(paste0(output_dir, "apgd_winter.nc")))
+eval_eur11_seasons<-list(spring=stack(paste0(output_dir, "eval_eur11_spring.nc")), summer= stack(paste0(output_dir, "eval_eur11_summer.nc")),
+                   autumn=stack(paste0(output_dir, "eval_eur11_autumn.nc")), winter=stack(paste0(output_dir, "eval_eur11_winter.nc")))
+hist_eur11_seasons<-list(spring=stack(paste0(output_dir, "hist_eur11_spring.nc")), summer= stack(paste0(output_dir, "hist_eur11_summer.nc")),
+                         autumn=stack(paste0(output_dir, "hist_eur11_autumn.nc")), winter=stack(paste0(output_dir, "hist_eur11_winter.nc")))
+hist_alp3_seasons<-list(spring=stack(paste0(output_dir, "hist_alp3_spring.nc")), summer= stack(paste0(output_dir, "hist_alp3_summer.nc")),
+                   autumn=stack(paste0(output_dir, "hist_alp3_autumn.nc")), winter=stack(paste0(output_dir, "hist_alp3_winter.nc")))
+eval_alp3_seasons<-list(spring=stack(paste0(output_dir, "eval_alp3_spring.nc")), summer= stack(paste0(output_dir, "eval_alp3_summer.nc")),
+                        autumn=stack(paste0(output_dir, "eval_alp3_autumn.nc")), winter=stack(paste0(output_dir, "eval_alp3_winter.nc")))
+
+
+
+
 apgd_seasons_q99<-getQuantileOfSeasons(apgd_seasons)
+
 eval_eur11_seasons_q99<-getQuantileOfSeasons(eval_eur11_seasons)
 hist_eur11_seasons_q99<-getQuantileOfSeasons(hist_eur11_seasons)
 eval_alp3_seasons_q99<-getQuantileOfSeasons(eval_alp3_seasons)
@@ -525,21 +556,98 @@ dif_hist_alp3<-return_val[[1]]
 freq_hist_alp3<-return_val[[2]]
 
 
-plotSeasonalBoxplot(raster_list = dif_eval, filename_pattern = "boxplot_eval_eur11_", main_pattern = "Evaluation, EUR-11")
+'plotSeasonalBoxplot(raster_list = dif_eval, filename_pattern = "boxplot_eval_eur11_", main_pattern = "Evaluation, EUR-11")
 plotSeasonalBoxplot(raster_list = dif_hist, filename_pattern = "boxplot_hist_eur11_", main_pattern = "Historical, EUR-11")
 plotSeasonalBoxplot(raster_list = dif_eval_alp3, filename_pattern = "boxplot_eval_alp3_", main_pattern = "Evaluation, ALP-3")
-plotSeasonalBoxplot(raster_list = dif_hist_alp3, filename_pattern = "boxplot_hist_alp3_", main_pattern = "Historical, ALP-3")
+plotSeasonalBoxplot(raster_list = dif_hist_alp3, filename_pattern = "boxplot_hist_alp3_", main_pattern = "Historical, ALP-3")'
 
-plotAllSeasonsFreq(freq_eval, "all_frequencies_eval_eur11", "Frequency Plot for Evaluation Data in EUR-11", ylim=c(0,300), xlim=c(0,125))
-plotAllSeasonsFreq(freq_hist, "all_frequencies_hist_eur11", "Frequency Plot for Historical Data in EUR-11", ylim=c(0,200), xlim=c(0,125))
-plotAllSeasonsFreq(freq_eval_alp3, "all_frequencies_eval_alp3", "Frequency Plot for Evaluation Data in ALP-3", ylim=c(0,200), xlim=c(0,140))
-plotAllSeasonsFreq(freq_hist_alp3, "all_frequencies_hist_alp3", "Frequency Plot for Historical Data in ALP-3", ylim=c(0,200), xlim=c(0,140))
+new_dat<-list("Historical EUR-11"=dif_hist$winter,"Evaluation EUR-11"=dif_eval$winter,"Historical ALP-3"=dif_hist_alp3$winter
+              ,"Evaluation ALP-3"=dif_eval_alp3$winter)
+plotAllSeasonalBoxplot(raster_list = new_dat, filename = "boxplot_winter", plotmain = "Boxplot of all 99.Quantile Differences in winter")
+new_dat<-list("Historical EUR-11"=dif_hist$spring,"Evaluation EUR-11"=dif_eval$spring,"Historical ALP-3"=dif_hist_alp3$spring
+              ,"Evaluation ALP-3"=dif_eval_alp3$spring)
+plotAllSeasonalBoxplot(raster_list = new_dat, filename = "boxplot_spring", plotmain = "Boxplot of all 99.Quantile Differences in spring")
+new_dat<-list("Historical EUR-11"=dif_hist$summer,"Evaluation EUR-11"=dif_eval$summer,"Historical ALP-3"=dif_hist_alp3$summer
+              ,"Evaluation ALP-3"=dif_eval_alp3$summer)
+plotAllSeasonalBoxplot(raster_list = new_dat, filename = "boxplot_summer", plotmain = "Boxplot of all 99.Quantile Differences in summer")
+new_dat<-list("Historical EUR-11"=dif_hist$autumn,"Evaluation EUR-11"=dif_eval$autumn,"Historical ALP-3"=dif_hist_alp3$autumn
+              ,"Evaluation ALP-3"=dif_eval_alp3$autumn)
+plotAllSeasonalBoxplot(raster_list = new_dat, filename = "boxplot_autumn", plotmain = "Boxplot of all 99.Quantile Differences in autumn")
 
+plotAllSeasonsFreq(list(freq_hist$winter, freq_eval$winter, freq_hist_alp3$winter,freq_eval_alp3$winter), "all_frequencies_winter", 
+                   "Frequency Plot Differences in the 99.Quantile for winter", ylim=c(0,200), xlim=c(-60,80))
+plotAllSeasonsFreq(list(freq_hist$spring, freq_eval$spring, freq_hist_alp3$spring,freq_eval_alp3$spring), "all_frequencies_spring", 
+                   "Frequency Plot Differences in the 99.Quantile for spring", ylim=c(0,170), xlim=c(-60,80))
+plotAllSeasonsFreq(list(freq_hist$summer, freq_eval$summer, freq_hist_alp3$summer,freq_eval_alp3$summer), "all_frequencies_summer", 
+                   "Frequency Plot Differences in the 99.Quantile for summer", ylim=c(0,120), xlim=c(-65,65))
+plotAllSeasonsFreq(list(freq_hist$autumn, freq_eval$autumn, freq_hist_alp3$autumn,freq_eval_alp3$autumn), "all_frequencies_autumn", 
+                   "Frequency Plot Differences in the 99.Quantile for autumn", ylim=c(0,175), xlim=c(-55,70))
+
+
+
+###########################################################################################################
+##################################### GENAUERE BETRACHTUNG DER JAHRESZEITEN ###############################
+###########################################################################################################
+################# HIST EUR-11
+hist_eur11_oversim_1<-extent(c(xmin=4170000, xmax=4195000, ymin=2535000, ymax=2570000))
+hist_eur11_undersim_1<-extent(c(xmin=4195000, xmax=4230000, ymin=2535000, ymax=2570000))
+hist_eur11_oversim_1_rasters<-cropAndMean(hist_eur11, hist_eur11_oversim_1, "spring")
+hist_eur11_undersim_1_rasters<-cropAndMean(hist_eur11, hist_eur11_undersim_1, "spring")
+apgd_undersim_1<-cropAndMean(apgd, hist_eur11_undersim_1, "spring")
+apgd_oversim_1<-cropAndMean(apgd, hist_eur11_oversim_1, "spring")
+plotData(data= hist_eur11_oversim_1_rasters, fn = "hist_eur11_oversim1", plotmain = "Flächengemittelter Niederschlag im Frühling")
+plotData(data= hist_eur11_undersim_1_rasters, fn = "hist_eur11_undersim1", plotmain = "Flächengemittelter Niederschlag im Frühling")
+plotData(data= apgd_oversim_1, fn = "apgd_oversim1", plotmain = "Flächengemittelter Niederschlag im Frühling")
+plotData(data= apgd_undersim_1, fn = "apgd_undersim1", plotmain = "Flächengemittelter Niederschlag im Frühling")
+
+
+
+
+################### EVAL EUR-11
+eval_eur11_undersim<-extent(c(xmin=4585000, xmax=4615000, ymin=2570000, ymax=2595000))
+eval_eur11_undersim_rasters<-cropAndMean(raster_list = eval_eur11, ex = eval_eur11_undersim, season = "summer")
+apgd_undersim<-cropAndMean(apgd, eval_eur11_undersim, "summer")
+plotData(data = eval_eur11_undersim_rasters, fn = "eval_eur11_undersim",plotmain = "Flächengemittelter Niederschlag im Sommer" )
+plotData(data = apgd_undersim, fn = "apgd_undersim_eur11",plotmain = "Flächengemittelter Niederschlag im Sommer" )
+
+temperature<-stackTEMP("~/Bacc/tmp_E-OBS1995-2010_remapped_toAPGD.nc")
+
+
+temperature_undersim_eur11<-cropAndMean(temperature, eval_eur11_undersim, "summer")
+t_u_eur11<-cropAndMeanAndMean(raster_list = temperature, simulated=eval_eur11_temp, ex = eval_eur11_undersim, season = "summer", year_of_interest = 1998)
+pr_u_eur11<-cropAndMeanAndMean(raster_list = apgd, simulated=eval_eur11, ex = eval_eur11_undersim, season="summer", year_of_interest = 1998)
+plotData(data = temperature_undersim_eur11, fn = "temp_eur11_undersim",plotmain = "Flächengemittelte Temperatur im Sommer" )
+plotData(data = t_u_eur11, fn = "temp_eur11_undersim_mean1998",plotmain = "Differenzen von der mittleren Temperatur in der gemittelten Fläche" )
+plotData(data = pr_u_eur11, fn = "pr_eur11_undersim_mean1998",plotmain = "Differenzen vom mittleren Niederschlag in der gemittelten Fläche" )
+
+#######################################################################################################################
+################### HIST ALP-3 #########################################################################################
+#######################################################################################################################
+hist_alp3_extent<-extent(c(xmin=4585000, xmax=4615000, ymin=2570000, ymax=2595000))
+hist_alp3_cropped<-cropAndMean(raster_list = eval_eur11, ex = eval_eur11_undersim, season = "summer")
+apgd_undersim<-cropAndMean(apgd, eval_eur11_undersim, "summer")
+plotData(data = hist_alp3_cropped, fn = "hist_alp3_undersim",plotmain = "Flächengemittelter Niederschlag im Sommer" )
+plotData(data = apgd_undersim, fn = "apgd_undersim_hist_alp3",plotmain = "Flächengemittelter Niederschlag im Sommer" )
+#temperature<-stackTEMP("~/Bacc/tmp_E-OBS1995-2010_remapped_toAPGD.nc")
+temperature_undersim_alp3<-cropAndMean(temperature,hist_alp3_extent, "summer")
+t_u_alp3<-cropAndMeanAndMean(raster_list = temperature, simulated=hist_alp3_temp, ex = hist_alp3_extent, season = "summer", year_of_interest = 1998)
+pr_u_alp3<-cropAndMeanAndMean(raster_list = apgd, simulated=hist_alp3, ex = hist_alp3_extent, season="summer", year_of_interest = 1998)
+plotData(data = temperature_undersim_eur11, fn = "temp_eur11_undersim",plotmain = "Flächengemittelte Temperatur im Sommer" )
+plotData(data = t_u_alp3, fn = "temp_alp3_undersim_mean1998",plotmain = "Differenzen von der mittleren Temperatur in der gemittelten Fläche" )
+plotData(data = pr_u_alp3, fn = "pr_alp3_undersim_mean1998",plotmain = "Differenzen vom mittleren Niederschlag in der gemittelten Fläche" )
+
+
+#######################################################################################################################
+################### EVAL ALP-3 #########################################################################################
+#######################################################################################################################
+outcropper<-extent(c(xmin=4795000, xmax=4880000, ymin=2260000, ymax=2300000))
+eval_alp3_try<-eval_alp3
+cropExtent(outcropper, eval_alp3_try)
 
 ########################## ########################## ########################## ##########################
 ######################################## SPLIT MONTHLY ####################################################
 ########################## ########################## ########################## ##########################
-
+'
 ids_by_month<-splitMonthlyOBS(all_days=stack(input_file_obs_remapped, varname="rr"), lon=stack(input_files_eval_pr[[1]], varname="lon"),
                               lat=raster(input_files_eval_pr[[1]], varname="lat"), new_filename=filename_obs_monthly)
 
@@ -547,6 +655,14 @@ ids_by_month<-splitMonthlySim(allInputfiles=input_files_eval_pr, lon=stack(input
                               lat=raster(input_files_eval_pr[[1]], varname="lat"), new_filename=filename_eval_monthly)
 ids_by_month<-splitMonthlySim(allInputfiles=input_files_hist_pr, lon=raster(input_files_hist_pr[[1]], varname="lon"),
                               lat=raster(input_files_hist_pr[[1]], varname="lat"), new_filename=filename_hist_monthly)
+
+'
+
+
+
+
+
+
 'for(i in 1:11)
 {
     print("Q99")

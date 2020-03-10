@@ -1,0 +1,6 @@
+i=1996
+for file in ~/Bacc/Lukas_Moser/EUR-11/eval/tas* 
+do
+	cdo remapbil,APGD_grid.nc -setgrid,EUR-11_tmp_eval.nc "$file" "tmp_EUR_11_eval_to_APGD$i.nc"
+	i=$(( $i + 1 ))
+done

@@ -108,3 +108,22 @@ getPR<-function(inputfiles, varname, mV_name, faktor=1){
   
   return(return_vals)
 }
+
+stackTEMP<-function(inputfiles){
+  all<-raster()  
+  listus<-list('1996'=raster(), '1997'=raster(), '1998'=raster(), '1999'=raster(),'2002'=raster(), '2001'=raster(),
+               '2002'=raster(), '2003'=raster(), '2004'=raster(),'2005'=raster())
+  for(i in 1:length(inputfiles))
+  {
+    all<-addLayer(all, stack(inputfiles[[i]], varname='tg'))
+  }
+  extent(all)<-extent(apgd[[1]])
+  all<-setZ(all, as.Date("1996-01-01")+0:(nlayers(all)-1))
+  for(i in 1996:2005)
+  {
+    ids<-which((getZ(all) <= as.Date(paste0(paste0(toString(i),"-12-31"))))& (getZ(all) >= as.Date(paste0(toString(i),"-01-01"))))
+    listus[[i-1995]]<-subset(all,ids)
+  }
+  #print(all)
+  return(listus)
+}

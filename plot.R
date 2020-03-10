@@ -315,10 +315,10 @@ plotBiases <- function(biases_alp3_eval, biases_alp3_hist, biases_eur11_eval, bi
 
 click_plot<-function(raster){
   #quilt.plot(data.frame(lon=as.vector(lon),lat=as.vector(lat),pr=as.vector(raster)), nx=ncol(differences)-1, ny=nrow(differences)-1)
-  dev.off()
   X11()
   plot(raster)
   click(x=raster, n=Inf, xy=TRUE, cell=TRUE, type="o")
+  dev.off()
 }
 
 justQuiltPlot<-function(ra, lon, lat)
@@ -343,15 +343,37 @@ saveRaster<-function(raster, filename, varname, longname){
 plotAllSeasonsFreq<-function(list_freq, filename, plotmain, ylim, xlim)
 {
     jpeg(paste0(output_dir, filename, ".jpg"), height = 600, width = 900)
-    plot(list_freq[[4]], col="blue", type="l", xlab="Difference in the 99. Quantile[mm/day]", ylab="over all appearance",
+    plot(list_freq[[1]], col="blue", type="l", xlab="Difference in the 99. Quantile[mm/day]", ylab="over all appearance",
          main= plotmain, xlim=xlim, ylim=ylim)
     lines(list_freq[[2]], col="red", type="l")
-    lines(list_freq[[3]], col="brown", type="l")
-    lines(list_freq[[1]], type="l", col="green")
+    lines(list_freq[[3]], col="orange", type="l")
+    lines(list_freq[[4]], type="l", col="green")
     abline(h=seq(ylim[[1]], ylim[[2]], by=50), v=seq(xlim[[1]], xlim[[2]], by=5), col="gray", lty=3)
-    legend(x=70, y=150, legend=c("spring", "summer", "autumn", "winter"),
-           col=c("green", "red", "brown", "blue"), lty=c(1))
+    legend(x=xlim[[2]]-30, y=ylim[[2]]-50, legend=c("Historical EUR-11", "Evaluation EUR-11", "Historical ALP-3", "Evaluation ALP-3"),
+           col=c("blue", "red", "orange", "green"), lty=c(1))
     dev.off()
 }
+plotAllSeasonalBoxplot<-function(raster_list, filename, plotmain){
+  no_na<-list(layer1=NULL, layer2=NULL, layer3=NULL, layer4=NULL)
+  biases<-list()
+  for(i in 1:4){
+    no_na[[i]]<-values(raster_list[[i]])
+    no_na[[i]]<-no_na[[i]][!is.na(no_na[[i]])]
+    biases<-unlist(list(unlist(biases), bias(no_na[[i]])))
+  }
+  jpeg(paste0(output_dir, filename, ".jpg"), height = 400, width = 600)
+  boxplot(no_na, ylab="Difference from observated data [mm/day]", names=c(paste0(names(raster_list)[[1]],"\nBias=",round(bias(no_na[[1]]),5)), 
+          paste0(names(raster_list)[[2]],"\nBias=",round(bias(no_na[[2]]),5)), paste0(names(raster_list)[[3]],"\nBias=",round(bias(no_na[[3]]),5)), 
+          paste0(names(raster_list)[[4]],"\nBias=",round(bias(no_na[[4]]),5))),main=plotmain)
+  dev.off()
+  
+  return(biases)
+}
 
+plotData <- function(data, fn, plotmain){
+  molten<-melt(data, id.vars="timeline")
 
+  #jpeg(paste0(output_dir, fn, ".jpg"), height = 900, width = 1200)
+  ggplot(molten) +aes(x=timeline, y=as.numeric(value), col=variable) + geom_line() + ylab("Niederschlag [mm/day]") +xlab("") + guides(col=guide_legend(title="Dataset")) + ggtitle(plotmain)
+  #dev.off()  
+}

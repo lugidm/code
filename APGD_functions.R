@@ -3,14 +3,21 @@
 # Created by: lugi
 # Created on: 11/5/19
 stackAPGD<-function(inputfiles){
-    all<-raster()
-    for(i in 1:length(inputfiles))
-    {
-        all<-addLayer(all, stack(inputfiles[[i]]))
-    }
-    all<-setZ(all, as.Date("1996-01-01")+0:(nlayers(all)-1))
-    print(all)
-    return(all)
+  all<-raster()  
+  listus<-list('1996'=raster(), '1997'=raster(), '1998'=raster(), '1999'=raster(),'2002'=raster(), '2001'=raster(),
+              '2002'=raster(), '2003'=raster(), '2004'=raster(),'2005'=raster())
+  for(i in 1:length(inputfiles))
+  {
+    all<-addLayer(all, stack(inputfiles[[i]], varname='PRECIPITATION'))
+  }
+  all<-setZ(all, as.Date("1996-01-01")+0:(nlayers(all)-1))
+  for(i in 1996:2005)
+  {
+    ids<-which((getZ(all) <= as.Date(paste0(paste0(toString(i),"-12-31"))))& (getZ(all) >= as.Date(paste0(toString(i),"-01-01"))))
+    listus[[i-1995]]<-subset(all,ids)
+  }
+    #print(all)
+    return(listus)
 }
 getMeanAPGD<-function(allDays, lon, lat){
     print("getAnnualMeanObs")
@@ -55,13 +62,20 @@ getAPGDinYear<-function(allDays, year){
 getQuantileObs <- function(allDays){
   qt_by_year<-raster()
   for(i in 1996:2005){
-    date_string_start <- paste0(toString(i), "-01-01")
-    date_string_end <- paste0(toString(i+1), "-01-01")
-    extract_ids <- which((getZ(allDays) < as.Date(date_string_end))& (getZ(allDays) >= as.Date(date_string_start)))
-    dummy<-subset(allDays, extract_ids)
-    #### REALLY EXPENSIVE CALCULATION
-    qt_by_year <- addLayer(qt_by_year, calc(dummy,Q99))
-    names(qt_by_year[[i-1995]])<-paste0(date_string_start,"..", date_string_end)
+    qt_by_year <- addLayer(qt_by_year, calc(allDays[[i-1995]],Q99))
   }
   return(qt_by_year)
+}
+
+cropExtent<-function(ex, raster_list){
+  #c<-matrix(nrow=20, ncol=23)
+  for(i in 1:length(raster_list)){
+    ids<-cellsFromExtent(raster_list[[i]], ex)
+    print(i)
+    print(ids)
+      #print(raster_list[[i]])
+      raster_list[[i]][ids]<-NA
+    
+  }
+  return(c)
 }
