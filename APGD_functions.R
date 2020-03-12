@@ -70,12 +70,9 @@ getQuantileObs <- function(allDays){
 cropExtent<-function(ex, raster_list){
   #c<-matrix(nrow=20, ncol=23)
   for(i in 1:length(raster_list)){
-    ids<-cellsFromExtent(raster_list[[i]], ex)
-    print(i)
-    print(ids)
-      #print(raster_list[[i]])
-      raster_list[[i]][ids]<-NA
-    
+    na_raster<-crop(raster_list[[i]], ex)
+    values(na_raster)<-NA
+    raster_list[[i]]<-merge(na_raster, raster_list[[i]], overlap=FALSE)
   }
-  return(c)
+  return(raster_list)
 }

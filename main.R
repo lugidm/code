@@ -488,7 +488,7 @@ for(i in 1996:2005){
   names(eval_eur11_temp[[i-1995]])<-seq(from=as.Date(paste0(i,"-01-01")), to=as.Date(paste0(i,"-12-31")), by="day")
   eval_eur11_temp[[i-1995]]<-setZ(eval_eur11_temp[[i-1995]],seq(from=as.Date(paste0(i,"-01-01")), to=as.Date(paste0(i,"-12-31")), by="day"))
   
-  hist_alp3_temp[[i-1995]]<-hist_alp3_temp[[i-1995]]-273.15
+  #hist_alp3_temp[[i-1995]]<-hist_alp3_temp[[i-1995]]-273.15
   extent(hist_alp3_temp[[i-1995]])<-extent(apgd[[i-1995]])
   names(hist_alp3_temp[[i-1995]])<-seq(from=as.Date(paste0(i,"-01-01")), to=as.Date(paste0(i,"-12-31")), by="day")
   hist_alp3_temp[[i-1995]]<-setZ(hist_alp3_temp[[i-1995]],seq(from=as.Date(paste0(i,"-01-01")), to=as.Date(paste0(i,"-12-31")), by="day"))
@@ -640,10 +640,29 @@ plotData(data = pr_u_alp3, fn = "pr_alp3_undersim_mean1998",plotmain = "Differen
 #######################################################################################################################
 ################### EVAL ALP-3 #########################################################################################
 #######################################################################################################################
-outcropper<-extent(c(xmin=4795000, xmax=4880000, ymin=2260000, ymax=2300000))
-eval_alp3_try<-eval_alp3
-cropExtent(outcropper, eval_alp3_try)
+outcropper<-extent(c(xmin=4795000, xmax=4887500, ymin=2207500, ymax=2320000))
+eval_alp3_cropped<-cropExtent(ex = outcropper, raster_list = eval_alp3)
+for(i in 1:length(eval_alp3_cropped)){
+  names(eval_alp3_cropped[[i]])<-seq(from=as.Date(paste0(i+1995,"-01-01")),to = as.Date(paste0(i+1995,"-12-31")), by = "day")
+  eval_alp3_cropped[[i]]<-setZ(eval_alp3_cropped[[i]],seq(from=as.Date(paste0(i+1995,"-01-01")),to = as.Date(paste0(i+1995,"-12-31")), by = "day"))
+}
 
+eval_alp3_seasons_q99<-getQuantileOfSeasons(eval_alp3_cropped)
+return_val<-q99_SeasonsSUB(eval_alp3_seasons_q99, apgd_seasons_q99, lon=lon, lat=lat,filename = "eval_alp3_cropped_", plotmain = "Evaluation, ALP-3")
+dif_eval_alp3<-return_val[[1]]
+freq_eval_alp3<-return_val[[2]]
+plotBoxplot(dif_eval_alp3$spring, "boxplot_eval_alp3_cropped_spring", "Boxplot of Evaluation, ALP-3 in Spring")
+
+eval_alp3_oversim_extent<-extent(c(xmin=4165000, xmax=4190000, ymin=2545000, ymax=2560000))
+eval_alp3_undersim_extent<-extent(c(xmin=4210000, xmax=4230000, ymin=2535000, ymax=2560000))
+eval_alp3_oversim<-cropAndMean(eval_alp3_cropped, eval_alp3_oversim_extent, "spring")
+eval_alp3_undersim<-cropAndMean(eval_alp3_cropped, eval_alp3_undersim_extent, "spring")
+apgd_undersim<-cropAndMean(apgd, eval_alp3_undersim_extent, "spring")
+apgd_oversim<-cropAndMean(apgd, eval_alp3_oversim_extent, "spring")
+plotData(data= eval_alp3_oversim, fn = "eval_alp3_oversim", plotmain = "Flächengemittelter Niederschlag im Frühling")
+plotData(data= eval_alp3_undersim, fn = "eval_alp3_undersim", plotmain = "Flächengemittelter Niederschlag im Frühling")
+plotData(data= apgd_oversim_1, fn = "apgd_oversim1", plotmain = "Flächengemittelter Niederschlag im Frühling")
+plotData(data= apgd_undersim_1, fn = "apgd_undersim1", plotmain = "Flächengemittelter Niederschlag im Frühling")
 ########################## ########################## ########################## ##########################
 ######################################## SPLIT MONTHLY ####################################################
 ########################## ########################## ########################## ##########################

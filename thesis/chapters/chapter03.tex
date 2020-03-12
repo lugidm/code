@@ -88,7 +88,7 @@ Da dadurch die Datensätze für das selbe Phänomen untereinander verglichen wer
 	\label{fig:seasons_dif}
 \end{figure}
 \section{Nähere Betrachtungen der einzelnen Datensätze}
-\subsection{Historical EUR-11}
+\subsection{Historical EUR-11} \label{subsec:hist_eur11}
 Wie man in der Abbildung \ref{fig:seasons_dif:hist_eur11} erkennen kann, liegen in dem gekennzeichneten Bereichen die maximalen negativen Abweichungen direkt neben denen der maximal Positiven. Dieses Phänomen scheint mehrmals auf der Karte aufzutauchen (z.B im Bereich von Krk und im Bereich der Alpi Orobie). Dies lässt darauf schließen, dass das Modell eine große Regenzelle aufgrund von Fehlberechnungen in örtlich Fehlerhaft abbildete. Diese Vermutung kann gut durch die in Abb. \ref{fig:seasons_hist} dargestellten Niederschlagskarten nachvollzogen werden. Jedoch ist Bemerkenswert, dass das Modell solch starke Abweichungen aus dem Normalzustand überhaupt abbildet: Die Peaks, die diese Abweichungen ausmachen liegen weit über dem Durchschnitt dieser Regionen vgl. dazu Abb.\ref{fig:season:over_apgd} \& \ref{fig:season:under_apgd}\\
 Um dieses Phänomen näher zu erkunden wurden der gekennzeichneten Bereich in einen Überschätzenden und einen Unterschätzenden Bereich geteilt. Die Modelldaten wurden dann im Frühling über die Fläche gemittelt und in Abb.\ref{fig:season:over_hist} \& \ref{fig:season:under_hist} gegen die Zeit aufgetragen. Dieselben Berechnungen im selben Bereich wurden für die Beobachtungsdaten vollzogen. Diese Ergebnisse wurden in der Abb.\ref{fig:season:under_apgd} \& \ref{fig:season:over_apgd} visualisiert.\\
 \begin{figure}
@@ -180,5 +180,20 @@ Die Temperatur scheint jedoch um einiges besser den Gegebenheiten zu entsprechen
 	\caption{Differenz der Temperatur und des Niederschlags zum entsprechenden Durchschnitt}
 	\label{fig:seasons:mean_alp3}
 \end{figure}
+
 \subsection{Evaluation ALP-3}
-Um diesen Datensatz und dessen größere Abweichungen darzustellen wurde zunächst der Ausreißer im Süden Kroatiens ausgeschnitten um dessen Verfälschung auszublenden. Die Karte, die sich daraus ergab findet man in der Abb.
+Um diesen Datensatz in dessen größten Abweichungen darzustellen wurde zunächst der Ausreißer im Süden Kroatiens ausgeschnitten um dessen Verfälschung auszublenden. Die Karte, die sich daraus ergab findet man in der Abb.\ref{fig:seasons:cropped eval_alp_3}. Wie zu erkennen ist, hat sich die maximale Niederschlagsdifferenz nun von $250\frac{mm}{Tag}$ auf etwa $60\frac{mm}{Tag}$ vermindert. Somit ist dieses Gebiet für den Datensatz ein klarer Ausreißer. Dies erkennt man auch beim betrachten des Boxplots in Abb.\ref{fig:seasons:cropped eval_alp_3_boxplot}. Der Bias hat sich zudem drastisch verkleinert: von anfänglich $7.01032$ auf $4.95719$. Zudem wurde durch diese verbesserte Darstellung klar, dass sich im Gebiet des Lago Maggiore dasselbe Muster der Abweichungen wie im Historical - EUR-11 Datensatz abzeichnet (vgl. Kap.\ref{subsec:hist_eur11}), weshalb es nun in derselben Herangehensweise verglichen werden soll.
+
+\begin{figure}[h]
+	\begin{subfigure}{0.49\textwidth}
+		\includegraphics[width=\textwidth]{quantile_season/eval_alp3_cropped_spring.jpg}
+		\caption{Niederschlagskarte der Differenzen des Niederschlags im Datensatz Evaluation, ALP-3 im Frühling, mit gekennzeichnetem Gebiet}
+		\label{fig:seasons:cropped eval_alp_3}
+	\end{subfigure}
+	\begin{subfigure}{0.49\textwidth}
+		\includegraphics[width=\textwidth]{quantile_season/boxplot_eval_alp3_cropped_spring.jpg}
+		\caption{Boxplot der Differenzen der Niederschläge im Datensatz Evaluation, ALP-3 im Frühling}
+		\label{fig:seasons:cropped eval_alp_3_boxplot}
+	\end{subfigure}
+	\caption{}
+\end{figure}
