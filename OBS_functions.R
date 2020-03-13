@@ -33,24 +33,11 @@ getRemappedAnnualQuantileObs <- function(allDays){
 }
 
 getAnnualMeanObs <- function(allDays){
-    print("getAnnualMeanObs")
-    #f<-freq(pr_by_year[[1]], digits = 2, cum = TRUE, valid=TRUE, total=TRUE)
-    #f<-f[1:357,]
-    #pr_by_year<-subset(allDays, which(getZ(allDays)<as.Date('1996-01-01')))
-    ##### REALLY EXPENSIVE CALCULATION
-    #values(pr_by_year)[values(pr_by_year) == fVal_obs$value]=NA
-    #pr_by_year<-calc(pr_by_year, fun=mean)
     pr_by_year<-raster()
-    for(i in 1996:2005){
-        date_string_start <- paste0(toString(i), "-01-01")
-        date_string_end <- paste0(toString(i+1), "-01-01")
-        extract_ids <- which((getZ(allDays) < as.Date(date_string_end))& (getZ(allDays) >= as.Date(date_string_start)))
-        dummy<-subset(allDays, extract_ids)
-        #### REALLY EXPENSIVE CALCULATION
-        dummy[dummy==fVal_obs$value] <- NA
-        dummy<-calc(dummy,fun=mean)
-        names(dummy) <- toString(i)
-        pr_by_year <- addLayer(pr_by_year, dummy)
+    for(i in 1:length(allDays)){
+      dummy<-calc(allDays[[i]],fun=mean)
+      names(dummy) <- toString(i+1995)
+      pr_by_year <- addLayer(pr_by_year, dummy)
     }
     return(pr_by_year)
 }

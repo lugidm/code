@@ -113,6 +113,7 @@ plotDifferences <- function(frequencies, raster, lon, lat, filename, plotmain, a
         jpeg(paste0(output_dir,toString(i+1995),"frequencies", filename), height = 400, width = 650)
           plot(frequencies[[i]], type="l", col="black", xlab="difference", ylab="over all appearance",
           main=paste0("Frequency plot in ", toString(i+1995)))
+          grid(col="gray", lty = 2)
           ', axis=FALSE)
           axis(1, seq(round(min(frequencies[[i]][,1])), round(max(frequencies[[i]][,1])), by = 10))
           axis(2, seq(round(min(frequencies[[i]][,2])), round(max(frequencies[[i]][,2])), by = 10))
@@ -154,37 +155,29 @@ plotMeanDifferences <- function(differences, frequencies, lon, lat, filename, EV
         if(EVAL){
             jpeg(paste0(output_dir, "frequencies", filename), height = 600, width = 900)
             plot(frequencies, type="l", col="black", xlab="mean divergence", ylab="over all mean-appearance",
-            main="Mean frequencies plot in evaluation-APGD differences for period 1996-2005"
-            ,xaxp=c(round(min(frequencies[,1])), round(max(frequencies[,1])), 18))
+            main="Mean frequencies plot in evaluation-APGD differences for period 1996-2005")
             #axis(1, seq(round(min(frequencies[,1])), round(max(frequencies[,1])), by = 0.5))
-            abline(h=seq(round(min(frequencies[,2])), round(max(frequencies[,2])), by=500), v=seq(round(min(frequencies[,1])),
-            round(max(frequencies[,1])), by=0.5), col="gray", lty=3)
+            grid(col="gray", lty = 2)
         }else{
             jpeg(paste0(output_dir,"frequencies", filename), height = 600, width = 900)
             plot(frequencies, type="l", col="black", xlab="mean divergence", ylab="over all mean-appearance",
-            main="Mean frequencies plot in historical-APGD differences for period 1996-2005"
-            ,xaxp=c(round(min(frequencies[,1])), round(max(frequencies[,1])), 28))
+            main="Mean frequencies plot in historical-APGD differences for period 1996-2005")
             #axis(1, seq(round(min(frequencies[,1])), round(max(frequencies[,1])), by = 0.5))
-            abline(h=seq(round(min(frequencies[,2])), round(max(frequencies[,2])), by=500), v=seq(round(min(frequencies[,1])),
-            round(max(frequencies[,1])), by=0.5), col="gray", lty=3)
+            grid(col="gray", lty = 2)
         }
     }else{
         if(EVAL){
             jpeg(paste0(output_dir, "frequencies", filename), height = 600, width = 900)
             plot(frequencies, type="l", col="black", xlab="mean divergence", ylab="over all mean-appearance",
-            main="Mean frequencies plot in evaluation-APGD differences for period 1996-2005"
-            ,xaxp=c(round(min(frequencies[,1])), round(max(frequencies[,1])), 26))
+            main="Mean frequencies plot in evaluation-APGD differences for period 1996-2005")
             #axis(1, seq(round(min(frequencies[,1])), round(max(frequencies[,1])), by = 0.5))
-            abline(h=seq(round(min(frequencies[,2])), round(max(frequencies[,2])), by=500), v=seq(round(min(frequencies[,1])),
-            round(max(frequencies[,1])), by=0.5), col="gray", lty=3)
+            grid(col="gray", lty = 2)
         }else{
             jpeg(paste0(output_dir,"frequencies", filename), height = 600, width = 900)
             plot(frequencies, type="l", col="black", xlab="mean divergence", ylab="over all mean-appearance",
-            main="Mean frequencies plot in historical-APGD differences for period 1995-2005"
-            ,xaxp=c(round(min(frequencies[,1])), round(max(frequencies[,1])), 28))
+            main="Mean frequencies plot in historical-APGD differences for period 1995-2005")
             #axis(1, seq(round(min(frequencies[,1])), round(max(frequencies[,1])), by = 0.5))
-            abline(h=seq(round(min(frequencies[,2])), round(max(frequencies[,2])), by=500), v=seq(round(min(frequencies[,1])),
-            round(max(frequencies[,1])), by=0.5), col="gray", lty=3)
+            grid(col="gray", lty = 2)
         }
     }
     print("plotted frequencies")

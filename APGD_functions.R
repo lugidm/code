@@ -4,7 +4,7 @@
 # Created on: 11/5/19
 stackAPGD<-function(inputfiles){
   all<-raster()  
-  listus<-list('1996'=raster(), '1997'=raster(), '1998'=raster(), '1999'=raster(),'2002'=raster(), '2001'=raster(),
+  listus<-list('1996'=raster(), '1997'=raster(), '1998'=raster(), '1999'=raster(),'2000'=raster(), '2001'=raster(),
               '2002'=raster(), '2003'=raster(), '2004'=raster(),'2005'=raster())
   for(i in 1:length(inputfiles))
   {

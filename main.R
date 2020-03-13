@@ -661,8 +661,11 @@ apgd_undersim<-cropAndMean(apgd, eval_alp3_undersim_extent, "spring")
 apgd_oversim<-cropAndMean(apgd, eval_alp3_oversim_extent, "spring")
 plotData(data= eval_alp3_oversim, fn = "eval_alp3_oversim", plotmain = "Flächengemittelter Niederschlag im Frühling")
 plotData(data= eval_alp3_undersim, fn = "eval_alp3_undersim", plotmain = "Flächengemittelter Niederschlag im Frühling")
-plotData(data= apgd_oversim_1, fn = "apgd_oversim1", plotmain = "Flächengemittelter Niederschlag im Frühling")
-plotData(data= apgd_undersim_1, fn = "apgd_undersim1", plotmain = "Flächengemittelter Niederschlag im Frühling")
+plotData(data= apgd_oversim, fn = "apgd_oversim_eval_alp3", plotmain = "Flächengemittelter Niederschlag im Frühling")
+plotData(data= apgd_undersim, fn = "apgd_undersim_eval_alp3", plotmain = "Flächengemittelter Niederschlag im Frühling")
+eval_alp3_oversim_mean<-cropAndMeanAndMean(raster_list = apgd, simulated = eval_alp3_cropped, ex = eval_alp3_oversim_extent, season = "spring", year_of_interest = 2002)
+plotData(data = eval_alp3_oversim_mean, fn = "pr_alp3_undersim_mean1998",plotmain = "Differenzen vom mittleren Niederschlag in der gemittelten Fläche" )
+
 ########################## ########################## ########################## ##########################
 ######################################## SPLIT MONTHLY ####################################################
 ########################## ########################## ########################## ##########################
