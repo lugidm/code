@@ -375,7 +375,6 @@ plotAllSeasonalBoxplot<-function(raster_list, filename, plotmain){
 
 plotData <- function(data, fn, plotmain){
   molten<-melt(data, id.vars="timeline")
-
   #jpeg(paste0(output_dir, fn, ".jpg"), height = 900, width = 1200)
   ggplot(molten) +aes(x=timeline, y=as.numeric(value), col=variable) + geom_line() + ylab("Niederschlag [mm/day]") +xlab("") + guides(col=guide_legend(title="Dataset")) + ggtitle(plotmain)
   #dev.off()  

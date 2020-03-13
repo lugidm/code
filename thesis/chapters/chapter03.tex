@@ -182,18 +182,53 @@ Die Temperatur scheint jedoch um einiges besser den Gegebenheiten zu entsprechen
 \end{figure}
 
 \subsection{Evaluation ALP-3}
-Um diesen Datensatz in dessen größten Abweichungen darzustellen wurde zunächst der Ausreißer im Süden Kroatiens ausgeschnitten um dessen Verfälschung auszublenden. Die Karte, die sich daraus ergab findet man in der Abb.\ref{fig:seasons:cropped eval_alp_3}. Wie zu erkennen ist, hat sich die maximale Niederschlagsdifferenz nun von $250\frac{mm}{Tag}$ auf etwa $60\frac{mm}{Tag}$ vermindert. Somit ist dieses Gebiet für den Datensatz ein klarer Ausreißer. Dies erkennt man auch beim betrachten des Boxplots in Abb.\ref{fig:seasons:cropped eval_alp_3_boxplot}. Der Bias hat sich zudem drastisch verkleinert: von anfänglich $7.01032$ auf $4.95719$. Zudem wurde durch diese verbesserte Darstellung klar, dass sich im Gebiet des Lago Maggiore dasselbe Muster der Abweichungen wie im Historical - EUR-11 Datensatz abzeichnet (vgl. Kap.\ref{subsec:hist_eur11}), weshalb es nun in derselben Herangehensweise verglichen werden soll.
-
+Um diesen Datensatz in dessen tatsächlich größten Abweichungen besser darzustellen wurde zunächst das Gebiet im Süden Kroatiens ausgeschnitten um dessen Verfälschung auszublenden. Die Karte, die sich daraus ergab findet man in der Abb.\ref{fig:seasons:cropped eval_alp_3}. Wie zu erkennen ist, hat sich die maximale Niederschlagsdifferenz nun von $250\frac{mm}{Tag}$ auf etwa $60\frac{mm}{Tag}$ vermindert - dieses Gebiet scheint ein klarer Ausreißer zu sein. Der Boxplots in Abb.\ref{fig:seasons:cropped eval_alp_3_boxplot} unterstützt diese Vermutung. Der Bias hat sich zudem drastisch verkleinert: von anfänglich $7.01032$ auf $4.95719$. Durch diese verbesserte Darstellung ist ersichtlich, dass sich im Gebiet des Lago Maggiore dasselbe Muster der Abweichungen wie im Historical - EUR-11 Datensatz abzeichnet (vgl. Kap.\ref{subsec:hist_eur11}), weshalb es nun in derselben Herangehensweise verglichen werden soll: Der gekennzeichnete Bereich in Abb.\ref{fig:seasons:cropped eval_alp_3} wurde in eine überschätzende und einen unterschätzende Fläche geteilt und diese dann über die Fläche gemittelt gegen die Zeit Aufgetragen.
 \begin{figure}[h]
 	\begin{subfigure}{0.49\textwidth}
 		\includegraphics[width=\textwidth]{quantile_season/eval_alp3_cropped_spring.jpg}
-		\caption{Niederschlagskarte der Differenzen des Niederschlags im Datensatz Evaluation, ALP-3 im Frühling, mit gekennzeichnetem Gebiet}
+		\caption{Niederschlagskarte}
 		\label{fig:seasons:cropped eval_alp_3}
 	\end{subfigure}
 	\begin{subfigure}{0.49\textwidth}
 		\includegraphics[width=\textwidth]{quantile_season/boxplot_eval_alp3_cropped_spring.jpg}
-		\caption{Boxplot der Differenzen der Niederschläge im Datensatz Evaluation, ALP-3 im Frühling}
+		\caption{Boxplot}
 		\label{fig:seasons:cropped eval_alp_3_boxplot}
 	\end{subfigure}
-	\caption{}
+	\caption{Differenzen des Niederschlags im Datensatz ohne dem Gebiet im Süden Kroatiens im Frühling, mit gekennzeichnetem Gebiet}
 \end{figure}
+
+\begin{figure}[h]
+	\begin{subfigure}{0.49\textwidth}
+		\includegraphics[width=\textwidth]{quantile_season/eval_alp3_undersim_frequencies.jpeg}
+		\caption{Flächengemittelter Niederschlag in dem Bereich der Überschätzung (vgl. Abb.\ref{fig:seasons:cropped eval_alp_3} für den Datensatze Evaluation ALP-3}
+		\label{fig:seasons:oversim eval_alp_3}
+	\end{subfigure}
+	\begin{subfigure}{0.49\textwidth}
+		\includegraphics[width=\textwidth]{quantile_season/eval_alp3_oversim_frequencies.jpeg}
+		\caption{Flächengemittelter Niederschlag in dem Bereich der Unterschätzung (vgl. Abb.\ref{fig:seasons:cropped eval_alp_3} für den Datensatze Evaluation ALP-3}
+		\label{fig:seasons:undersim_eval_alp_3}
+	\end{subfigure}
+	\caption{}
+	\label{fig:seasons:overunder_eval_alp3}
+\end{figure}
+\begin{figure}[h]
+	\begin{subfigure}{0.49\textwidth}
+		\includegraphics[width=\textwidth]{quantile_season/apgd_oversim_eval_alp3_freq.jpeg}
+		\caption{Flächengemittelter Niederschlag in dem Bereich der Überschätzung (vgl. Abb.\ref{fig:seasons:cropped eval_alp_3} für die Beobachtungsdaten}
+		\label{fig:seasons:oversim eval_alp_3_obs}
+	\end{subfigure}
+	\begin{subfigure}{0.49\textwidth}
+		\includegraphics[width=\textwidth]{quantile_season/apgd_undersim_eval_alp3_freq.jpeg}
+		\caption{Flächengemittelter Niederschlag in dem Bereich der Unterschätzung (vgl. Abb.\ref{fig:seasons:cropped eval_alp_3} für die Beobachtungsdaten}
+		\label{fig:seasons:undersim_eval_alp_3_obs}
+	\end{subfigure}
+	\caption{}
+	\label{fig:seasons:overunder_obs_eval_alp3}
+\end{figure}
+Wie beim vergleichen der beiden Häufigkeiten des flächengemittelten Niederschlags in den Abbildungen \ref{fig:seasons:overunder_eval_alp3} und \ref{fig:seasons:overunder_eval_alp3} auffällt, scheint durch das Konvektion-Erlaubende downscaling-Modell die Beobachtungsdaten besser dargestellt zu werden als das in Kapitel \ref{subsec:hist_eur11} verglichene Modell mit parametrisierter Konvektion:
+\begin{itemize}
+	\item Der Unterschied zwischen den größten Peaks beider Karten ist viel kleiner
+	\item Die entsprechenden Peaks sind im richtigen Monat
+	\item Es scheint sogar nur durch die Wahl des 99. Quantils die Überschätzung abgebildet worden zu sein (vgl. Abb.\ref{fig:seasons:oversim eval_alp_3} \& \ref{fig:seasons:oversim eval_alp_3_obs}). Ansonsten wäre noch die Wahl des Maximalwerts im Niederschlag als Vergleichsbasis eine Option gewesen, jedoch würden durch diese Wahl Ausreißern zu viel Gewicht zugeschrieben.
+\end{itemize}
+Da im überschätzendem Bereich die größte Überschätzung seitens des Modells im Jahr 2002 stattfindet, wurde in diesem Jahr der Niederschlag relativ zum Durchschnittsniederschlag dieser Fläche aufgetragen um einen besseren Vergleich dieses speziellen Jahres zu erhalten.
