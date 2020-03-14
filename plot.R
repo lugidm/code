@@ -265,18 +265,18 @@ plotBoxplot<-function(raster_brick, filename_pattern, main_pattern, overall_mean
   no_na<-list(layer1=NULL, layer2=NULL, layer3=NULL, layer4=NULL, layer5=NULL, layer6=NULL, layer7=NULL, layer8=NULL, layer9=NULL,layer10=NULL)
   biases<-list()
   for(i in 1:nlayers(raster_brick)){
-    no_na[[i]]<-values(raster_brick[[i]])
-    no_na[[i]]<-no_na[[i]][!is.na(no_na[[i]])]
-    biases<-unlist(list(unlist(biases), bias(no_na[[i]])))
+    #no_na[[i]]<-values(raster_brick[[i]])
+    #no_na[[i]]<-no_na[[i]][!is.na(no_na[[i]])]
+    biases<-unlist(list(unlist(biases), (values(raster_brick[[i]]), na.rm=TRUE)))
     if(is.null(overall_mean)){
       jpeg(paste0(output_dir, filename_pattern,".jpg"), height = 500, width = 700)
-      boxplot(no_na[[i]], ylab="Mean difference from observated data [mm/day]",  main=paste0(main_pattern,". Bias = ", round(bias(no_na[[i]]),5)))
+      boxplot(values(raster_brick[[i]]), ylab="Mean difference from observated data [mm/day]",  main=paste0(main_pattern,". Bias = ", round(biases[[i]]),5))
     }else if(overall_mean==TRUE){
       jpeg(paste0(output_dir, filename_pattern,".jpg"), height = 500, width = 700)
-      boxplot(no_na[[i]], ylab="Mean difference from observated data [mm/day]",  main=paste0("Mean boxplot of ",main_pattern," data, mean over all years. Bias = ", round(bias(no_na[[i]]),5)))
+      boxplot(values(raster_brick[[i]]), ylab="Mean difference from observated data [mm/day]",  main=paste0("Mean boxplot of ",main_pattern," data, mean over all years. Bias = ", round(biases[[i]]),5))
     }else{
       jpeg(paste0(output_dir, filename_pattern, i+1995, ".jpg"), height = 400, width = 500)
-      boxplot(no_na[[i]], ylab="Mean difference from observated data [mm/day]",  main=paste0("Mean boxplot of ",main_pattern," data in year: ", i+1995, ", Bias = ", round(bias(no_na[[i]]),5)))
+      boxplot(values(raster_brick[[i]]), ylab="Mean difference from observated data [mm/day]",  main=paste0("Mean boxplot of ",main_pattern," data in year: ", i+1995, ", Bias = ", round(biases[[i]]),5))
     }
       dev.off()
   }
@@ -303,10 +303,10 @@ plotBiases <- function(biases_alp3_eval, biases_alp3_hist, biases_eur11_eval, bi
   tada<-data.frame(timeline=as.integer(time_list_eval), biases=c(biases_alp3_eval, biases_alp3_hist, biases_eur11_eval, biases_eur11_hist), 
                    grouping=structure(c(rep(1L, 10), rep(2L,10), rep(3L, 10), rep(4L, 10)),
                    .Label=c("mean bias of alp3-evaluation data","mean bias of alp3-historical data", "mean bias of eur11-evaluation data", "mean bias of eur11-historical data"),class="factor"))
-  jpeg(paste0(output_dir, fn, ".jpg"), width = 900, height=600)
+  #jpeg(paste0(output_dir, fn, ".jpg"), width = 900, height=600)
     print(paste0(output_dir, fn, ".jpg"))
     ggplot(tada) +aes(x=as.Date.yearmon(timeline), y=biases, col=grouping) + geom_line() + ylab("Mean Biases [mm/day]") +xlab("Years") + guides(col=guide_legend(title="Dataset")) + ggtitle("Yearly Mean Biases")
-  dev.off()  
+  #dev.off()  
 }
 
 click_plot<-function(raster){

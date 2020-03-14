@@ -34,7 +34,7 @@ subArrayMean <- function(hist_eur11, eval_eur11, hist_alp3, eval_alp3, observate
   dif_e11_eval<-e11_eval
   dif_alp3_hist<-alp3_hist
   dif_alp3_eval<-alp3_eval
-  for(i in 1:length(sim)){
+  for(i in 1:length(observated)){
     dif_e11_hist[i][[1]]<-(e11_hist[i][[1]]-obs[i][[1]])
     dif_e11_eval[i][[1]]<-(e11_eval[i][[1]]-obs[i][[1]])
     dif_alp3_hist[i][[1]]<-(alp3_hist[i][[1]]-obs[i][[1]])
@@ -44,6 +44,7 @@ subArrayMean <- function(hist_eur11, eval_eur11, hist_alp3, eval_alp3, observate
                                 "EUR-11-Evaluation"=dif_e11_eval, "ALP-3-Historical"=dif_alp3_hist, "ALP-3-Evaluation"=dif_alp3_eval)
   return(ret_dat)
 }
+
 putInData<-function(simulated_1, simulated_2, observated, start_date, end_date){
   sim1<-cellStats(simulated_1, "mean")
   sim2<-cellStats(simulated_2, "mean")
