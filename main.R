@@ -21,6 +21,9 @@ source("~/Bacc/code/APGD_functions.R")
 source("~/Bacc/code/split.R")
 source("~/Bacc/code/monthly.R")
 source("~/Bacc/code/mean.R")
+source("~/Bacc/code/q99.R")
+source("~/Bacc/code/season.R")
+
 
 #library(ggplot2)
 #library(rasterVis)
@@ -214,7 +217,7 @@ for(i in 1:length(time_list_hist))
 ##############  MEAN   #############################
 ####################################################
 '
-observation <- getRemappedObs(input_file_obs_remapped)
+observation <- stackAPGD(getAPGD())
 mean_observations<-getAnnualMeanObs(observation)
 lon <- raster(input_file_obs_remapped, varname="lon")
 lat <- raster(input_file_obs_remapped, varname="lat")
@@ -227,8 +230,8 @@ for(i in 1:11)
     plotJPGmean(raster=mean_observations[[i]], lon=lon, lat=lat, paste0("mprs", time_list_obs[i],"obs_remapped.jpg"), paste0("Annual mean percipitation[mm/day] ",
     time_list_obs[i]," in remapped observation data"), addMap=TRUE)
 }
-'
 
+'
 
 #####################################################
 ################## EVAL DATA ########################
@@ -256,12 +259,13 @@ for(i in 1:length(time_list_eval))
 old_raster <- raster("../Results/mprs_eval_alp3.nc")
 writeRaster(addLayer(addLayer(old_raster, lon),lat), "../Results/mprs_eval_alp3.nc", overwrite=TRUE, format="CDF",
 varname="MPercipitation", varunit="mm", longname="Mean Percipitation", xname="X", yname="Y",zname="nbands", zunit="numeric")
+
 '
 ########################################################################################################################
 #############################################   COMPARISIONS EUR 11 ####################################################
 ########################################################################################################################
 
-'ALP3=FALSE
+ALP3=FALSE
 mean_pr_eval <- stack(dump_file_mprs_eval_eur11, varname = "mean_pr")
 mean_pr_obs <- stack(dump_file_mprs_apgd, varname = "mprs")
 lon=subset(mean_pr_obs, nlayers(mean_pr_obs)-1)
@@ -283,7 +287,7 @@ mean_eval<-compareAllYears(differences=dif_eval, frequencies=freq_eval, lon=lon,
 mean_hist<-compareAllYears(differences=dif_hist, frequencies=freq_hist, lon=lon, lat=lat, EVAL=FALSE)
 plotBoxplot(mean_eval[[1]], "eur_11_mean_evaluation_boxplot", "evaluation", overall_mean=TRUE)
 plotBoxplot(mean_hist[[1]], "eur_11_mean_historical_boxplot", "historical", overall_mean=TRUE)
-'
+
 ########################################################################################################################
 ##################### ALP-3 ****************************************** CALCULATIONS ####################################
 ########################################################################################################################
@@ -354,7 +358,7 @@ for(i in 1:11)
     paste0("Annual mean percipitation[mm/day] ", time_list_obs[i]," in remapped observation data for ALP-3"), addMap=TRUE)
 }
 '
-'
+
 ALP3=TRUE
 mean_pr_eval_alp3 <- stack(dump_file_mprs_eval_alp3, varname = "mprs")
 mean_pr_obs <- stack(dump_file_mprs_apgd, varname = "mprs")
@@ -378,17 +382,22 @@ mean_hist_alp3<-compareAllYears(differences=dif_hist_alp3, frequencies=freq_hist
 plotBoxplot(mean_eval_alp3[[1]], "alp3_mean_evaluation_boxplot", "evaluation", overall_mean=TRUE)
 plotBoxplot(mean_hist_alp3[[1]], "alp3_mean_historical_boxplot", "historical", overall_mean=TRUE)
 
-'
+
 
 ########################################################################################################
 #############################    2002 2002 2002 2002 2002 2002 2002 2002 ###############################
 ########################################################################################################
-'
+
 eval_eur11_2002<-stack(getEUR11regridded_eval_pr()[[7]], varname="pr")
 hist_eur11_2002<-stack(getEUR11regridded_historical_pr()[[7]], varname="pr")
 eval_alp3_2002<-stack(getALP3regriddedevalPR()[[7]], varname="TOT_PREC")
 hist_alp3_2002<-stack(getALP3regriddedhistPR()[[7]], varname="TOT_PREC")
-apgd_2002<-getAPGDinYear(stackAPGD(input_files_APGD), 2002)
+
+hist_alp3_2002_mean<-calc(hist_alp3_2002, mean, na.rm=TRUE)
+dif<-overlay(hist_alp3_2002_mean, apgd_2002_mean, fun=function(x,y){x-y})
+
+
+apgd_2002<-apgd[[7]]
 extent(apgd_2002)<-extent(eval_eur11_2002)
 cropped_eval_eur11_2002<-cropMean2002(eval_eur11_2002)
 cropped_eval_eur11_2002<-cropped_eval_eur11_2002*3600*24
@@ -408,7 +417,6 @@ hist<-putInData(simulated_1 = cropped_his_alp3_2002, simulated_2 = cropped_hist_
 plotDif2002(data = hist, fn="historical_2002")
 ########################BIASES#################
 plotBiases(biases_alp3_eval, biases_alp3_hist, biases_eur11_eval, biases_eur11_hist, fn="yearly_mean_biases")
-'
 
 
 ######################################################################################################
@@ -429,6 +437,7 @@ hist_alp3<-getPR(getALP3regriddedhistPR(), varname="TOT_PREC", NULL) #NO MISSING
 
 eval_eur11_temp<-getPR(getEUR11regridded_eval_temp(), varname="tas", "_FillValue")
 hist_alp3_temp<-getPR(getALP3regriddedhistTEMP(), varname="T_2M", NULL) #NO MISSING VALUE
+eval_alp3_temp<-getPR(getALP3regriddedevalTEMP(), varname="T_2M", "missing_value") #NO MISSING VALUE
 
 quantile_eval_eur11<-getQuantile(eval_eur11)
 quantile_hist_eur11<-getQuantile(hist_eur11)
@@ -492,6 +501,11 @@ for(i in 1996:2005){
   extent(hist_alp3_temp[[i-1995]])<-extent(apgd[[i-1995]])
   names(hist_alp3_temp[[i-1995]])<-seq(from=as.Date(paste0(i,"-01-01")), to=as.Date(paste0(i,"-12-31")), by="day")
   hist_alp3_temp[[i-1995]]<-setZ(hist_alp3_temp[[i-1995]],seq(from=as.Date(paste0(i,"-01-01")), to=as.Date(paste0(i,"-12-31")), by="day"))
+  
+  #eval_alp3_temp[[i-1995]]<-eval_alp3_temp[[i-1995]]-273.15
+  extent(eval_alp3_temp[[i-1995]])<-extent(apgd[[i-1995]])
+  names(eval_alp3_temp[[i-1995]])<-seq(from=as.Date(paste0(i,"-01-01")), to=as.Date(paste0(i,"-12-31")), by="day")
+  eval_alp3_temp[[i-1995]]<-setZ(eval_alp3_temp[[i-1995]],seq(from=as.Date(paste0(i,"-01-01")), to=as.Date(paste0(i,"-12-31")), by="day"))
   
   extent(eval_eur11[[i-1995]])<-extent(apgd[[i-1995]])
   names(eval_eur11[[i-1995]])<-seq(from=as.Date(paste0(i,"-01-01")), to=as.Date(paste0(i,"-12-31")), by="day")
@@ -600,6 +614,15 @@ plotData(data= hist_eur11_undersim_1_rasters, fn = "hist_eur11_undersim1", plotm
 plotData(data= apgd_oversim_1, fn = "apgd_oversim1", plotmain = "Flächengemittelter Niederschlag im Frühling")
 plotData(data= apgd_undersim_1, fn = "apgd_undersim1", plotmain = "Flächengemittelter Niederschlag im Frühling")
 
+hist_eur11_temp_oversim<-cropAndMeanAndMean(raster_list = temperature, simulated=hist_eur11_temp, ex = hist_eur11_oversim_extent, season = "spring", year_of_interest = 2004)
+hist_eur11_temp_undersim<-cropAndMeanAndMean(raster_list = temperature, simulated=hist_eur11_temp, ex = hist_eur11_undersim_extent, season = "spring", year_of_interest = 2002)
+hist_eur11_undersim_mean<-cropAndMeanAndMean(raster_list = apgd, simulated = hist_eur11, ex = hist_eur11_undersim_1, season = "spring", year_of_interest = 2002)
+hist_eur11_oversim_mean<-cropAndMeanAndMean(raster_list = apgd, simulated = hist_eur11, ex =hist_eur11_oversim_1, season = "spring", year_of_interest = 1999)
+
+plotData(data = hist_eur11_undersim_mean, fn = "eval_alp3_oversim_2004",plotmain = "Differenzen vom mittlerene Niederschlag in der gemittelten Fläche" )
+plotData(data = hist_eur11_oversim_mean, fn = "eval_alp3_undersim_2002",plotmain = "Differenzen von der mittleren Temperatur in der gemittelten Fläche" )
+plotData(data = eval_alp3_temp_oversim, fn = "temp_eval_alp3_oversim_2004",plotmain = "Differenzen vom mittleren Niederschlag in der gemittelten Fläche" )
+plotData(data = eval_alp3_temp_undersim, fn = "temp_eval_alp3_undersim_2002",plotmain = "Differenzen vom mittleren Niederschlag in der gemittelten Fläche" )
 
 
 
@@ -663,8 +686,19 @@ plotData(data= eval_alp3_oversim, fn = "eval_alp3_oversim", plotmain = "Flächen
 plotData(data= eval_alp3_undersim, fn = "eval_alp3_undersim", plotmain = "Flächengemittelter Niederschlag im Frühling")
 plotData(data= apgd_oversim, fn = "apgd_oversim_eval_alp3", plotmain = "Flächengemittelter Niederschlag im Frühling")
 plotData(data= apgd_undersim, fn = "apgd_undersim_eval_alp3", plotmain = "Flächengemittelter Niederschlag im Frühling")
-eval_alp3_oversim_mean<-cropAndMeanAndMean(raster_list = apgd, simulated = eval_alp3_cropped, ex = eval_alp3_oversim_extent, season = "spring", year_of_interest = 2002)
-plotData(data = eval_alp3_oversim_mean, fn = "pr_alp3_undersim_mean1998",plotmain = "Differenzen vom mittleren Niederschlag in der gemittelten Fläche" )
+
+temperature<-stackTEMP("~/Bacc/tmp_E-OBS1995-2010_remapped_toAPGD.nc")
+
+
+eval_alp3_temp_oversim<-cropAndMeanAndMean(raster_list = temperature, simulated=eval_alp3_temp, ex = eval_alp3_oversim_extent, season = "spring", year_of_interest = 2004)
+eval_alp3_temp_undersim<-cropAndMeanAndMean(raster_list = temperature, simulated=eval_alp3_temp, ex = eval_alp3_undersim_extent, season = "spring", year_of_interest = 2002)
+eval_alp3_undersim_mean<-cropAndMeanAndMean(raster_list = apgd, simulated = eval_alp3_cropped, ex = eval_alp3_undersim_extent, season = "spring", year_of_interest = 2002)
+eval_alp3_oversim_mean<-cropAndMeanAndMean(raster_list = apgd, simulated = eval_alp3_cropped, ex = eval_alp3_oversim_extent, season = "spring", year_of_interest = 2004)
+
+plotData(data = eval_alp3_oversim_mean, fn = "eval_alp3_oversim_2004",plotmain = "Differenzen vom mittlerene Niederschlag in der gemittelten Fläche" )
+plotData(data = eval_alp3_undersim_mean, fn = "eval_alp3_undersim_2002",plotmain = "Differenzen von der mittleren Temperatur in der gemittelten Fläche" )
+plotData(data = eval_alp3_temp_oversim, fn = "temp_eval_alp3_oversim_2004",plotmain = "Differenzen vom mittleren Niederschlag in der gemittelten Fläche" )
+plotData(data = eval_alp3_temp_undersim, fn = "temp_eval_alp3_undersim_2002",plotmain = "Differenzen vom mittleren Niederschlag in der gemittelten Fläche" )
 
 ########################## ########################## ########################## ##########################
 ######################################## SPLIT MONTHLY ####################################################
