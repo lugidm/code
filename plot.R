@@ -262,25 +262,25 @@ plotTwoFrequencies <- function(freq_eval, freq_hist, filename, data_type){
 }
 
 plotBoxplot<-function(raster_brick, filename_pattern, main_pattern, overall_mean=NULL){
-  no_na<-list(layer1=NULL, layer2=NULL, layer3=NULL, layer4=NULL, layer5=NULL, layer6=NULL, layer7=NULL, layer8=NULL, layer9=NULL,layer10=NULL)
-  biases<-list()
+  #no_na<-list(layer1=NULL, layer2=NULL, layer3=NULL, layer4=NULL, layer5=NULL, layer6=NULL, layer7=NULL, layer8=NULL, layer9=NULL,layer10=NULL)
+  #biases<-list()
   for(i in 1:nlayers(raster_brick)){
-    #no_na[[i]]<-values(raster_brick[[i]])
+    ##no_na[[i]]<-values(raster_brick[[i]])
     #no_na[[i]]<-no_na[[i]][!is.na(no_na[[i]])]
-    biases<-unlist(list(unlist(biases), (values(raster_brick[[i]]), na.rm=TRUE)))
+    #biases<-unlist(list(unlist(biases), (values(raster_brick[[i]]))))
     if(is.null(overall_mean)){
       jpeg(paste0(output_dir, filename_pattern,".jpg"), height = 500, width = 700)
-      boxplot(values(raster_brick[[i]]), ylab="Mean difference from observated data [mm/day]",  main=paste0(main_pattern,". Bias = ", round(biases[[i]]),5))
+      boxplot(values(raster_brick[[i]]), ylab="Mean difference from observated data [mm/day]",  main=paste0(main_pattern,". Bias = ", bias(biases[[i]]),5))
     }else if(overall_mean==TRUE){
-      jpeg(paste0(output_dir, filename_pattern,".jpg"), height = 500, width = 700)
-      boxplot(values(raster_brick[[i]]), ylab="Mean difference from observated data [mm/day]",  main=paste0("Mean boxplot of ",main_pattern," data, mean over all years. Bias = ", round(biases[[i]]),5))
+      #jpeg(paste0(output_dir, filename_pattern,".jpg"), height = 500, width = 700)
+      boxplot(values(raster_brick[[i]]), ylab="Difference from observated data [mm/day]",  main=paste0("Boxplot of ",main_pattern," data. Bias = ", round(mean(values(raster_brick[[i]]), na.rm=TRUE),5)))
     }else{
       jpeg(paste0(output_dir, filename_pattern, i+1995, ".jpg"), height = 400, width = 500)
       boxplot(values(raster_brick[[i]]), ylab="Mean difference from observated data [mm/day]",  main=paste0("Mean boxplot of ",main_pattern," data in year: ", i+1995, ", Bias = ", round(biases[[i]]),5))
     }
-      dev.off()
+      #dev.off()
   }
-  return(biases)
+  #return(biases)
 }
 
 plotSeasonalBoxplot<-function(raster_list, filename_pattern, main_pattern){

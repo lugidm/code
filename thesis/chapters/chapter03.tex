@@ -1,4 +1,4 @@
-Wie im Kapitel \ref{chap:quantile} gezeigt wurde, scheint sich die Abweichung des 99. Quantils des Niederschlags (und damit des Starkregens) bei allen Datensätzen nahezu identisch abzuzeichnen. Deshalb soll in diesem Kapitel wie es in \cite{biasMaraun} gemacht wurde, gezielt auf die Starkregenereignisse der unterschiedlichen Jahreszeiten eingegangen werden, um die Evaluation der beiden Klimamodelle abzuschließen.
+Wie im Kapitel \ref{chap:quantile} gezeigt wurde, scheint sich die Abweichung im 99. Quantils des Niederschlags (und damit des Starkregens) nahezu unabhängig von den betreibenden Modellen (GCM und Re-Analysedaten) identisch abzuzeichnen. Die regionalen Klimamodelle bzw. deren Daten unterscheiden sich aber stark in der geographischen Ausbreitung der Abweichungen: Das Klimamodell mit parametrisierter Konvektion scheint über den gesamten Beobachtungsraum eine relativ gleichbleibende Abweichung zu erzeugen wohingegen das Klimamodell CCLM5-0-9 nur in gebirgigen Gegenden starke Abweichungen zeigt. Um nun kleiner Gebiete evaluieren zu können soll deshalb in diesem Kapitel wie es in \cite{biasMaraun} gemacht wurde, gezielt auf die Starkregenereignisse der unterschiedlichen Jahreszeiten eingegangen werden.
 \section{Herangehensweise}\label{sec:Herangehensweise}
 \begin{itemize}
 \item Alle Datensätze werden auf die Jahreszeiten aufgeteilt:
@@ -12,7 +12,7 @@ Wie im Kapitel \ref{chap:quantile} gezeigt wurde, scheint sich die Abweichung de
 
 \section{Differenzen in den Jahreszeiten}
 Es wurde wie im Unterkapitel \ref{sec:Herangehensweise} erklärt, die Daten zunächst auf die Jahreszeiten aufgeteilt und dann daraus (über alle zehn Jahre) die maximalen Niederschläge herausgefiltert - über die Berechnung des 99. Quantils. Danach wurde, wie schon in den Kapiteln zuvor beschrieben von den Modelldaten die Beobachtungsdaten abgezogen- das heißt, wenn die Differenz negativ ist wurde zu wenig Niederschlagsmenge modelliert und vice versa.\\
-Aus diesen Abweichungen wurden die Boxplots in Abb.\ref{fig:seasons_boxplots} erstellt: Alle Abweichungen scheinen sich in einem relativ guten Rahmen aufzuhalten. Nur der Evaluation-Datensatz aus ALP-3 scheint enorme Ausreißer zu haben. Dies ist wiederum auf das Gebiet im Süden Kroatiens zurückzuführen wie in der Abbildung \ref{fig:seasons_dif} zu erkennen ist. In der Tabelle \ref{tab:season_bias} wurde die schlechteste Performance nach der Jahreszeit der Datensätze eingetragen. Da hier nur drei von zwei Datensätzen auftauchten, wurde noch eine zweite Tabelle angelegt, die die schlechteste Jahreszeit für jeden Datensatzes darstellt. Diese ist in Tabelle \ref{tab:season_dataset} untergebracht. Die Einträge der Tabelle\ref{tab:season_dataset} und der Tabelle\ref{tab:season_bias} wurden dann verwendet, um über die Datensätze der Folgenden näheren Betrachtungen zu entscheiden:
+Aus diesen Abweichungen wurden die Boxplots in Abb.\ref{fig:seasons_boxplots} erstellt: Alle Abweichungen scheinen sich in einem relativ guten Rahmen aufzuhalten. Nur der Evaluation-Datensatz aus ALP-3 scheint enorme Ausreißer zu haben. Dies ist wiederum auf das Gebiet im Süden Kroatiens zurückzuführen, wie in der Abbildung \ref{fig:seasons_dif} zu erkennen ist. In der Tabelle \ref{tab:season_bias} wurde die schlechteste Performance nach der Jahreszeit der Datensätze eingetragen. Da hier nur drei von zwei Datensätzen auftauchten, wurde noch eine zweite Tabelle angelegt, die die schlechteste Jahreszeit für jeden Datensatzes darstellt. Diese ist in Tabelle \ref{tab:season_dataset} untergebracht. Die Einträge der Tabelle\ref{tab:season_dataset} und der Tabelle\ref{tab:season_bias} wurden dann verwendet, um über die Datensätze der Folgenden näheren Betrachtungen zu entscheiden:
 \begin{itemize}
 	\item Für den Datensatz Historical EUR-11: Frühling
 	\item Für den Datensatz Evaluation EUR-11: Sommer
@@ -153,14 +153,15 @@ Für diese beiden Jahre wurde in der gemittelten Fläche der Niederschlag zum Du
 	\caption{Abweichung vom mittleren Niederschlag im entsprechenden Bereich, Modelldaten= Historical EUR-11}
 	\label{fig:seasons:hist_eur11:overundersim_mean}
 \end{figure}
-Man erkennt gut, dass sich die Vermutungen bestätigt haben, im überschätzendem Bereich Abb.\ref{fig:seasons:hist_eur11:oversim_mean} bildet das Modell eine viel stärker fluktuierende Kurve, mit größeren Ausschlägen aus als in den Beobachtungsdaten.\\
-Im unterschätzenden Bereich (Abb.\ref{fig:seasons:hist_eur11:undersim_mean}) gilt dasselbe nur umgekehrt: Es gleicht der Kurvenverlauf des Modells (EUR-11) im unterschätzendem Bereich der Kurve der Beobachtungsdaten im überschätzendem Bereich und vice versa. Zudem ist beachtenswert, dass der entscheidende Peak vom Modell in einem anderen Jahr vorhergesagt wird.\\
+Man erkennt gut, dass im überschätzendem Bereich Abb.\ref{fig:seasons:hist_eur11:oversim_mean} die Modelldaten eine viel stärker fluktuierende Kurve, mit größeren Ausschlägen hat als die Beobachtungsdaten.
+Im unterschätzenden Bereich (Abb.\ref{fig:seasons:hist_eur11:undersim_mean}) gilt dasselbe: Es gleicht der Kurvenverlauf des Modells im unterschätzendem Bereich der Kurve der Beobachtungsdaten im überschätzendem Bereich und vice versa.\newpage
 
 \subsection{Evaluation EUR-11}\label{sec:eval_eur_11}
 In diesem Datensatz fällt auf, dass mehrere große Bereiche vom Modell unterschätzt wurden. Dies zeigt sich besonders gut in den ausgeprägten blauen Flecken der Abb.\ref{fig:seasons_dif:eval_eur_11}. Es treten kaum so starke Überschätzungen wie beim Historical Datensatz auf. Dies könnte auch an der betrachteten Jahreszeit liegen: Sommer ist die Heimat der Hitzegewitter und somit auch der kurzzeitigen Extremniederschläge, welche eine große Herausforderung in der Simulation sind. Besonders wenn die Konvektion parametrisiert wurde, wie es in diesem Modell der Fall ist. Aufgrund der Jahreszeit wird für diesen Datensatz die Temperatur und der Niederschlag in dem gekennzeichneten Bereich mit den Beobachtungsdaten verglichen.\\
-Wie man in der Abbildung \ref{fig:season:under_eval_eur11} erkennt, ist der Niederschlag wieder eine für parametrisierte Konvektion typische Fluktuation nahezu gleichmäßig über die Zeit verteilt. Es gibt keine großen Ausreißer. Dies fällt besonders auf, wenn man das Mittel der Beobachtungsdaten damit vergleicht (Abb.\ref{fig:season:under_apgd_eur11}). Des Weiteren kann man dem Diagramm der Beobachtungsdaten entnehmen, dass sich der ausschlaggebende Peak im September 1998 befindet, Für diese Zeit herrscht in diesem Gebiet eine Differenz von ungefähr $-60\frac{mm}{Tag}$. Der Niederschlag für den September in diesem Jahr schien besonders heftig auszufallen.\\
+Wie man in der Abbildung \ref{fig:season:under_eval_eur11} erkennt, ist der Niederschlag in einer für parametrisierte Konvektion typische Fluktuation nahezu gleichmäßig über die Zeit verteilt. Es gibt keine großen Ausreißer. Dies fällt besonders auf, wenn man das Mittel der Beobachtungsdaten damit vergleicht (Abb.\ref{fig:season:under_apgd_eur11}). Des Weiteren kann man dem Diagramm der Beobachtungsdaten entnehmen, dass sich der ausschlaggebende Peak im September 1998 befindet, Für diese Zeit herrscht in diesem Gebiet eine Differenz von ungefähr $-60\frac{mm}{Tag}$. Der beobachtete Niederschlag im September dieses Jahres schien besonders heftig auszufallen. was durch die Kurve des Modells kaum abgebildet wird - dort herrscht ein monotones fluktuieren des Niederschlags ohne größere Ausreißer.\\
 Um nun die Temperatur in Verbindung mit der starken Abweichung des Niederschlags zu bringen und um eventuell auch ein untypisches Wetterverhalten in diesem Jahr auszumachen wurde die Temperaturkarte für dieses Gebiet ausgeschnitten und, dem Niederschlag gleich, über die Fläche gemittelt.\\
-Der Niederschlag wurde im betreffenden Jahr 1998 betrachtet, und es konnte zwar ein ähnliches Verhalten der Kurven beobachtet werden, jedoch mit weit zu wenig Ausschlag, wie in der Abbildung \ref{fig:seasons:undersim_eval_eur11} zu sehen ist.
+Der Niederschlag und die Temperatur wurden im Jahr 1998 betrachtet: Der Kurvenverlauf des Niederschlags in der Abbildung \ref{fig:seasons:undersim_eval_eur11} zeigt eine gute Übereinstimmung zwischen Modell und Beobachtungen: Einzig der Ausschlag der Kurven ist etwas zu klein, was für die Vorhersagekraft eines Modells mit parametrisierter Konvektion spricht. Es kann zwar ein den Beobachtungen ähnlicher Verlauf der Temperaturkurven beobachtet werden, jedoch scheint diese nicht den tatsächlichen Werten nahezukommen und fluktuiert eher in einer ähnlichen Frequenz. Da es sich hier um eine rein qualitative Analyse handelt dürfen nicht Werte aus den Vergleichen gezogen werden sondern nur auf das ähnliche oder unähnliche Verhalten des Modells zu den Beobachtungsdaten geschlossen werden.
+
 \begin{figure}[h]
 	\begin{subfigure}{0.49\textwidth}
 		\includegraphics[width=\textwidth]{quantile_season/eval_eur11_undersim.jpg}
@@ -174,34 +175,37 @@ Der Niederschlag wurde im betreffenden Jahr 1998 betrachtet, und es konnte zwar 
 	\end{subfigure}
 	\caption{}
 \end{figure}
+
 \begin{figure}[h]
 	\begin{subfigure}{0.49\textwidth}
 		\includegraphics[width=\textwidth]{quantile_season/middle_pr_undersim_eur11.jpg}
-		\caption{Die Differenzen der Modelldaten(Eval-EUR-11) und der Beobachtungsdaten vom mittlerem Niederschlag in der in Abb.\ref{fig:seasons_dif:eval_eur_11} gekennzeichneten Fläche (im Jahr 1998)}
+		\caption{Niederschlag}
 	\end{subfigure}
 	\begin{subfigure}{0.49\textwidth}
 		\includegraphics[width=\textwidth]{quantile_season/middle_temp_undersim_eur11.jpg}
-		\caption{Die Differenzen der Modelldaten (Eval-EUR-11) und der Beobachtungsdaten von den mittleren Temperaturen in der in Abb.\ref{fig:seasons_dif:eval_eur_11} gekennzeichneten Fläche (im Jahr 1998)}
+		\caption{Temperatur}
 	\end{subfigure}
-	\caption{Differenz der Temperatur und des Niederschlags zum Durchschnitt}
+	\caption{Differenz der Temperatur und des Niederschlags zum Durchschnitt (Evaluation EUR-11 Jahr 1998) in der in Abb.\ref{fig:seasons_dif:eval_eur_11} gekennzeichneten Fläche}
 	\label{fig:seasons:undersim_eval_eur11}
 \end{figure}
+
 \begin{itemize}
-	\item Der Niederschlag liegt im Monat September zwar über dem Durchschnittsniederschlag, jedoch ist der Ausschlag des tatsächlich gemessene Phänomen um $100\frac{mm}{Tag}$ höher als der des Modells. Beachtenswert dabei ist zudem, dass der Niederschlag im Modell über die ganze Zeitspanne viel weniger fluktuierend vom Mittelwert abweicht als die Beobachtungsdaten dies tun.
-	\item Die betreffende Temperaturkurve ist viel weniger stark ausgeprägt, jedoch ist zu erkennen, dass im Monat September, wo das Starkregenereignis auftrat, die Modelldaten eine auf den Durchschnitt bezogene kältere Temperatur vorhersagte als in den Beobachtungsdaten gemessen wurde. Zudem ist beachtenswert, dass die Ausschläge über die ganze Zeitspanne oft gegenläufig sind.
+	\item Der Niederschlag liegt im Monat September über dem Durchschnittsniederschlag. Dies gilt für Modell und Beobachtungsdaten, was eine gute Vorhersagekraft des Modells verspricht. Beachtenswert dabei ist, dass der Niederschlag im Modell über die ganze Zeitspanne viel weniger vom Mittelwert abweicht als es in den Beobachtungsdaten der Fall ist.
+	\item Die betreffende Temperaturkurve ist viel weniger stark korrelierend. Im Monat September, wo die Starkregenereignisse dieses Gebiets häufiger auftreten, scheinen die Modelldaten eine auf den Durchschnitt bezogene kältere Temperatur vorherzusagen. Das könnte auch auf einen Fehler in den Re-Analysedaten hinweisen.
 \end{itemize}
+\newpage
 
 \subsection{Historical ALP-3}
-Wie in der Abbildung \ref{fig:seasons_dif:hist_alp3} zu sehen ist, wird in diesem Kapitel derselbe Bereich evaluiert, wie bereits im zuvor im Kapitel \ref{sec:eval_eur_11}. Dadurch können die beiden Modelle und auch die Antriebsdaten gegeneinander verglichen werden. Da das Modell CCLM5-0-9 im ALP-3 Historical Datensatz mit historischen Daten des globalen Klimamodells MPI-ESM-LR angetrieben, dadurch sollten theoretisch größere Abweichungen herrschen als in dem mit Re-Analysedaten betriebenen, wenn auch gröber aufgelösten Evaluation, EUR-11.\\
+Wie in der Abbildung \ref{fig:seasons_dif:hist_alp3} zu sehen ist, wird in diesem Kapitel derselbe Bereich evaluiert, wie bereits im zuvor im Kapitel \ref{sec:eval_eur_11}. Dadurch können die beiden Modelle und auch die Antriebsdaten gegeneinander verglichen werden. Da das Modell CCLM5-0-9 im ALP-3 Historical Datensatz mit historischen Daten des globalen Klimamodells MPI-ESM-LR angetrieben, dadurch sollten theoretisch größere Abweichungen herrschen als in dem mit Re-Analysedaten betriebenen.\\
 Wieder wurden wie im Kapitel zuvor schon die Daten über die in Abb.\ref{fig:seasons_dif:hist_alp3} gekennzeichnete Fläche gemittelt und mit den Beobachtungsdaten verglichen, da in demselben Bereich eine relativ große negative Abweichung vorzufinden war. Dabei blieb natürlich der Beobachtungsdatensatz derselbe und es wird deshalb darauf verzichtet, den Plot in Abb.\ref{fig:season:under_apgd_eur11} nochmal abzubilden. Die Modelldaten sind in der Abb.\ref{fig:season:under_hist_alp3}\\
-Man erkennt, dass sich das Muster für den Niederschlag kaum verändert hat. Der Zusammenhang mit den Beobachtungsdaten hat sich sogar etwas verschlechtert: Da die Übereinstimmung des Peaks im September überhaupt nicht mehr gegeben ist. Auch beim Betrachten der Abb.\ref{fig:season:under_hist_alp3} fällt dies bereits auf.\\
-Die Temperatur scheint jedoch um einiges besser den Gegebenheiten zu entsprechen, die Fluktuationen über und unter der Durchschnittstemperatur entsprechen nahezu perfekt denen in den Beobachtungsdaten. Nur wiederum im September scheint ein größerer Fehler berechnet worden zu sein. Somit kann für das Konvektion-Erlaubende Klimamodell gesagt werden, dass die Temperaturfluktuationen im Sommer um einiges besser dargestellt werden.
-\begin{figure}[h]
+Man erkennt, dass sich das Muster für den Niederschlag kaum verändert hat. Der Zusammenhang mit den Beobachtungsdaten hat sich sogar etwas verschlechtert: Da die Übereinstimmung des Peaks im September überhaupt nicht mehr gegeben ist. Auch beim Betrachten der Abb.\ref{fig:season:under_hist_alp3} fällt dies bereits auf. Da das regionale Modell in das gröber aufgelöste CCLM4-8-17 eingenestet wurde, kann diese Verschlechterung der Korrelation auch auf das Aufschaukeln der Fehler beider Modelle zurückgeführt werden.\\
+Die Temperatur scheint jedoch um einiges besser den Gegebenheiten zu entsprechen, die Fluktuationen über und unter der Durchschnittstemperatur entsprechen nahezu perfekt denen in den Beobachtungsdaten. Somit kann für das Konvektion-Erlaubende Klimamodell CCLM5-0-9 gesagt werden, dass die Temperaturfluktuationen im Sommer um einiges besser dargestellt werden.
+\begin{figure}[h!]
 	\includegraphics[width=0.95\textwidth]{quantile_season/hist_alp3_undersim.jpg}
 	\caption{Niederschlagsverlauf im Datensatz Historical, ALP-3 für den in Abb.\ref{fig:seasons_dif:hist_alp3} gekennzeichneten Bereich, gemittelt über dessen Fläche}
 	\label{fig:season:under_hist_alp3}
 \end{figure}
-\begin{figure}[h]
+\begin{figure}[h!]
 	\begin{subfigure}{0.49\textwidth}
 		\includegraphics[width=\textwidth]{quantile_season/dif_pr_undersim_alp3.jpeg}
 		\caption{Niederschlag}
@@ -210,14 +214,15 @@ Die Temperatur scheint jedoch um einiges besser den Gegebenheiten zu entsprechen
 		\includegraphics[width=\textwidth]{quantile_season/dif_temp_undersim_alp3.jpeg}
 		\caption{Temperatur}
 	\end{subfigure}
-	\caption{Differenz der Temperatur und des Niederschlags zum entsprechenden Durchschnitt. Modelldaten: Historical ALP-3, in der in Abb.\ref{fig:seasons_dif:hist_alp3} gekennzeichneten Fläche (im Jahr 1998}
+	\caption{Differenz der Temperatur und des Niederschlags zum entsprechenden Durchschnitt. Modelldaten: Historical ALP-3, in der in Abb.\ref{fig:seasons_dif:hist_alp3} gekennzeichneten Fläche (im Jahr 1998)}
 	\label{fig:seasons:mean_alp3}
 \end{figure}
+
 \newpage
 \subsection{Evaluation ALP-3}\label{subsec:eval_alp3}
 Um den Datensatz Evaluation ALP-3 mit dessen größten Abweichungen besser darstellen zu können, wurde zunächst das Gebiet im Süden Kroatiens ausgeschnitten und verworfen, um dessen Verfälschung auszublenden. Diese Abweichung kann durch die Einwirkung der Randbedingungen und die damit verbundenen Probleme des globalen Modells auf das RCM erklärt werden(in Kapitel \ref{sec:problems_in_simulation} genauer beschrieben). Die Karte des Niederschlags, die sich daraus ergab findet man in Abb.\ref{fig:seasons:cropped eval_alp_3}. Wie zu erkennen ist, hat sich die höchste Niederschlagsdifferenz von $250\frac{mm}{Tag}$ auf etwa $60\frac{mm}{Tag}$ vermindert - dieses Gebiet scheint eine Fehlsimulation durch Interpolation am Rande des Darstellungsbereiches zu sein. Der Boxplots in Abb.\ref{fig:seasons:cropped eval_alp_3_boxplot} unterstützt diese Vermutung: der Bias hat sich drastisch verkleinert: von anfänglich $7.01032$ auf $4.95719$. Durch diese verbesserte Darstellung wurde ersichtlich, dass sich im Gebiet des Lago Maggiore dasselbe Muster der Abweichungen wie im Historical - EUR-11 Datensatz abzeichnet (vgl. Kap.\ref{subsec:hist_eur11}), weshalb es nun in derselben Herangehensweise verglichen werden soll: Der gekennzeichnete Bereich in Abb.\ref{fig:seasons:cropped eval_alp_3} wurde in eine überschätzende und eine unterschätzende Fläche geteilt und der Niederschlag über diese Fläche gemittelt und gegen die Zeit aufgetragen.\\
 
-\begin{figure}[h]
+\begin{figure}[h!]
 	\begin{subfigure}{0.49\textwidth}
 		\includegraphics[width=\textwidth]{quantile_season/eval_alp3_cropped_spring.jpg}
 		\caption{Niederschlagskarte}
@@ -231,7 +236,7 @@ Um den Datensatz Evaluation ALP-3 mit dessen größten Abweichungen besser darst
 	\caption{Differenzen des Niederschlags im Datensatz Evaluation ALP-3 ohne dem Gebiet im Süden Kroatiens im Frühling, mit dem gekennzeichnetem Gebiet}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[h!]
 	\begin{subfigure}{0.49\textwidth}
 		\includegraphics[width=\textwidth]{quantile_season/eval_alp3_undersim_frequencies.jpeg}
 		\caption{Flächengemittelter Niederschlag in dem Bereich der Überschätzung (vgl. Abb.\ref{fig:seasons:cropped eval_alp_3} für den Datensatze Evaluation ALP-3}
@@ -245,7 +250,7 @@ Um den Datensatz Evaluation ALP-3 mit dessen größten Abweichungen besser darst
 	\caption{}
 	\label{fig:seasons:overunder_eval_alp3}
 \end{figure}
-\begin{figure}[h]
+\begin{figure}[h!]
 	\begin{subfigure}{0.49\textwidth}
 		\includegraphics[width=\textwidth]{quantile_season/apgd_oversim_eval_alp3_freq.jpeg}
 		\caption{Flächengemittelter Niederschlag in dem Bereich der Überschätzung (vgl. Abb.\ref{fig:seasons:cropped eval_alp_3} für die Beobachtungsdaten}
@@ -264,11 +269,10 @@ Wie beim Vergleichen der beiden Häufigkeiten des flächengemittelten Niederschl
 \begin{itemize}
 	\item Der Unterschied zwischen den größten Peaks beider Karten ist viel kleiner
 	\item Die entsprechenden Peaks sind im richtigen Monat
-	\item Es scheint sogar nur durch die Wahl des 99. Quantils die Überschätzung abgebildet worden zu sein (vgl. Abb.\ref{fig:seasons:oversim eval_alp_3} \& \ref{fig:seasons:oversim eval_alp_3_obs}). Ansonsten wäre noch die Wahl des Maximalwerts im Niederschlag als Vergleichsbasis eine Option gewesen, jedoch würden durch diese Wahl Ausreißern zu viel Gewicht zugeschrieben.
 \end{itemize}
-Da im überschätzendem Bereich der größte Niederschlag seitens des Modells im Jahr 2004 vorhergesagt wird, wurde in diesem Jahr der Niederschlag relativ zum Durchschnittsniederschlag dieser Fläche aufgetragen, um einen besseren Vergleich dieses speziellen Jahres zu erhalten. Daraus ergab sich die Grafik in Abb. \ref{fig:seasons:pr_oversim_eval_alp3}.\\
-Für den unterschätzenden Bereich wurden dieselben Berechnungen ausgeführt, jedoch für das Jahr 2002, da dort die Beobachtungsdaten den markantesten Peak erreichen und so die Modelldaten weit übertreffen. Aus diesen Berechnungen ergab sich die Grafik in Abb.\ref{fig:seasons:pr_undersim_eval_alp3}.\\
-\begin{figure}[h]
+Da im überschätzendem Bereich der größte Niederschlag seitens des Modells im Jahr 2004 vorhergesagt wird, wurde in diesem Jahr der Niederschlag relativ zum Durchschnittsniederschlag dieser Fläche aufgetragen, um einen besseren Vergleich dieses zu erhalten. Daraus ergab sich die Grafik in Abb. \ref{fig:seasons:pr_oversim_eval_alp3}.\\
+Für den unterschätzenden Bereich wurden dieselben Berechnungen ausgeführt für das Jahr 2002, da dort die Beobachtungsdaten den markantesten Peak erreichen und so die Modelldaten weit übertreffen. Die Ergebnisse sind in Abb.\ref{fig:seasons:pr_undersim_eval_alp3} zu finden.\\
+\begin{figure}[h!]
 	\begin{subfigure}{0.49\textwidth}
 		\includegraphics[width=\textwidth]{quantile_season/eval_alp3_oversim_2004.jpeg}
 		\caption{Überschätzender Bereich, Jahr 2004}
@@ -283,9 +287,28 @@ Für den unterschätzenden Bereich wurden dieselben Berechnungen ausgeführt, je
 	\label{fig:seasons:pr_over_undersim_eval_alp3}
 \end{figure}
 Wie man in der Abbildung \ref{fig:seasons:pr_oversim_eval_alp3} gut erkennen kann ist der relative Niederschlag für das Jahr 2004 gut abgebildet und in der Fluktuation treffender als in der vergleichbaren Abbildung  für den Datensatz Historical EUR-11 (siehe Abb.\ref{fig:seasons:hist_eur11:oversim_mean}). Die Ausschläge scheinen zwar treffend aber zu schwach modelliert worden zu sein.\\
-In der Abbildung \ref{fig:seasons:pr_undersim_eval_alp3} sind die Ausschläge für den unterschätzenden Bereich dargestellt: Man erkennt wieder, dass die Fluktuation um einiges Besser dargestellt ist, als in der vergleichbaren Darstellung vom Historical EUR-11 Datensatz. Auch hier scheinen die Daten das Spiegelbild des überschätzenden Bereichs zu sein: Die Ausschläge der Kurven sind Gegenläufig zueinander.\newpage
+In der Abbildung \ref{fig:seasons:pr_undersim_eval_alp3} sind die Ausschläge für den unterschätzenden Bereich dargestellt: Man erkennt wieder, dass die Fluktuation um einiges Besser dargestellt ist, als in der vergleichbaren Darstellung vom Historical EUR-11 Datensatz. Hier scheinen die Daten das Spiegelbild des überschätzenden Bereichs zu sein: Die Ausschläge der Kurven sind Gegenläufig zueinander.
+
 \subsection{Zusammenfassung}
-Wie in den vorhergehenden Unterkapiteln gezeigt wurde, scheint das downscaling-Modell mit simulierter Konvektion die Fluktuationen in den Jahreszeiten besser und den Beobachtungsdaten am nächsten darzustellen verglichen mit den Modellen der parametrisierten Konvektion. Dies äußert sich vor allem über den Niederschlag einer beliebigen Jahreszeit gegen den entsprechenden Durchschnitt: Der Niederschlag scheint mit einer gegebenen Frequenz zu alternieren, ohne die Jahreszeiten tatsächlich abzubilden.\\
-Die Temperaturachse scheint diesem Muster zu folgen, wie in der Abb.\ref{fig:seasons:mean_alp3} zu sehen ist: Sie ist um einiges treffender in der simulierten Konvektion dargestellt als in der Parametrisierten.\\
-Der größte Nachteil für den Einsatz der dynamisch simulierten Konvektion ist, dass sich durch die Simulation viele Fehlerquellen in orthographisch anspruchsvollen Gebieten einschleichen. Dies ist besonders gut in dem Unterkapitel \ref{subsec:hist_eur11} und \ref{subsec:eval_alp3} zu sehen. Dort wurden Abweichungen großer positiven Wertes geographisch direkt neben solchen negativen Wertes lokalisiert. Durch solche Gebiete starker Abweichung verschiebt sich in Folge auch der Bias für die Starkregenereignisse. Dies darf aber keinesfalls als Qualitätsmanko für die Vorhersage gesehen werden, sondern bestenfalls als Angelpunkt für Verbesserungen.\\
-Somit kann gesagt werden, dass auf größeren Flächen im Schnitt die dynamisch simulierte Konvektion in regionalen Klimamodellen zu stärkeren Abweichungen führt als ein vergleichbar Parametrisiertes. Wird jedoch die Auswirkung eines globalen Klimamodells auf ein orthographisch anspruchsvolles Gebiet wie die Alpen benötigt, muss auf die simulierte Konvektion zurückgegriffen werden da in der parametrisierten Konvektion nur die bisherigen Wettererscheinungen in die Berechnungen einbezogen werden und sich somit keine neuen Wettererscheinungen zeigen lassen, welche aus stark abweichenden Temperaturen resultieren würden. Dies zeigt sich besonders gut an der Fluktuation des Niederschlags in der Abbildung \ref{fig:seasons:undersim_eval_eur11}, wo zu sehen ist, dass der Niederschlag nur eine wiederkehrende Frequenz ist ohne tatsächlich auf die dazugehörige Temperatur Rücksicht zu nehmen.\\
+Wie in den vorhergehenden Unterkapiteln gezeigt wurde, scheint das downscaling-Modell mit simulierter Konvektion die Frequenz der Fluktuationen im Niederschlag bzw. in der Temperatur den Beobachtungsdaten entsprechender darzustellen. Dies äußert sich vor allem im Niederschlag gegen den entsprechenden Durchschnitt: Der Niederschlag scheint im Modell mit parametrisierter Konvektion mit einer gegebenen Frequenz zu alternieren, ohne die Beobachtungsdaten tatsächlich abzubilden.\\
+Die Temperaturkurve scheint diesem Muster zu folgen, wie in der Abb.\ref{fig:seasons:mean_alp3} zu sehen ist, ist sie im Modell CCLM5-0-9 um einiges treffender dargestellt.\\
+Der größte Nachteil für den Einsatz der dynamisch simulierten Konvektion ist, dass sich durch die Simulation viele Fehlerquellen in gebirgigen Gebieten einschleichen können, wenn die Parameter noch nicht hinreichend fein-getuned wurden. Dies ist besonders gut in dem Unterkapitel \ref{subsec:hist_eur11} und \ref{subsec:eval_alp3} zu sehen. Dort wurden Abweichungen großer positiven Wertes geographisch direkt neben solchen negativen Wertes lokalisiert. Durch solche Gebiete starker Abweichung verschiebt sich in Folge auch der Bias für die Starkregenereignisse.\\
+Somit kann gesagt werden, dass die dynamisch simulierte Konvektion in regionalen Klimamodellen CCLM5-0-9 zu stärkeren Ausschlägen der Abweichungen führt, auf großen Gebieten jedoch die tatsächlichen Wetterverhältnisse besser dargestellt werden als im Modell mit parametrisierter Konvektion (vgl. Abb. \ref{fig:seasons_dif}). Wird jedoch die Auswirkung eines globalen Klimamodells auf ein gebirgiges Gebiet wie die Alpen betrachtet, liefert das Klimamodell CCLM5-0-9 derzeit noch schlechtere Vorhersagen als das CCLM4-8-17, da dort die Ausschläge der Abweichungen weniger markant sind. Dieses Modell hat einen klaren Altersvorteil wodurch die Parameter feiner abgestimmt werden konnten. Somit konnte im Schnitt die Abweichung für dieses Modell heruntergesetzt werden.\\
+Will man jedoch klimatische Zustände simulieren, welche dem jetzigen Zustand unähnlich sind, muss auf die explizit simulierte Konvektion zurückgegriffen werden da in der parametrisierten Konvektion nur die bisherigen Wettererscheinungen in die Berechnungen einbezogen werden und sich somit keine neuen Wettererscheinungen zeigen lassen, welche aus einer stark abweichenden atmosphärischen Konstellation resultieren würden.\\
+
+\section{R-Code}
+\begin{lstlisting}[language = R]
+getQuantileOfSeasons <- function(list_all_days){
+	qt_by_year<-list(spring=NULL, summer=NULL, autumn=NULL, winter=NULL)
+	for(i in 1:4){
+		qt_by_year[[i]]<- calc(list_all_days[[i]],Q99)
+	}
+	return(qt_by_year)
+}
+eval_eur11_seasons<-list(spring=stack(paste0(output_dir, "eval_eur11_spring.nc")), summer= stack(paste0(output_dir, "eval_eur11_summer.nc")),
+autumn=stack(paste0(output_dir, 'eval_eur11_autumn.nc')), winter=stack(paste0(output_dir, 'eval_eur11_winter.nc'))) # Zuvor aufsplitten der Daten in die Jahreszeiten
+eval_eur11_seasons_q99<-getQuantileOfSeasons(eval_eur11_seasons)#quantile berechnen
+dif_eval_eur11<-overlay(quantile_eval_eur11, quantile_observations, fun=function(x,y){return((x - y))})# differenzen Berechnen
+\end{lstlisting}
+
+Für nähere Informationen zu den Funktionen muss auf das git-Repositorium verwiesen werden, welches im Anhang gefunden werden kann.

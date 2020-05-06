@@ -1,14 +1,10 @@
 getQuantile <- function(list_allDays){
   qt_by_year<-raster()
-  for(i in 1996:2005){
-    'date_string_start <- paste0(toString(i), "-01-01")
-    date_string_end <- paste0(toString(i+1), "-01-01")
-    ids<-which((getZ(allDays) < as.Date(date_string_end))& (getZ(allDays) >= as.Date(date_string_start)))
-    '
-    dummy<-list_allDays[[i-1995]]
-    qt_by_year <- addLayer(qt_by_year, calc(dummy,Q99))
-    names(qt_by_year[[i-1995]])<-paste0(toString(i))
+  for(i in 1:10){
+    dummy<-list_allDays[[i]]
+    qt_by_year <- addLayer(qt_by_year, dummy)
   }
+  qt_by_year<-calc(qt_by_year, fun=Q99)
   return(qt_by_year)
 }
 

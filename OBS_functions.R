@@ -35,6 +35,7 @@ getRemappedAnnualQuantileObs <- function(allDays){
 getAnnualMeanObs <- function(allDays){
     pr_by_year<-raster()
     for(i in 1:length(allDays)){
+      
       dummy<-calc(allDays[[i]],fun=mean)
       names(dummy) <- toString(i+1995)
       pr_by_year <- addLayer(pr_by_year, dummy)

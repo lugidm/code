@@ -5,35 +5,11 @@ Um ein Bild von der allgemeinen Übereinstimmung der simulierten Daten mit den t
 	\item Subtraktion dieser Mittelwerte (Simuliert - Beobachtet): Mittelwerte pro Gitterzelle über diese Differenzen; ein Mittel über die gesamten zehn Jahre der Simulationsdaten	
 \end{enumerate}
 \section{Mittlerer Bias}
-In diesem Unterkapitel soll das Verhalten der gemittelten Differenzen aller Datensätze aufgezeigt werden.
-%\begin{figure}[h]
-%	\includegraphics[width=\textwidth]{mean_n/yearly_mean_biases.jpg}
-%	\caption{Die Biases der gemittelten Differenzen aller vier Datensätze aufgetragen gegen die Zeit}
-%	\label{fig:yearly_mean_biases}
-%\end{figure}
-Wie man gut in den Abbildungen \ref{fig:mean_freq_plots} erkennen kann, liegt die Abweichung des Evaluation-Datensätze weit näher bei 0 als die des Historicals. Des Weiteren ist gut zu erkennen, dass die Abweichung des Datensatzes ALP-3 betrieben mit den Re-Analysedaten (Evaluation) die Beobachtungsdaten gut abbildet und somit im Mittel ein gutes Klimamodell für den Alpenraum darstellt. Beide Klimamodelle betrieben mit dem GCM MPI-ESM-LR liefern Ergebnisse, die eine starke Abweichung in positive Richtung aufweist, wobei hier kaum noch Unterschiede zwischen EUR-11 und ALP-3 auszumachen sind. Diese Abbildung spricht somit für die Qualität des regionalen Klimamodells, ALP-3 und aber auch gegen die Treffsicherheit des globalen Klimamodells.\\
-In Abb.\ref{fig:mean_freq_plots} die Häufigkeiten der Abweichungen abgebildet, sowie ein Boxplot in Abb.\ref{fig:mean_boxplots} angelegt, wo zu erkennen ist, dass es einige große Ausreißer gibt. Auf diesen Fakt wird auch in Folge eingegangen, da es über das gesamte Gitter starke Schwankungen der Abweichung gab, welche sich vor allem an den Gebirgskämmen abzeichnete.\\
+In diesem Unterkapitel soll das Verhalten der gemittelten Differenzen aller Datensätze aufgezeigt werden.\\
+Wie man gut in den Abbildungen \ref{fig:mean_boxplots} erkennen kann, liegt die Abweichung der Evaluation-Datensätze weit näher bei 0 als die in den Historical-Datensätzen. Des Weiteren ist gut zu erkennen, dass die Abweichung des Datensatzes ALP-3 betrieben mit den Re-Analysedaten (Evaluation) die Beobachtungsdaten gut abbilden und somit im Mittel ein relativ gutes Klimamodell für den Alpenraum darstellt.
+Beide Klimamodelle betrieben mit dem GCM MPI-ESM-LR (Hisorical) liefern Ergebnisse, die eine starke Abweichung in positive Richtung aufweist, wobei sie sich nur mehr in der Größe der Ausreißer unterscheiden: Das CCLM5-0-9 hat weitaus stärkere Ausreißer zu den Beobachtungsdaten. Die Abbildungen zeigen, dass im Mittel zwar die Ausreißer des regionalem Klimamodell CCLM5-0-9 im Gegensatz zum CCLM4-8-17 dominieren jedoch sich der mittlere Bias kaum unterscheidet. Im Mittel ist also die Vorhersagequalität der beiden Modelle nahezu identisch. Man kann auch beim Vergleichen der beiden Evaluation-Datensätze mit den beiden Historical-Datensätzen erkennen, dass das globale Klimamodell im Alpenraum den Niederschlag zu stark simuliert, was den ins Positive verschobenen Bias erklärt.\\
+Da sich diese Abweichungen nicht über das gesamte Gitter gleich abzeichnen wird in Folge auf die geographische Verteilung der Abweichungen eingegangen.
 
-\begin{figure}[h!]
-	\begin{subfigure}{0.49\textwidth}
-		\includegraphics[width=\textwidth]{mean_n/frequenciesdif_mean_hist.jpg}
-		\caption{Historical, EUR-11}
-	\end{subfigure}
-	\begin{subfigure}{0.49\textwidth}
-		\includegraphics[width=\textwidth]{mean_n/frequenciesdif_mean_hist_apgd.jpg}
-		\caption{Historical, ALP-3}
-	\end{subfigure}
-	\begin{subfigure}{0.49\textwidth}
-		\includegraphics[width=\textwidth]{mean_n/frequenciesdif_mean_eval.jpg}
-		\caption{Evaluation, EUR-11}
-	\end{subfigure}
-	\begin{subfigure}{0.49\textwidth}
-		\includegraphics[width=\textwidth]{mean_n/frequenciesdif_mean_eval_apgd.jpg}
-		\caption{Evaluation, ALP-3}
-	\end{subfigure}
-	\caption{Frequency-Plots der Differenzen des jährlichen Mittels des Niederschlags gemittelt über alle Jahre}
-	\label{fig:mean_freq_plots}
-\end{figure}
 \begin{figure}[h!]
 	\begin{subfigure}{0.49\textwidth}
 		\includegraphics[width=\textwidth]{mean_n/eur_11_mean_historical_boxplot.jpg}
@@ -54,13 +30,33 @@ In Abb.\ref{fig:mean_freq_plots} die Häufigkeiten der Abweichungen abgebildet, 
 	\caption{Box-Plots der Differenzen des jährlichen Mittels des Niederschlags gemittelt über alle Jahre}
 	\label{fig:mean_boxplots}
 \end{figure}
-\begin{figure}[h]
-	\includegraphics[width=0.90\textwidth]{mean_n/dif_mean_hist_apgd.jpg}
-    \caption{Differenzen der jährlichen Mittel, gemittelt über alle Jahre, Datensatz: Historical, ALP-3}
-    \label{fig:alp3_dif_hist_mean}
+
+
+\begin{figure}[h!]
+	\begin{subfigure}{0.49\textwidth}
+		\includegraphics[width=\textwidth]{mean_n/mean_diff_hist_eur11.jpeg}
+		\caption{Historical, EUR-11}
+	\end{subfigure}
+	\begin{subfigure}{0.49\textwidth}
+		\includegraphics[width=\textwidth]{mean_n/mean_diff_hist_alp3.jpeg}
+		\caption{Historical, ALP-3}
+	\end{subfigure}
+	\begin{subfigure}{0.49\textwidth}
+		\includegraphics[width=\textwidth]{mean_n/mean_diff_eval_eur11.jpeg}
+		\caption{Evaluation, EUR-11}
+	\end{subfigure}
+	\begin{subfigure}{0.49\textwidth}
+		\includegraphics[width=\textwidth]{mean_n/mean_diff_eval_alp3.jpeg}
+		\caption{Evaluation, ALP-3}
+	\end{subfigure}
+	\caption{Geographische Verteilung der Differenzen (Modell-Beobachtungsdaten) vom jährlichen Mittel des Niederschlags [mm/Tag] gemittelt über alle Jahre}
+	\label{fig:mean_diff}
 \end{figure}
-Um die geographische Verteilung der größten Abweichungen darzustellen wurden eine beispielhafte Darstellung gewählt, die die größten mittleren Abweichungen zeigt: der Datensatz Historical im regionalen Klimamodell ALP-3. Diese ist in Abbildung \ref{fig:alp3_dif_hist_mean} abgebildet.
-Wie man gut in der Abbildung erkennen kann, ist im Allgemeinen über den orthographisch gediegenen Gegenden die Abweichung vom Beobachtungsdatensatz gering. Es ist gut ersichtlich, dass die Abweichungen in überwiegend gebirgigen Gegenden größer sind. Wie auch in den Abbildungen \ref{fig:mean_freq_plots} zu sehen ist, überwiegt eine Abweichung von $0.5-1$. Die Kurve ist auch leicht ins Rechte verschoben - dies bedeutet, dass mehr Niederschlage simuliert wurde als es tatsächlich gab. Dies könnte somit eine Schwäche des globalen Klimamodells darstellen, da sich dieses Muster auch in den anderen Datensätzen abzeichnet, wie im folgenden Kapitel erkenntlich gemacht werden soll.
+
+Die geographische Verteilung der Abweichungen wurden in Abb. \ref{fig:mean_diff} für alle Datensätze dargestellt. Man erkennt gut, dass sich die größten Abweichungen an den Gebirgskämmen abzeichnen, über den orthographisch gediegenen Gegenden ist die Abweichung vom Beobachtungsdatensatz relativ gering. Das hat den Grund, dass sich in gebirgigen Gegenden  kleinen Konvektionszellen bilden, die sich zu größeren Regenzellen aufschaukeln können. Das gröber aufgelöste Modell CCLM4-8-17 mit einer Auflösung von ungefähr 15km kann diese Wettererscheinungen nicht modellieren - viele Täler in diesen Gegenden sind schmäler als 15km. Sie sind nur durch die parametrisierte Konvektion darstellbar. Dieses Modell scheint durch sein höheres Alter bereits feiner getuned geworden zu sein als das verglichene CCLM5-0-9: Die Abweichungen überschreiten kaum die 6 mm/Tag, wie auch schon in der Abbildung \ref{fig:mean_boxplots} dargestellt ist.\\
+Das feiner aufgelöste regionale Klimamodell CCLM5-0-9 (ALP3) müsste in diesen Gegenden einen klaren Vorteil haben, da die Konvektion dynamisch simuliert wird. Jedoch scheinen die Gleichungen bzw. die einzelnen Module des Modells noch nicht hinreichend abgestimmt (getuned) worden zu sein.\\
+Ein im Kapitel \ref{chap:modells} beschriebener negativer Randeffekt des Nestings zeigt sich besonders im Evaluation-Datensatz, wo im Süden Kroatiens ein extremer Ausreißer auszumachen ist, diese Ausreißer zeichnen sich auch im entsprechenden Boxplot ab. (vgl. Abb.\ref{fig:mean_boxplots}). Die größten Abweichungen liegen nahe am Rand vor. Diese werden verursacht durch z.B. zu kleine Bufferzonen zum übergeordneten Modell oder Effekte der zeitlichen und räumlichen Interpolation der GCM - Daten.\\
+Beachtenswert ist, dass alle RCMs eine Abweichung ins Positive aufweisen - dies bedeutet, dass mehr Niederschlage simuliert wurde als es tatsächlich gab. Da es sich für beide Klimamodelle betrieben mit GCM und auch den Reanalysedaten so verhält kann es auf eine Schwäche der beiden RCMs zurückgeführt werden. Es muss beachtet werden, dass das CCLM5-0-9 in das gröbere CCLM4-8-17 genested ist. Dadurch zeichnen sich die Abweichungen des gröberen RCMs auch im feinerem ab.
 
 \begin{comment}
 \section{Beobachtungen eines Jahres: 2002} \label{section:2002}
@@ -130,4 +126,17 @@ Das Klimamodell welches die Konvektion nicht simuliert (EUR-11) scheint dauernd 
 Das Konvektion-simulierende Klimamodell ALP-3 scheint besonders im Winter und im Herbst Niederschlagsextrema zu überschätzen. Im Sommer  bzw. Frühling stimmen die Daten relativ gut überein. Manche Extrema sind zwar zeitlich verschoben, jedoch muss bemerkt werden, dass die historischen Tage nichts mit den simulierten Tage im Klimamodell gemein haben, somit darf die zeitliche Verteilung nicht zu genau genommen werden. Sondern es muss eine gewisse Toleranz, wann ein Starkregenereignis eintritt mit-einberechnet werden.\\
 \end{comment}
 \section{Zusammenfassung}\label{sec:zusammenfassung_01}
-Wie in diesem Kapitel gezeigt wurde, liegen die Mittelwerte beider regionalen Klimamodell ähnlich verteilt vor. Da dadurch die Extremniederschläge aus den Daten ausgemittelt werden und auch der Mittelwert des Niederschlags nicht das Klima einer Region beschreibt, kann der Mittelwert nicht zur vollständigen Evaluation eines Modells herangezogen werden. Nichtsdestotrotz gibt der Mittelwert einen guten Aufschluss darüber, wo die größten Abweichungen herrschen (siehe Abbildung \ref{fig:alp3_dif_hist_mean}). Jedoch sobald man ein Jahr oder auch die gesamte Zeitspanne genauer betrachten will steht man vor dem Problem, dass die simulierten Tage nicht direkt mit den historischen Tagen in Verbindung gebracht werden dürfen. Um nun diese tägliche Inkonsistenz aus der Betrachtung Außenvorzulassen soll im nächsten Kapitel auf die alljährlichen Extremwettererscheinungen eingegangen werden, wodurch diese Inkonsistenz in den Kalendertagen umgangen wird.
+Wie in diesem Kapitel gezeigt wurde, liegen die Abweichungen der Mittelwerte beider regionalen Klimamodell ähnlich verteilt vor. Dies kann darauf zurückgeführt werden, dass das feinere RCM CCLM5-0-9 in das gröber genested wurde. Die beiden Datensätze (ALP3 und EUR11) unterscheiden sich besonders in den Ausreißern (vgl. Abb \ref{fig:mean_boxplots}), das feinere RCM hat viel stärkere maximale Abweichungen als das gröbere. Dies ist auf das noch mangelhafte tuning des jüngeren und feineren Modells zurückzuführen.\\
+Durch das Mitteln der Daten wurden die Extremniederschläge aus den Daten ''wekgemittelt'' und da der Mittelwert des Niederschlags nicht das Klima einer Region beschreibt kann der Mittelwert nicht zur vollständigen Evaluation eines Modells herangezogen werden. Nichtsdestotrotz gibt der Mittelwert einen guten Aufschluss darüber, wo die größten Abweichungen herrschen (siehe Abbildung \ref{fig:mean_diff}). Will man eine einzelne Region über eine Jahreszeit oder auch die gesamte Zeitspanne genauer betrachten, steht man vor dem Problem, dass die simulierten Tage nicht direkt mit den historischen Tagen in Verbindung gebracht werden dürfen(vgl. Kapitel \ref{chap:modells}). Um nun diese tägliche Inkonsistenz aus der Evaluierung Außenvorzulassen soll im nächsten Kapitel auf die alljährlichen Extremniederschläge über das 99.Quantil eingegangen werden, wodurch diese Inkonsistenz in den Kalendertagen umgangen wird: Es wird nicht der Tag X in den Beobachtungsdaten mit dem Tag X in den Modelldaten verglichen sondern der Tag mit dem höchsten Niederschlag bzw. dem 99.Quantil des Niederschlag in beiden Datensätzen.
+\section{R-Code}
+\begin{lstlisting}[language=R]
+	observation <- stackAPGD(getAPGD())
+	mean_observations<-getAnnualMeanObs(observation)
+	mean_mean_observations<-calc(mean_observations, fun=mean)
+	eval_eur11 <- stackSim(getEUR11regridded_eval_pr(), varname = "pr", factor = 3600*24) # factor for the precipitation-unit
+	mean_eval_eur11<-getAnnualMeanSim(eval_eur11) # calculates the annual mean and places it in a raster (=>10years==10layers)
+	mean_mean_eval_eur11 <- calc(mean_eval_eur11, fun=mean) #calculate the mean over all years
+	extent(mean_mean_observations)<-extent(mean_mean_eval_eur11) # for better representation
+	dif_mean_eval_eur11<-overlay(mean_mean_eval_eur11, mean_mean_observations,fun=function(x,y){return((x - y))}) #subtract each grid-cell
+\end{lstlisting}
+Ein Ausschnitt des Codes, der für die Berechnungen des Mittelwertes und der Differenzen verwendet wurde. Die Funktionen getAPGD() und getEUR11regrid\_eval\_pr() liefert eine liste der Dateien mit den Daten zurück. Die beiden Funktionen stackSim() und stackAPGD() legen die Daten in eine Liste aus rastern ab. danach wird über die einzelnen Elemente der Liste der Mittelwert und in Folge der Mittelwert aller Mittelwerte berechnet (stets für jede Zelle einzeln). Diese Mittelwerte werden voneinander abgezogen (Modell - Beobachtung).

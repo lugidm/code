@@ -1,3 +1,22 @@
+getAnnualMeanSim <- function(allDays){
+  pr_by_year<-raster()
+  for(i in 1:length(allDays)){
+    dummy<-calc(allDays[[i]],fun=mean)
+    names(dummy) <- toString(i+1995)
+    pr_by_year <- addLayer(pr_by_year, dummy)
+  }
+  return(pr_by_year)
+}
+stackSim <- function(inputfiles, varname, factor){
+  listus<-list('1996'=raster(), '1997'=raster(), '1998'=raster(), '1999'=raster(),'2000'=raster(), '2001'=raster(),
+               '2002'=raster(), '2003'=raster(), '2004'=raster(),'2005'=raster())
+  for(i in 1:length(inputfiles))
+  {
+    listus[[i]]<- stack(inputfiles[[i]], varname=varname)*factor
+  }
+  return(listus)
+}
+
 cropMean2002<-function(raster_stack){
   M<-extent(c(xmin=100, xmax=108, ymin=78,ymax=87))
   return_raster<-raster()

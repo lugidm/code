@@ -59,14 +59,6 @@ getAPGDinYear<-function(allDays, year){
     return(dummy)
 }
 
-getQuantileObs <- function(allDays){
-  qt_by_year<-raster()
-  for(i in 1996:2005){
-    qt_by_year <- addLayer(qt_by_year, calc(allDays[[i-1995]],Q99))
-  }
-  return(qt_by_year)
-}
-
 cropExtent<-function(ex, raster_list){
   #c<-matrix(nrow=20, ncol=23)
   for(i in 1:length(raster_list)){
