@@ -469,7 +469,7 @@ plotBiases(biases_alp3_eval, biases_alp3_hist, biases_eur11_eval, biases_eur11_h
 ######################################################################################################
 ALP3=FALSE
 observation <- stackAPGD(getAPGD())
-quantile_observations<-getQuantileObs(observation)
+quantile_observations<-getQuantile(observation)
 lon <- raster(getAPGD()[[2]], varname="lon")
 lat <- raster(getAPGD()[[2]], varname="lat")
 
@@ -498,6 +498,15 @@ dif_quantile_eval_eur11 <- overlay(quantile_eval_eur11, quantile_observations, f
 dif_quantile_hist_eur11 <- overlay(quantile_hist_eur11, quantile_observations, fun=function(x,y){return((x - y))})
 dif_quantile_eval_alp3 <- overlay(quantile_eval_alp3, quantile_observations, fun=function(x,y){return((x - y))})
 dif_quantile_hist_alp3 <- overlay(quantile_hist_alp3, quantile_observations, fun=function(x,y){return((x - y))})
+outcropper<-extent(c(xmin=220, xmax=244, ymin=0, ymax=21))
+eval_alp3_cropped<-cropExtent(ex = outcropper, raster_list = list(dif_quantile_eval_alp3))[[1]]
+
+
+
+plotBoxplot(dif_quantile_hist_eur11, "diff_q99_boxplot_hist_eur11", "EUR-11 historical", TRUE)
+plotBoxplot(dif_quantile_eval_alp3, "diff_q99_boxplot_eval_alp3", "ALP-3 evaluation", TRUE)
+plotBoxplot(dif_quantile_hist_alp3, "diff_q99_boxplot_hist_alp3", "ALP-3 historical", TRUE)
+plotBoxplot(dif_quantile_eval_eur11, "diff_q99_boxplot_eval_eur11", "EUR-11 evaluation", TRUE)
 
 ALP3=FALSE
 return_val<-q99_SUB(quantile_eval_eur11, quantile_observations, lon=lon, lat=lat, EVAL=TRUE)
@@ -571,7 +580,7 @@ for(i in 1996:2005){
   extent(hist_alp3[[i-1995]])<-extent(apgd[[i-1995]])
   names(hist_alp3[[i-1995]])<-seq(from=as.Date(paste0(i,"-01-01")), to=as.Date(paste0(i,"-12-31")), by="day")
   hist_alp3[[i-1995]]<-setZ(hist_alp3[[i-1995]], seq(from=as.Date(paste0(i,"-01-01")), to=as.Date(paste0(i,"-12-31")), by="day"))
-}
+}'
 eval_eur11_seasons<-splitSeasons(allInputfiles = eval_eur11, lon=lon, lat=lat, new_filename="eval_eur11_")
 hist_eur11_seasons<-splitSeasons(allInputfiles = hist_eur11, lon=lon,lat=lat, new_filename="hist_eur11_")
 hist_alp3_seasons<-splitSeasons(allInputfiles = hist_alp3, lon=lon,lat=lat, new_filename="hist_alp3_")
@@ -583,7 +592,7 @@ apgd_seasons<-splitSeasons(allInputfiles = apgd, lon =stack(getAPGD()[[1]], varn
 ########################## ########################## ########################## ##########################
 ######################################## QUANTILES OF SEASONS #############################################
 ########################## ########################## ########################## ##########################
-'apgd_seasons<-list(spring=stack(paste0(output_dir, "apgd_spring.nc")), summer= stack(paste0(output_dir, "apgd_summer.nc")),
+apgd_seasons<-list(spring=stack(paste0(output_dir, "apgd_spring.nc")), summer= stack(paste0(output_dir, "apgd_summer.nc")),
                    autumn=stack(paste0(output_dir, "apgd_autumn.nc")), winter=stack(paste0(output_dir, "apgd_winter.nc")))
 eval_eur11_seasons<-list(spring=stack(paste0(output_dir, "eval_eur11_spring.nc")), summer= stack(paste0(output_dir, "eval_eur11_summer.nc")),
                    autumn=stack(paste0(output_dir, "eval_eur11_autumn.nc")), winter=stack(paste0(output_dir, "eval_eur11_winter.nc")))
@@ -646,7 +655,7 @@ plotAllSeasonsFreq(list(freq_hist$summer, freq_eval$summer, freq_hist_alp3$summe
 plotAllSeasonsFreq(list(freq_hist$autumn, freq_eval$autumn, freq_hist_alp3$autumn,freq_eval_alp3$autumn), "all_frequencies_autumn", 
                    "Frequency Plot Differences in the 99.Quantile for autumn", ylim=c(0,175), xlim=c(-55,70))
 
-'
+
 
 ###########################################################################################################
 ##################################### GENAUERE BETRACHTUNG DER JAHRESZEITEN ###############################

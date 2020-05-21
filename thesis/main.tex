@@ -1,6 +1,6 @@
 \documentclass[12pt,twoside]{report}
 \usepackage[table, dvipsnames]{xcolor}
-
+\usepackage{tocloft}
 \usepackage[utf8]{inputenc}
 \usepackage{caption}
 \usepackage{subcaption}
@@ -12,12 +12,22 @@
 \usepackage[a4paper, width=150mm, top=20mm, bottom=25mm, bindingoffset=6mm]{geometry}
 \usepackage[title]{appendix}
 \usepackage{fancyhdr}
+
 \pagestyle{fancy} %% there the header is been set up 
 \fancyfoot{}
 \fancyfoot[LO,RE]{\thepage}
 \fancyhead{}
 \fancyhead[LE,RO]{\rightmark}
 \renewcommand{\footrulewidth}{0.3pt}% Line at the footer visible
+
+%\renewcommand\cftchapfont{\smalll\bfseries}
+%\renewcommand\cftsecfont{\small}
+%\renewcommand{\cftsubsecfont}{\small}
+
+\renewcommand\cftchappagefont{\small\bfseries}
+\renewcommand\cftsecpagefont{\small}
+\renewcommand{\cftsubsecpagefont}{\small}
+
 \usepackage{verbatim}
 %for code representation in R
 \usepackage{listings}
@@ -76,13 +86,14 @@
 	
 	\chapter*{Danksagungen}
 	\input{chapters/acknowledgements}
+	\newpage
 	\tableofcontents
 	
 	\chapter{Einführung}
 	\label{chap:intro}
 	\input{chapters/introduction}
 	
-	\chapter{Evaluierte Klimamodelle}
+	\chapter{Evaluierte Klimamodelle und Beobachtungsdaten}
 	\label{chap:modells}
 	\input{chapter/modells}
 	
