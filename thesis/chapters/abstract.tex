@@ -1,16 +1,15 @@
-In dieser Arbeit werden die Simulationsdaten aus zwei unterschiedlichen regionalen Klimamodellen (RCM), evaluiert und verglichen. Der hauptsächliche Unterschied der beiden Modelle liegt in der Repräsentation der Konvektion: parametrisiert oder dynamisch modelliert.\\
-%Um Daten aus einem globalen Klimamodell auf regionale Ebene zu bringen, reichen statistische Methoden kaum aus (vgl. D.Maraun und Statistical Downscaling and Bias Correction for Climate Research \cite{statistical_downscaling}). Es muss ein regionales Klimamodell angewendet werden, um die Daten des grob-aufgelösten globalen Klimamodells auf die lokalen Gegebenheiten korrekt projizieren zu können.
+In dieser Arbeit werden die Simulationsdaten aus zwei unterschiedlichen regionalen Klimamodellen (RCM) evaluiert und verglichen. Der hauptsächliche Unterschied der beiden Modelle liegt in der Repräsentation der Konvektion: Parametrisiert oder dynamisch modelliert.\\
 
 Die in dieser Arbeit evaluierten regionalen Klimamodelle sind:
 \begin{itemize}
 	\item CCLM5-0-9: Ein Klimamodell mit einer Auflösung von 3km, welches die Konvektion bis zu einem gewissen Punkt simuliert.
-	\item CCLM4-8-17: Ein Standard-Klimamodell mit einer Auflösung von 12.5km, damit sind regionale Konvektionszellen nicht simulierbar, da sich diese auf wesentlich kleineren Maßstäben abspielen. 
+	\item CCLM4-8-17: Ein Standard-Klimamodell mit einer Auflösung von 12.5km. Dadurch müssen kleinere Konvektionszellen parametrisiert werden. 
 \end{itemize}
 Beide RCM's wurden jeweils mit unterschiedlichen Daten angetrieben: 
 \begin{itemize}
-	\item Re-Analysedaten der Periode 1996-2005
-	\item historischen Daten der Klimasimulation MPI-ESM-LR (r2i1p1) \cite{mpi-esm-lr} aus der Periode 1995-2005
+	\item Re-Analysedaten der Periode 1996-2005.
+	\item Historischen Daten der Klimasimulation mit dem globalen Klimamodell MPI-ESM-LR (r2i1p1) \cite{mpi-esm-lr} aus der Periode 1996-2005.
 \end{itemize}
-Wie es meine Arbeit zeigt, scheint das RCM CCLM5-0-9 im Mittel mit starken Ausschlägen der Abweichungen auf Vorhersagen im Globalen Klimamodell zu reagieren, welche stark vom tatsächlichen Zustand des Klimasystems abweichen. Wird es jedoch mit Re-Analysedaten betrieben, scheint es im Mittel genauere Vorhersagen zu liefern als das verglichen CCLM4-8-17.\\
-Die Stärken des CCLM5-0-9 zeigen sich vor allem in der Simulation von Starkregen. Kleinräumige Gebiete in gebirgigen Gegenden zeigen zwar starke Abweichungen auf, abgesehen davon ist aber die Abweichung der restlichen Flächen näher bei null. Beim verglichenen CCLM4-8-17 ist eine geringe Abweichung vom Starkregen über die gesamte Fläche gegeben.\\
-Da es sich in den evaluierten Datensätzen um eine relativ kleine zeitliche Spanne von zehn Jahren handelt, kann nicht vollends sichergestellt werden, dass sich das erhaltene Muster über längere Perioden gleich abzeichnet.
+Wie es diese Arbeit zeigt, scheint das RCM CCLM5-0-9 im Mittel mit starken Abweichungen zu reagieren, wenn es mit dem globalen Klimamodell MPI-ESM-LR betrieben wird. Wahrscheinlich bedingt durch ein starke Abweichung des globalen Modells zum tatsächlichen Zustand des Klimas und auch die positive Rückkopplung durch das Nesting in das CCLM4-8-17. Wird es jedoch mit Re-Analysedaten betrieben, scheint es im Mittel genauere Vorhersagen zu liefern als das verglichene CCLM4-8-17.\\
+Die Stärken des CCLM5-0-9 zeigen sich vor allem in der Simulation von Starkregen. Gebiete in gebirgigen Gegenden zeigen zwar starke kleinräumige Abweichungen auf, abgesehen davon ist die Abweichung der restlichen Flächen nahe bei null. Das weist auf ein noch unausgereiftes Tuning hin. Beim verglichenen CCLM4-8-17 ist hingegen eine stetige geringe Abweichung vom Starkregen über die gesamte Fläche gegeben.\\
+Da es sich bei den evaluierten Datensätzen um eine relativ kleine zeitliche Spanne von zehn Jahren handelt, kann nicht vollends sichergestellt werden, dass sich das erhaltene Muster über längere Perioden gleich abzeichnet.
